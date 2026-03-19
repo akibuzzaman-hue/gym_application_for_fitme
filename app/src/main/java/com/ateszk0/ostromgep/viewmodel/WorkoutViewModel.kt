@@ -32,7 +32,6 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _restTimerSeconds = MutableStateFlow(0)
     val restTimerSeconds = _restTimerSeconds.asStateFlow()
 
-    // ÚJ: Kibővített gyakorlatkönyvtár
     private val _exerciseLibrary = MutableStateFlow<List<ExerciseDef>>(emptyList())
     val exerciseLibrary = _exerciseLibrary.asStateFlow()
 
@@ -45,7 +44,6 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _activeExercises = MutableStateFlow<List<ExerciseSessionData>>(emptyList())
     val activeExercises = _activeExercises.asStateFlow()
 
-    // ÚJ: Progressive Overload varázsló állapota
     private val _overloadPrompts = MutableStateFlow<List<OverloadPrompt>>(emptyList())
     val overloadPrompts = _overloadPrompts.asStateFlow()
 
@@ -62,8 +60,6 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private fun loadData() {
         _appTheme.value = prefs.getString("theme", "Kék") ?: "Kék"
-
-        // Migráció: Ha van v2-es (okos) adatbázis, betöltjük, ha nincs, átalakítjuk a régit
         val libJsonV2 = prefs.getString("library_v2", null)
         if (libJsonV2 != null) {
             _exerciseLibrary.value = gson.fromJson(libJsonV2, object : TypeToken<List<ExerciseDef>>() {}.type)
@@ -99,22 +95,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.sets
     private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
 
-    // --- ÚJ: Gyakorlat Rep Range Módosítása ---
     fun updateExerciseRepRange(name: String, min: Int, max: Int) {
         val current = _exerciseLibrary.value.toMutableList()
         val index = current.indexOfFirst { it.name == name }
-        if (index != -1) {
-            current[index] = current[index].copy(minReps = min, maxReps = max)
-        } else {
-            current.add(ExerciseDef(name, min, max))
-        }
+        if (index != -1) current[index] = current[index].copy(minReps = min, maxReps = max)
+        else current.add(ExerciseDef(name, min, max))
         _exerciseLibrary.value = current
         saveData()
     }
 
     fun startEmptyWorkout() { _activeExercises.value = emptyList(); _totalSeconds.value = 0; _restTimerSeconds.value = 0 }
 
-    // --- ÚJ: PROGRESSZÍV TÚLTERHELÉS VARÁZSLÓ INDÍTÁSA ---
     fun startWorkoutFromTemplate(template: WorkoutTemplate) {
         val newSession = template.exercises.map { templateEx ->
             val prevSets = getLastPerformedSets(templateEx.name)
@@ -126,19 +117,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = newSession
         _totalSeconds.value = 0; _restTimerSeconds.value = 0
 
-        // Legeneráljuk a javaslatokat
         val prompts = mutableListOf<OverloadPrompt>()
         newSession.forEach { ex ->
             val def = _exerciseLibrary.value.find { it.name == ex.name } ?: ExerciseDef(ex.name)
-            // Az első éles (nem bemelegítő) széria alapján döntünk
             val firstWorkingSet = ex.sets.find { !it.isWarmup && it.reps.isNotBlank() && it.kg.isNotBlank() }
             if (firstWorkingSet != null) {
                 val oldReps = firstWorkingSet.reps.toIntOrNull() ?: 0
                 val oldWeight = firstWorkingSet.kg.toDoubleOrNull() ?: 0.0
-
                 if (oldReps > 0) {
                     val prompt = OverloadPrompt(ex.id, ex.name, oldWeight, oldReps, def.maxReps, def.minReps)
-                    if (prompt.requiresWeightIncrease) { prompt.newRepsStr = def.minReps.toString() }
+                    if (prompt.requiresWeightIncrease) prompt.newRepsStr = def.minReps.toString()
                     prompts.add(prompt)
                 }
             }
@@ -146,21 +134,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _overloadPrompts.value = prompts
     }
 
-    // A Varázsló eredményének alkalmazása a mezőkre
     fun applyOverloadPrompts(prompts: List<OverloadPrompt>) {
         val currentExes = _activeExercises.value.toMutableList()
         prompts.filter { it.isSelected }.forEach { prompt ->
             val exIndex = currentExes.indexOfFirst { it.id == prompt.exerciseId }
             if (exIndex != -1) {
                 val ex = currentExes[exIndex]
-                val updatedSets = ex.sets.map { set ->
-                    if (!set.isWarmup) set.copy(kg = prompt.newWeightStr, reps = prompt.newRepsStr) else set
-                }
-                currentExes[exIndex] = ex.copy(sets = updatedSets)
+                currentExes[exIndex] = ex.copy(sets = ex.sets.map { if (!it.isWarmup) it.copy(kg = prompt.newWeightStr, reps = prompt.newRepsStr) else it })
             }
         }
         _activeExercises.value = currentExes
-        _overloadPrompts.value = emptyList() // Varázsló bezárása
+        _overloadPrompts.value = emptyList()
     }
 
     fun dismissOverloadPrompts() { _overloadPrompts.value = emptyList() }
@@ -186,6 +170,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteExercise(exerciseId: Int) { _activeExercises.value = _activeExercises.value.filter { it.id != exerciseId } }
     fun updateExerciseNote(exerciseId: Int, newNote: String) { _activeExercises.value = _activeExercises.value.map { if (it.id == exerciseId) it.copy(note = newNote) else it } }
+    fun moveExerciseUp(index: Int) { if (index > 0) { val list = _activeExercises.value.toMutableList(); val item = list.removeAt(index); list.add(index - 1, item); _activeExercises.value = list } }
+    fun moveExerciseDown(index: Int) { if (index < _activeExercises.value.size - 1) { val list = _activeExercises.value.toMutableList(); val item = list.removeAt(index); list.add(index + 1, item); _activeExercises.value = list } }
     fun swapExercises(from: Int, to: Int) { val c = _activeExercises.value.toMutableList(); val t = c[from]; c[from] = c[to]; c[to] = t; _activeExercises.value = c }
     fun deleteSet(eId: Int, sId: Int) { _activeExercises.value = _activeExercises.value.map { ex -> if (ex.id == eId) { var c = 1; ex.copy(sets = ex.sets.filter { it.id != sId }.map { if (it.isWarmup) it else it.copy(setLabel = (c++).toString()) }) } else ex } }
     fun updateSet(eId: Int, s: WorkoutSetData) { _activeExercises.value = _activeExercises.value.map { ex -> if (ex.id == eId) ex.copy(sets = ex.sets.map { if (it.id == s.id) s else it }) else ex } }
@@ -196,6 +182,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun adjustRestTimer(a: Int) { _restTimerSeconds.value = maxOf(0, _restTimerSeconds.value + a) }
     fun skipRestTimer() { _restTimerSeconds.value = 0 }
 
+    // ITT A VISSZATÉRT STATISZTIKA GENERÁTOR
     fun getChartData(): List<Float> {
         val volumes = _workoutHistory.value.takeLast(7).map { it.totalVolume.toFloat() }
         if (volumes.isEmpty()) return listOf(0f, 0f, 0f, 0f, 0f, 0f, 0f)
