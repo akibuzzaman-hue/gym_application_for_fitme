@@ -24,7 +24,7 @@ import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 
 @Composable
-fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit) {
+fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit, onNavigateToCalendar: () -> Unit, onNavigateToStatistics: () -> Unit) {
     val history by viewModel.workoutHistory.collectAsState()
     val chartData = viewModel.getChartData()
     
@@ -68,13 +68,13 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             Text("Dashboard", color = TextGray)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { 
-                DashboardButton("Statistics", Icons.Default.BarChart, Modifier.weight(1f)) {}
+                DashboardButton("Statistics", Icons.Default.BarChart, Modifier.weight(1f)) { onNavigateToStatistics() }
                 DashboardButton("Exercises", Icons.Default.FitnessCenter, Modifier.weight(1f)) { onNavigateToExercises() } 
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { 
                 DashboardButton("Measures", Icons.Default.Accessibility, Modifier.weight(1f)) {}
-                DashboardButton("Calendar", Icons.Default.CalendarMonth, Modifier.weight(1f)) {} 
+                DashboardButton("Calendar", Icons.Default.CalendarMonth, Modifier.weight(1f)) { onNavigateToCalendar() } 
             }
             Spacer(modifier = Modifier.height(32.dp)) 
         }

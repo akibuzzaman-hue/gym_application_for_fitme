@@ -86,10 +86,16 @@ data class WorkoutHistoryEntry(
     val exercises: List<ExerciseSessionData>
 )
 
+enum class MuscleGroup {
+    CHEST, BACK, SHOULDERS, BICEPS, TRICEPS, LEGS, CORE, CARDIO
+}
+
 data class ExerciseDef(
     val name: String,
     val minReps: Int = 8,
-    val maxReps: Int = 12
+    val maxReps: Int = 12,
+    val imageUri: String? = null,
+    val muscleGroups: List<MuscleGroup> = emptyList()
 )
 
 data class OverloadPrompt(

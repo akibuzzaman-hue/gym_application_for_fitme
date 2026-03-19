@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.ateszk0.ostromgep.model.OverloadPrompt
+import com.ateszk0.ostromgep.model.ExerciseDef
+import com.ateszk0.ostromgep.model.MuscleGroup
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 
@@ -94,30 +96,55 @@ fun ProgressiveOverloadDialog(
 }
 
 @Composable
-fun RepRangeDialog(
-    exerciseName: String, 
-    initialMin: Int, 
-    initialMax: Int, 
+fun ExerciseEditDialog(
+    exercise: ExerciseDef, 
     themeColor: Color, 
     onDismiss: () -> Unit, 
-    onSave: (Int, Int) -> Unit
+    onSave: (String, Int, Int, String?, List<MuscleGroup>) -> Unit
 ) {
-    var minI by remember { mutableStateOf(initialMin.toString()) }
-    var maxI by remember { mutableStateOf(initialMax.toString()) }
+    var minI by remember { mutableStateOf(exercise.minReps.toString()) }
+    var maxI by remember { mutableStateOf(exercise.maxReps.toString()) }
+    var musc by remember { mutableStateOf(exercise.muscleGroups) }
     
+    // In a real app we would use an image picker, here we just toggle the placeholder
+    var hasImg by remember { mutableStateOf(exercise.imageUri != null) }
+
     AlertDialog(
         onDismissRequest = onDismiss, 
-        title = { Text("Céltartomány: $exerciseName", color = Color.White) }, 
+        title = { Text("Edit: ${exercise.name}", color = Color.White) }, 
         text = { 
-            Column { 
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
-                    OutlinedTextField(value = minI, onValueChange = { minI = it }, label = { Text("Min") }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-                    OutlinedTextField(value = maxI, onValueChange = { maxI = it }, label = { Text("Max") }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)) 
-                } 
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) { 
+                item {
+                    Text("Rep Range", color = TextGray)
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
+                        OutlinedTextField(value = minI, onValueChange = { minI = it }, label = { Text("Min") }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        OutlinedTextField(value = maxI, onValueChange = { maxI = it }, label = { Text("Max") }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)) 
+                    } 
+                }
+                item {
+                    Text("Image", color = TextGray)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(checked = hasImg, onCheckedChange = { hasImg = it }, colors = CheckboxDefaults.colors(checkedColor = themeColor))
+                        Text(if (hasImg) "Has Image: fitness_placeholder" else "No Image", color = Color.White)
+                    }
+                }
+                item {
+                    Text("Muscle Groups", color = TextGray)
+                }
+                items(MuscleGroup.values()) { mg ->
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable { 
+                        musc = if (musc.contains(mg)) musc - mg else musc + mg 
+                    }) {
+                        Checkbox(checked = musc.contains(mg), onCheckedChange = { 
+                            musc = if (it) musc + mg else musc - mg 
+                        }, colors = CheckboxDefaults.colors(checkedColor = themeColor))
+                        Text(mg.name, color = Color.White)
+                    }
+                }
             } 
         }, 
-        confirmButton = { Button(onClick = { onSave(minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12) }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Mentés", color = Color.White) } }, 
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Mégse", color = themeColor) } }
+        confirmButton = { Button(onClick = { onSave(exercise.name, minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12, if (hasImg) "android.resource://com.ateszk0.ostromgep/drawable/fitness_placeholder" else null, musc) }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Save", color = Color.White) } }, 
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel", color = themeColor) } }
     )
 }
 

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.ateszk0.ostromgep.model.ExerciseDef
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
-import com.ateszk0.ostromgep.ui.components.RepRangeDialog
+import com.ateszk0.ostromgep.ui.components.ExerciseEditDialog
 
 @Composable
 fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -> Unit) {
@@ -92,10 +92,10 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
     }
     
     exerciseToEdit?.let { ex -> 
-        RepRangeDialog(
-            ex.name, ex.minReps, ex.maxReps, themeColor, 
+        ExerciseEditDialog(
+            ex, themeColor, 
             { exerciseToEdit = null }, 
-            { min, max -> viewModel.updateExerciseRepRange(ex.name, min, max); exerciseToEdit = null }
+            { name, min, max, imgUri, muscles -> viewModel.updateExerciseDetails(name, min, max, imgUri, muscles); exerciseToEdit = null }
         ) 
     }
 }

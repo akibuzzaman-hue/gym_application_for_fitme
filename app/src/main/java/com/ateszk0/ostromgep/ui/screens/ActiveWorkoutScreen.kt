@@ -97,12 +97,12 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         }
     ) { innerPadding ->
         LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
-            item { 
-                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) { 
+            item {
+                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     StatItem("Duration", "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
                     StatItem("Volume", "${totalVolume.toInt()} kg")
-                    StatItem("Sets", "$completedSetsCount") 
-                } 
+                    StatItem("Sets", "$completedSetsCount")
+                }
             }
             itemsIndexed(exercises, key = { _, exercise -> exercise.id }) { index, exercise ->
                 val isDragged = draggedIndex == index
@@ -119,77 +119,81 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 ) {
                     ExerciseBlock(
                         exercise, index, exercises.size, themeColor,
-                        { viewModel.moveExerciseUp(index) }, 
+                        { viewModel.moveExerciseUp(index) },
                         { viewModel.moveExerciseDown(index) },
-                        { s -> viewModel.updateSet(exercise.id, s) }, 
-                        { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) }, 
-                        { viewModel.addSet(exercise.id) }, 
-                        { id -> viewModel.deleteSet(exercise.id, id) }, 
-                        { sec -> viewModel.updateExerciseRestTime(exercise.id, sec) }, 
-                        { id -> viewModel.toggleWarmup(exercise.id, id) }, 
-                        { note -> viewModel.updateExerciseNote(exercise.id, note) }, 
+                        { s -> viewModel.updateSet(exercise.id, s) },
+                        { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) },
+                        { viewModel.addSet(exercise.id) },
+                        { id -> viewModel.deleteSet(exercise.id, id) },
+                        { sec -> viewModel.updateExerciseRestTime(exercise.id, sec) },
+                        { id -> viewModel.toggleWarmup(exercise.id, id) },
+                        { note -> viewModel.updateExerciseNote(exercise.id, note) },
                         { viewModel.deleteExercise(exercise.id) },
                         { exerciseToEditRepRange = exercise.name }
                     )
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
-            item { 
-                Button(onClick = { showBottomSheet = true }, modifier = Modifier.fillMaxWidth().padding(16.dp).height(48.dp), colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { 
+            item {
+                Button(onClick = { showBottomSheet = true }, modifier = Modifier.fillMaxWidth().padding(16.dp).height(48.dp), colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
                     Icon(Icons.Default.Add, null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add Exercise", color = Color.White) 
+                    Text("Add Exercise", color = Color.White)
                 }
-                Spacer(modifier = Modifier.height(32.dp)) 
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
-        
+
         if (prompts.isNotEmpty()) {
             ProgressiveOverloadDialog(prompts, themeColor, { p -> viewModel.applyOverloadPrompts(p) }, { viewModel.dismissOverloadPrompts() })
         }
         if (showSettingsDialog) SettingsDialog(viewModel, themeColor) { showSettingsDialog = false }
         if (showPlateCalculator) PlateCalculatorDialog({ showPlateCalculator = false }, themeColor)
-        
-        exerciseToEditRepRange?.let { n -> 
-            val def = library.find { it.name == n }
-            RepRangeDialog(
-                n, def?.minReps ?: 8, def?.maxReps ?: 12, themeColor, 
-                { exerciseToEditRepRange = null }, 
-                { min, max -> viewModel.updateExerciseRepRange(n, min, max); exerciseToEditRepRange = null }
-            ) 
+
+        exerciseToEditRepRange?.let { n ->
+            val def = library.find { it.name == n } ?: com.ateszk0.ostromgep.model.ExerciseDef(n)
+            ExerciseEditDialog(
+                def, themeColor,
+                { exerciseToEditRepRange = null },
+                { name, min, max, imgUri, muscles -> 
+                    viewModel.updateExerciseDetails(name, min, max, imgUri, muscles)
+                    exerciseToEditRepRange = null 
+                }
+            )
         }
-        
+
         if (showBottomSheet) {
-            ModalBottomSheet(onDismissRequest = { showBottomSheet = false }, sheetState = sheetState, containerColor = SurfaceDark) { 
-                LazyColumn { 
-                    items(library) { exDef -> 
+            ModalBottomSheet(onDismissRequest = { showBottomSheet = false }, sheetState = sheetState, containerColor = SurfaceDark) {
+                LazyColumn {
+                    items(library) { exDef ->
                         ListItem(
-                            headlineContent = { Text(exDef.name, color = Color.White) }, 
-                            modifier = Modifier.clickable { viewModel.addNewExerciseBlock(exDef.name); showBottomSheet = false }, 
+                            headlineContent = { Text(exDef.name, color = Color.White) },
+                            modifier = Modifier.clickable { viewModel.addNewExerciseBlock(exDef.name); showBottomSheet = false },
                             colors = ListItemDefaults.colors(containerColor = Color.Transparent)
-                        ) 
-                    } 
-                } 
-            } 
+                        )
+                    }
+                }
+            }
         }
-        
-        if (showSaveTemplateDialog) { 
+
+        if (showSaveTemplateDialog) {
             var n by remember { mutableStateOf("") }
             AlertDialog(
-                onDismissRequest = { showSaveTemplateDialog = false }, 
-                title = { Text("Befejezés", color = Color.White) }, 
-                text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text("Sablon neve") }) }, 
-                confirmButton = { 
-                    Button(onClick = { viewModel.finishWorkout(if (n.isNotBlank()) n else null); showSaveTemplateDialog = false; onFinishWorkout() }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { 
-                        Text("Befejezés", color = Color.White) 
-                    } 
-                }, 
-                dismissButton = { 
-                    TextButton(onClick = { showSaveTemplateDialog = false }) { 
-                        Text("Mégse", color = themeColor) 
-                    } 
+                onDismissRequest = { showSaveTemplateDialog = false },
+                title = { Text("Befejezés", color = Color.White) },
+                text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text("Sablon neve") }) },
+                confirmButton = {
+                    Button(onClick = { viewModel.finishWorkout(if (n.isNotBlank()) n else null); showSaveTemplateDialog = false; onFinishWorkout() }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                        Text("Befejezés", color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showSaveTemplateDialog = false }) {
+                        Text("Mégse", color = themeColor)
+                    }
                 }
-            ) 
+            )
         }
     }
+
 }

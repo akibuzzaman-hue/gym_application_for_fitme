@@ -3,6 +3,9 @@ package com.ateszk0.ostromgep.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.ateszk0.ostromgep.NotificationHelper
+import com.ateszk0.ostromgep.WorkoutAction
+import com.ateszk0.ostromgep.WorkoutEventBus
 import com.ateszk0.ostromgep.data.WorkoutRepository
 import com.ateszk0.ostromgep.model.*
 import kotlinx.coroutines.delay
@@ -11,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
+
 
     private val repository = WorkoutRepository(application)
 
@@ -40,10 +44,22 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         viewModelScope.launch {
+            WorkoutEventBus.events.collect { action ->
+                when(action) {
+                    WorkoutAction.SKIP_REST -> skipRestTimer()
+                    WorkoutAction.ADD_15S -> adjustRestTimer(15)
+                    WorkoutAction.SUB_15S -> adjustRestTimer(-15)
+                }
+            }
+        }
+        viewModelScope.launch {
             while (true) {
                 delay(1000)
-                _totalSeconds.value += 1
-                if (_restTimerSeconds.value > 0) _restTimerSeconds.value -= 1
+                if (_activeExercises.value.isNotEmpty()) {
+                    _totalSeconds.value += 1
+                    if (_restTimerSeconds.value > 0) _restTimerSeconds.value -= 1
+                    NotificationHelper.updateNotification(application, _activeExercises.value, _restTimerSeconds.value)
+                }
             }
         }
     }
@@ -62,13 +78,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.sets
     private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
 
-    fun updateExerciseRepRange(name: String, min: Int, max: Int) {
+    fun updateExerciseDetails(name: String, min: Int, max: Int, imageUri: String?, muscleGroups: List<MuscleGroup>) {
         val current = _exerciseLibrary.value.toMutableList()
         val index = current.indexOfFirst { it.name == name }
         if (index != -1) {
-            current[index] = current[index].copy(minReps = min, maxReps = max)
+            current[index] = current[index].copy(minReps = min, maxReps = max, imageUri = imageUri, muscleGroups = muscleGroups)
         } else {
-            current.add(ExerciseDef(name, min, max))
+            current.add(ExerciseDef(name, min, max, imageUri, muscleGroups))
         }
         _exerciseLibrary.value = current
         repository.saveExerciseLibrary(current)
