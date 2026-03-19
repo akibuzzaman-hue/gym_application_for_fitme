@@ -13,6 +13,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,23 +36,18 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
     val chartData = viewModel.getChartData()
     val username by viewModel.username.collectAsState()
     val profUri by viewModel.profilePictureUri.collectAsState()
-
-    val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
-        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
-    ) { uri: android.net.Uri? ->
-        uri?.let { viewModel.updateProfilePictureUri(it.toString()) }
+    var showSettings by remember { mutableStateOf(false) }
+    
+    if (showSettings) {
+        com.ateszk0.ostromgep.ui.components.SettingsDialog(viewModel, themeColor) { showSettings = false }
     }
     
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+        item { Spacer(modifier = Modifier.height(16.dp)) }
         item { 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = { /* TODO settings */ }) {
-                    Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)
-                }
-            }
             Row(verticalAlignment = Alignment.CenterVertically) { 
                 Box(
-                    modifier = Modifier.size(64.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, 
+                    modifier = Modifier.size(64.dp).clip(CircleShape).background(SurfaceDark), 
                     contentAlignment = Alignment.Center
                 ) { 
                     if (profUri.isNullOrEmpty()) {
@@ -64,13 +62,13 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
                     }
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Column { 
-                    BasicTextField(
-                        value = username,
-                        onValueChange = { viewModel.updateUsername(it) },
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White),
-                        cursorBrush = SolidColor(themeColor)
-                    )
+                Column(modifier = Modifier.weight(1f)) { 
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Text(username, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White, modifier = Modifier.weight(1f))
+                        IconButton(onClick = { showSettings = true }) {
+                            Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)
+                        }
+                    }
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 4.dp)) { 
                         Column { 
                             Text("Workouts", color = TextGray, fontSize = 12.sp)
@@ -130,6 +128,7 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
                 } 
             } 
         }
+        item { Spacer(modifier = Modifier.height(100.dp)) }
     }
 }
 

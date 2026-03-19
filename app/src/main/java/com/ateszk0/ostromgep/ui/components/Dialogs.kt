@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -170,27 +172,72 @@ fun SettingsDialog(
     currentThemeColor: Color, 
     onDismiss: () -> Unit
 ) {
+    var selectedTab by remember { mutableStateOf(0) }
+    
+    val username by viewModel.username.collectAsState()
+    val profUri by viewModel.profilePictureUri.collectAsState()
+    var editName by remember { mutableStateOf(username) }
+
+    val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri: android.net.Uri? ->
+        uri?.let { viewModel.updateProfilePictureUri(it.toString()) }
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss, 
-        title = { Text("Beállítások", color = Color.White) }, 
+        title = { 
+            Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+                Text("Profil", color = if (selectedTab == 0) currentThemeColor else TextGray, fontWeight = if (selectedTab == 0) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 0 })
+                Text("Téma", color = if (selectedTab == 1) currentThemeColor else TextGray, fontWeight = if (selectedTab == 1) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 1 })
+            }
+        }, 
         text = {
-            Column { 
-                Text("Alkalmazás Témája:", fontWeight = FontWeight.Bold, color = Color.White)
-                Spacer(modifier = Modifier.height(16.dp))
-                listOf("Kék", "Piros", "Sárga", "Zöld").forEach { themeName ->
-                    val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
-                    Row(
-                        modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(vertical = 12.dp), 
-                        verticalAlignment = Alignment.CenterVertically
-                    ) { 
-                        Box(modifier = Modifier.size(24.dp).clip(CircleShape).background(color))
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(themeName, fontSize = 16.sp, color = Color.White) 
+            if (selectedTab == 0) {
+                Column {
+                    Text("Profilkép:", fontWeight = FontWeight.Bold, color = Color.White)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Box(modifier = Modifier.size(64.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, contentAlignment = Alignment.Center) {
+                        if (profUri.isNullOrEmpty()) {
+                            Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(40.dp)) 
+                        } else {
+                            coil.compose.AsyncImage(model = profUri, contentDescription = null, contentScale = androidx.compose.ui.layout.ContentScale.Crop, modifier = Modifier.fillMaxSize())
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("Neved:", fontWeight = FontWeight.Bold, color = Color.White)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = editName, 
+                        onValueChange = { editName = it }, 
+                        textStyle = TextStyle(color = Color.White),
+                        singleLine = true
+                    )
+                }
+            } else {
+                Column { 
+                    Text("Alkalmazás Témája:", fontWeight = FontWeight.Bold, color = Color.White)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    listOf("Kék", "Piros", "Sárga", "Zöld").forEach { themeName ->
+                        val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
+                        Row(
+                            modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(vertical = 12.dp), 
+                            verticalAlignment = Alignment.CenterVertically
+                        ) { 
+                            Box(modifier = Modifier.size(24.dp).clip(CircleShape).background(color))
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(themeName, fontSize = 16.sp, color = Color.White) 
+                        } 
                     } 
                 } 
-            } 
+            }
         },
-        confirmButton = { Button(onClick = onDismiss, colors = ButtonDefaults.buttonColors(containerColor = currentThemeColor)) { Text("Bezárás", color = Color.White) } }
+        confirmButton = { 
+            Button(onClick = { 
+                if (selectedTab == 0) viewModel.updateUsername(editName)
+                onDismiss() 
+            }, colors = ButtonDefaults.buttonColors(containerColor = currentThemeColor)) { Text("Bezárás", color = Color.White) } 
+        }
     )
 }
 

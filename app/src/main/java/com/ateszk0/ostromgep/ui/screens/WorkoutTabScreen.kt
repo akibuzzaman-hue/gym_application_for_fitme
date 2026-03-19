@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Assignment
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
@@ -58,6 +59,9 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text("Routines", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            IconButton(onClick = { /* TODO: Manage Folders */ }) {
+                Icon(Icons.Default.Folder, contentDescription = "Folders", tint = TextGray)
+            }
         }
         
         Spacer(modifier = Modifier.height(16.dp))

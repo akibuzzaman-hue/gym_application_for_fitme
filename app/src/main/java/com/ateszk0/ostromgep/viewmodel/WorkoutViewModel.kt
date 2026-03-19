@@ -8,6 +8,7 @@ import com.ateszk0.ostromgep.WorkoutAction
 import com.ateszk0.ostromgep.WorkoutEventBus
 import com.ateszk0.ostromgep.data.WorkoutRepository
 import com.ateszk0.ostromgep.model.*
+import com.ateszk0.ostromgep.utils.FileHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -84,8 +85,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun updateProfilePictureUri(uri: String) {
-        _profilePictureUri.value = uri
-        repository.saveProfilePictureUri(uri)
+        val app = getApplication<Application>()
+        val localUri = if (uri.startsWith("content://")) {
+            FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(uri)) ?: uri
+        } else uri
+        _profilePictureUri.value = localUri
+        repository.saveProfilePictureUri(localUri)
     }
 
     fun deleteTemplate(templateId: Int) { 
@@ -98,12 +103,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
 
     fun updateExerciseDetails(name: String, min: Int, max: Int, imageUri: String?, muscleGroups: List<MuscleGroup>) {
+        val app = getApplication<Application>()
+        val localImgUri = if (imageUri?.startsWith("content://") == true) {
+            FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(imageUri)) ?: imageUri
+        } else imageUri
+
         val current = _exerciseLibrary.value.toMutableList()
         val index = current.indexOfFirst { it.name == name }
         if (index != -1) {
-            current[index] = current[index].copy(minReps = min, maxReps = max, imageUri = imageUri, muscleGroups = muscleGroups)
+            current[index] = current[index].copy(minReps = min, maxReps = max, imageUri = localImgUri, muscleGroups = muscleGroups)
         } else {
-            current.add(ExerciseDef(name, min, max, imageUri, muscleGroups))
+            current.add(ExerciseDef(name, min, max, localImgUri, muscleGroups))
         }
         _exerciseLibrary.value = current
         repository.saveExerciseLibrary(current)
