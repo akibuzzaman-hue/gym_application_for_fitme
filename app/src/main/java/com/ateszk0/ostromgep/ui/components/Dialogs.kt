@@ -106,8 +106,12 @@ fun ExerciseEditDialog(
     var maxI by remember { mutableStateOf(exercise.maxReps.toString()) }
     var musc by remember { mutableStateOf(exercise.muscleGroups) }
     
-    // In a real app we would use an image picker, here we just toggle the placeholder
-    var hasImg by remember { mutableStateOf(exercise.imageUri != null) }
+    var imgUri by remember { mutableStateOf(exercise.imageUri) }
+    val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri: android.net.Uri? ->
+        uri?.let { imgUri = it.toString() }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss, 
@@ -123,9 +127,21 @@ fun ExerciseEditDialog(
                 }
                 item {
                     Text("Image", color = TextGray)
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = hasImg, onCheckedChange = { hasImg = it }, colors = CheckboxDefaults.colors(checkedColor = themeColor))
-                        Text(if (hasImg) "Has Image: fitness_placeholder" else "No Image", color = Color.White)
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { launcher.launch("image/*") }) {
+                        if (!imgUri.isNullOrEmpty()) {
+                            coil.compose.AsyncImage(
+                                model = imgUri,
+                                contentDescription = null,
+                                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                                modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                            )
+                        } else {
+                            Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(DarkBackground), contentAlignment = Alignment.Center) {
+                                Text("No Img", color = TextGray, fontSize = 10.sp)
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(if (imgUri.isNullOrEmpty()) "Pick Image" else "Change Image", color = Color.White)
                     }
                 }
                 item {
@@ -143,7 +159,7 @@ fun ExerciseEditDialog(
                 }
             } 
         }, 
-        confirmButton = { Button(onClick = { onSave(exercise.name, minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12, if (hasImg) "android.resource://com.ateszk0.ostromgep/drawable/fitness_placeholder" else null, musc) }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Save", color = Color.White) } }, 
+        confirmButton = { Button(onClick = { onSave(exercise.name, minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12, imgUri, musc) }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Save", color = Color.White) } }, 
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel", color = themeColor) } }
     )
 }

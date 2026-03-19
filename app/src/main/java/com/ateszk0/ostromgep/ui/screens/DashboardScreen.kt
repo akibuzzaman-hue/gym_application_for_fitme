@@ -22,33 +22,60 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 
 @Composable
 fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit, onNavigateToCalendar: () -> Unit, onNavigateToStatistics: () -> Unit) {
     val history by viewModel.workoutHistory.collectAsState()
     val chartData = viewModel.getChartData()
+    val username by viewModel.username.collectAsState()
+    val profUri by viewModel.profilePictureUri.collectAsState()
+
+    val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri: android.net.Uri? ->
+        uri?.let { viewModel.updateProfilePictureUri(it.toString()) }
+    }
     
     LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         item { 
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                IconButton(onClick = { /* TODO settings */ }) {
+                    Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)
+                }
+            }
             Row(verticalAlignment = Alignment.CenterVertically) { 
                 Box(
-                    modifier = Modifier.size(64.dp).clip(CircleShape).background(SurfaceDark), 
+                    modifier = Modifier.size(64.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, 
                     contentAlignment = Alignment.Center
                 ) { 
-                    Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(40.dp)) 
+                    if (profUri.isNullOrEmpty()) {
+                        Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(40.dp)) 
+                    } else {
+                        AsyncImage(
+                            model = profUri,
+                            contentDescription = "Profile Picture",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column { 
-                    Text("Ostromgép Harcos", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
+                    BasicTextField(
+                        value = username,
+                        onValueChange = { viewModel.updateUsername(it) },
+                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White),
+                        cursorBrush = SolidColor(themeColor)
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 4.dp)) { 
                         Column { 
                             Text("Workouts", color = TextGray, fontSize = 12.sp)
                             Text("${history.size}", color = Color.White, fontWeight = FontWeight.Bold) 
                         }
-                        Column { 
-                            Text("Followers", color = TextGray, fontSize = 12.sp)
-                            Text("1", color = Color.White, fontWeight = FontWeight.Bold) 
-                        } 
                     } 
                 } 
             }

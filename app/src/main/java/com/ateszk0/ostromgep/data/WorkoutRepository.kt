@@ -60,4 +60,29 @@ class WorkoutRepository(context: Context) {
     fun saveWorkoutHistory(history: List<WorkoutHistoryEntry>) {
         prefs.edit().putString("history", gson.toJson(history)).apply()
     }
+
+    fun getBodyWeightHistory(): List<com.ateszk0.ostromgep.model.BodyWeightEntry> {
+        val json = prefs.getString("bodyweight", null) ?: return emptyList()
+        return gson.fromJson(json, object : TypeToken<List<com.ateszk0.ostromgep.model.BodyWeightEntry>>() {}.type)
+    }
+
+    fun saveBodyWeightHistory(history: List<com.ateszk0.ostromgep.model.BodyWeightEntry>) {
+        prefs.edit().putString("bodyweight", gson.toJson(history)).apply()
+    }
+
+    fun getUsername(): String {
+        return prefs.getString("username", "Ostromgép Harcos") ?: "Ostromgép Harcos"
+    }
+
+    fun saveUsername(name: String) {
+        prefs.edit().putString("username", name).apply()
+    }
+
+    fun getProfilePictureUri(): String? {
+        return prefs.getString("profile_pic_uri", null)
+    }
+
+    fun saveProfilePictureUri(uri: String) {
+        prefs.edit().putString("profile_pic_uri", uri).apply()
+    }
 }

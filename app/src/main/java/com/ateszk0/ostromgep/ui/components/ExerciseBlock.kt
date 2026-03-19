@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.*
@@ -38,6 +39,7 @@ import kotlin.math.roundToInt
 @Composable
 fun ExerciseBlock(
     exercise: ExerciseSessionData, 
+    imageUri: String?,
     index: Int, 
     total: Int, 
     themeColor: Color,
@@ -63,7 +65,18 @@ fun ExerciseBlock(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.size(32.dp).clip(CircleShape).background(Color.White))
+                if (!imageUri.isNullOrEmpty()) {
+                    coil.compose.AsyncImage(
+                        model = imageUri,
+                        contentDescription = null,
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                    )
+                } else {
+                    Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(SurfaceDark), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.FitnessCenter, null, tint = TextGray, modifier = Modifier.size(24.dp))
+                    }
+                }
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(text = exercise.name, color = themeColor, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }

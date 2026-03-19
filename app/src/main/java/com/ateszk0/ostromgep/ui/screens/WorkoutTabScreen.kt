@@ -28,7 +28,7 @@ import com.ateszk0.ostromgep.ui.theme.*
 import androidx.compose.foundation.border
 
 @Composable
-fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Unit) {
+fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Unit, onNavigateToRoutineEditor: () -> Unit) {
     val templates by viewModel.savedTemplates.collectAsState()
     
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -64,7 +64,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
-                onClick = { },
+                onClick = { onNavigateToRoutineEditor() },
                 modifier = Modifier.weight(1f).height(48.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)

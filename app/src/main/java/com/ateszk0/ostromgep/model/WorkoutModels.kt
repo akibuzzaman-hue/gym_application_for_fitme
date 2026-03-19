@@ -86,6 +86,11 @@ data class WorkoutHistoryEntry(
     val exercises: List<ExerciseSessionData>
 )
 
+data class BodyWeightEntry(
+    val timestamp: Long,
+    val weightKg: Double
+)
+
 enum class MuscleGroup {
     CHEST, BACK, SHOULDERS, BICEPS, TRICEPS, LEGS, CORE, CARDIO
 }

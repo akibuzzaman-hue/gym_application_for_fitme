@@ -42,6 +42,15 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _overloadPrompts = MutableStateFlow<List<OverloadPrompt>>(emptyList())
     val overloadPrompts = _overloadPrompts.asStateFlow()
 
+    private val _bodyWeightHistory = MutableStateFlow(repository.getBodyWeightHistory())
+    val bodyWeightHistory = _bodyWeightHistory.asStateFlow()
+
+    private val _username = MutableStateFlow(repository.getUsername())
+    val username = _username.asStateFlow()
+
+    private val _profilePictureUri = MutableStateFlow(repository.getProfilePictureUri())
+    val profilePictureUri = _profilePictureUri.asStateFlow()
+
     init {
         viewModelScope.launch {
             WorkoutEventBus.events.collect { action ->
@@ -67,6 +76,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun setTheme(colorName: String) { 
         _appTheme.value = colorName
         repository.saveTheme(colorName)
+    }
+
+    fun updateUsername(name: String) {
+        _username.value = name
+        repository.saveUsername(name)
+    }
+
+    fun updateProfilePictureUri(uri: String) {
+        _profilePictureUri.value = uri
+        repository.saveProfilePictureUri(uri)
     }
 
     fun deleteTemplate(templateId: Int) { 
@@ -175,6 +194,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = emptyList()
     }
 
+    fun saveNewTemplate(name: String, exercises: List<ExerciseSessionData>) {
+        val id = (_savedTemplates.value.maxOfOrNull { it.id } ?: 0) + 1
+        val updated = _savedTemplates.value + WorkoutTemplate(id, name, exercises)
+        _savedTemplates.value = updated
+        repository.saveSavedTemplates(updated)
+    }
+
     fun createCustomExercise(name: String) { 
         if (name.isNotBlank() && _exerciseLibrary.value.none { it.name == name }) { 
             val newLib = _exerciseLibrary.value + ExerciseDef(name)
@@ -276,5 +302,114 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         if (volumes.isEmpty()) return listOf(0f, 0f, 0f, 0f, 0f, 0f, 0f)
         val max = volumes.maxOrNull() ?: 1f
         return volumes.map { it / max }
+    }
+
+    fun addBodyWeight(weightKg: Double) {
+        val newEntry = BodyWeightEntry(System.currentTimeMillis(), weightKg)
+        val updated = _bodyWeightHistory.value + newEntry
+        _bodyWeightHistory.value = updated
+        repository.saveBodyWeightHistory(updated)
+    }
+
+    fun getMuscleRecoveryStatus(): Map<MuscleGroup, String> {
+        val now = System.currentTimeMillis()
+        val recoveryMap = mutableMapOf<MuscleGroup, String>()
+        
+        MuscleGroup.values().forEach { recoveryMap[it] = "Green" }
+        
+        val oneDayMs = 24 * 60 * 60 * 1000L
+        val twoDaysMs = 48 * 60 * 60 * 1000L
+
+        _workoutHistory.value.forEach { entry ->
+            val timeDiff = now - entry.timestamp
+            entry.exercises.forEach { exSession ->
+                val def = _exerciseLibrary.value.find { it.name == exSession.name }
+                def?.muscleGroups?.forEach { mg ->
+                    if (timeDiff < oneDayMs) {
+                        recoveryMap[mg] = "Red"
+                    } else if (timeDiff < twoDaysMs && recoveryMap[mg] != "Red") {
+                        recoveryMap[mg] = "Yellow"
+                    }
+                }
+            }
+        }
+        return recoveryMap
+    }
+
+    fun suggestNextMission(): WorkoutTemplate? {
+        val templates = _savedTemplates.value
+        if (templates.isEmpty()) return null
+        
+        val templateLastUsed = templates.associateWith { t ->
+            val latestEntry = _workoutHistory.value.filter {
+                it.exercises.map { e -> e.name }.containsAll(t.exercises.map { e -> e.name })
+            }.maxByOrNull { it.timestamp }
+            latestEntry?.timestamp ?: 0L
+        }
+        
+        return templateLastUsed.minByOrNull { it.value }?.key
+    }
+
+    fun getWeeklyBattleLog(): List<Boolean> {
+        val now = java.util.Calendar.getInstance()
+        var currentDayOfWeek = now.get(java.util.Calendar.DAY_OF_WEEK) - 1
+        if (currentDayOfWeek == 0) currentDayOfWeek = 7 
+        
+        val mondayCal = now.clone() as java.util.Calendar
+        mondayCal.add(java.util.Calendar.DAY_OF_YEAR, -(currentDayOfWeek - 1))
+        mondayCal.set(java.util.Calendar.HOUR_OF_DAY, 0)
+        mondayCal.set(java.util.Calendar.MINUTE, 0)
+        mondayCal.set(java.util.Calendar.SECOND, 0)
+        mondayCal.set(java.util.Calendar.MILLISECOND, 0)
+        
+        val startOfWeekMs = mondayCal.timeInMillis
+        val dayMs = 24 * 60 * 60 * 1000L
+        
+        val booleanList = mutableListOf<Boolean>()
+        for (i in 0..6) {
+            val startOfDay = startOfWeekMs + (i * dayMs)
+            val endOfDay = startOfDay + dayMs
+            val hasWorkout = _workoutHistory.value.any { it.timestamp in startOfDay until endOfDay }
+            booleanList.add(hasWorkout)
+        }
+        return booleanList
+    }
+
+    fun getPersonalRecords(): List<String> {
+        val records = mutableListOf<String>()
+        val exerciseMaxWeight = mutableMapOf<String, Double>()
+        val exerciseMaxVolume = mutableMapOf<String, Double>()
+        
+        _workoutHistory.value.sortedBy { it.timestamp }.forEach { entry ->
+            entry.exercises.forEach { exSession ->
+                var sessionMaxWeight = 0.0
+                var sessionTotalVolume = 0.0
+                
+                exSession.sets.filter { it.isCompleted && !it.isWarmup }.forEach { set ->
+                    val weight = set.kg.toDoubleOrNull() ?: 0.0
+                    if (weight > sessionMaxWeight) sessionMaxWeight = weight
+                    sessionTotalVolume += set.volume()
+                }
+                
+                if (sessionMaxWeight > 0) {
+                    val prevMaxWeight = exerciseMaxWeight[exSession.name] ?: 0.0
+                    if (sessionMaxWeight > prevMaxWeight) {
+                        if (prevMaxWeight > 0.0) { 
+                            records.add("🔥 ${exSession.name}: Új súlyrekord ${OverloadPrompt.formatWeight(sessionMaxWeight)}kg!")
+                        }
+                        exerciseMaxWeight[exSession.name] = sessionMaxWeight
+                    }
+                }
+                
+                if (sessionTotalVolume > 0) {
+                    val prevMaxVol = exerciseMaxVolume[exSession.name] ?: 0.0
+                    if (sessionTotalVolume > prevMaxVol && prevMaxVol > 0.0) {
+                        records.add("📈 ${exSession.name}: Új volumenrekord ${sessionTotalVolume.toInt()}kg!")
+                        exerciseMaxVolume[exSession.name] = sessionTotalVolume
+                    }
+                }
+            }
+        }
+        return records.takeLast(10).reversed()
     }
 }

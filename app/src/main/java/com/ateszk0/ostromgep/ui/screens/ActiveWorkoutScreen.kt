@@ -43,7 +43,12 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var showSaveTemplateDialog by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
     var showSettingsDialog by remember { mutableStateOf(false) }
+    var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
+    
+    androidx.activity.compose.BackHandler(enabled = true) {
+        showDiscardDialog = true
+    }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val totalVolume = exercises.sumOf { it.totalVolume() }
@@ -91,7 +96,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 }
                 Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     Button(onClick = { showSettingsDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Settings", color = Color.White) }
-                    Button(onClick = { viewModel.finishWorkout(null); onFinishWorkout() }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Discard", color = Color.Red) }
+                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Discard", color = Color.Red) }
                 }
             }
         }
@@ -117,8 +122,9 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     .background(if (isDragged) SurfaceDark.copy(0.5f) else Color.Transparent)
                     .animateItemPlacement()
                 ) {
+                    val def = library.find { it.name == exercise.name }
                     ExerciseBlock(
-                        exercise, index, exercises.size, themeColor,
+                        exercise, def?.imageUri, index, exercises.size, themeColor,
                         { viewModel.moveExerciseUp(index) },
                         { viewModel.moveExerciseDown(index) },
                         { s -> viewModel.updateSet(exercise.id, s) },
@@ -149,6 +155,26 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         }
         if (showSettingsDialog) SettingsDialog(viewModel, themeColor) { showSettingsDialog = false }
         if (showPlateCalculator) PlateCalculatorDialog({ showPlateCalculator = false }, themeColor)
+
+        if (showDiscardDialog) {
+            AlertDialog(
+                onDismissRequest = { showDiscardDialog = false },
+                title = { Text("Biztosan elveted az edzést?", color = Color.White) },
+                text = { Text("Minden eddigi adatod elveszik.", color = TextGray) },
+                confirmButton = {
+                    Button(onClick = { 
+                        viewModel.finishWorkout(null)
+                        showDiscardDialog = false
+                        onFinishWorkout() 
+                    }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
+                        Text("Elvetés", color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDiscardDialog = false }) { Text("Mégse", color = themeColor) }
+                }
+            )
+        }
 
         exerciseToEditRepRange?.let { n ->
             val def = library.find { it.name == n } ?: com.ateszk0.ostromgep.model.ExerciseDef(n)

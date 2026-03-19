@@ -22,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ateszk0.ostromgep.ui.screens.*
 import com.ateszk0.ostromgep.ui.theme.*
@@ -74,13 +75,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics }
+enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor }
 
 @Composable
 fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
-    var currentScreen by remember { mutableStateOf(AppScreen.Profile) }
+    var currentScreen by remember { mutableStateOf(AppScreen.Home) }
     var isWorkoutActive by remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
+    
+    // Prevent exiting app from the bottom nav
+    androidx.activity.compose.BackHandler(enabled = !isWorkoutActive && currentScreen in listOf(AppScreen.Home, AppScreen.Workout, AppScreen.Profile)) {
+        // Do nothing, preventing app exit
+    }
 
     LaunchedEffect(isWorkoutActive) {
         val intent = Intent(context, WorkoutService::class.java)
@@ -96,7 +102,7 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
     } else {
         Scaffold(
             bottomBar = {
-                NavigationBar(containerColor = SurfaceDark) {
+                NavigationBar(containerColor = SurfaceDark, tonalElevation = 0.dp) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Home, null) }, 
                         label = { Text("Home") }, 
@@ -123,8 +129,12 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
         ) { padding ->
             Box(modifier = Modifier.padding(padding).fillMaxSize()) {
                 when (currentScreen) {
-                    AppScreen.Home -> Box(Modifier.fillMaxSize(), Alignment.Center) { Text("Hamarosan...", color = TextGray) }
-                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true })
+                    AppScreen.Home -> HomeScreen(viewModel, themeColor, onNavigateToWorkout = { 
+                        currentScreen = AppScreen.Workout
+                        isWorkoutActive = true 
+                    })
+                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor })
+                    AppScreen.RoutineEditor -> RoutineEditorScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
                     AppScreen.Profile -> DashboardProfile(
                         viewModel, 
                         themeColor, 
