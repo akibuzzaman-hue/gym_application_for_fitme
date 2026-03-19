@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
-
     private val repository = WorkoutRepository(application)
 
     private val _appTheme = MutableStateFlow(repository.getTheme())
@@ -28,7 +27,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _restTimerSeconds = MutableStateFlow(0)
     val restTimerSeconds = _restTimerSeconds.asStateFlow()
 
-    private val _exerciseLibrary = MutableStateFlow(repository.getExerciseLibrary())
+    private val _exerciseLibrary = MutableStateFlow<List<ExerciseDef>>(emptyList())
     val exerciseLibrary = _exerciseLibrary.asStateFlow()
 
     private val _savedTemplates = MutableStateFlow(repository.getSavedTemplates())
@@ -53,6 +52,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     val profilePictureUri = _profilePictureUri.asStateFlow()
 
     init {
+        _exerciseLibrary.value = repository.getExerciseLibrary().sortedBy { it.name }
+        
         viewModelScope.launch {
             WorkoutEventBus.events.collect { action ->
                 when(action) {
@@ -410,7 +411,6 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         exerciseMaxWeight[exSession.name] = sessionMaxWeight
                     }
                 }
-                
                 if (sessionTotalVolume > 0) {
                     val prevMaxVol = exerciseMaxVolume[exSession.name] ?: 0.0
                     if (sessionTotalVolume > prevMaxVol && prevMaxVol > 0.0) {
@@ -421,5 +421,43 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             }
         }
         return records.takeLast(10).reversed()
+    }
+
+    fun getWorkedMusclesLast7Days(): Set<MuscleGroup> {
+        val now = System.currentTimeMillis()
+        val sevenDaysMs = 7L * 24 * 60 * 60 * 1000
+        val workedMuscles = mutableSetOf<MuscleGroup>()
+
+        _workoutHistory.value.filter { now - it.timestamp <= sevenDaysMs }.forEach { entry ->
+            entry.exercises.forEach { exSession ->
+                val def = _exerciseLibrary.value.find { it.name == exSession.name }
+                def?.muscleGroups?.forEach { mg ->
+                    workedMuscles.add(mg)
+                }
+            }
+        }
+        return workedMuscles
+    }
+
+    fun getWorkedDaysLast7Days(): List<Boolean> {
+        val nowMs = System.currentTimeMillis()
+        val dayMs = 24 * 60 * 60 * 1000L
+        val booleanList = mutableListOf<Boolean>()
+        
+        // We want the last 7 days including today (index 6 is today, 0 is 6 days ago)
+        val todayStart = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        for (i in 6 downTo 0) {
+            val startOfDay = todayStart - (i * dayMs)
+            val endOfDay = startOfDay + dayMs
+            val hasWorkout = _workoutHistory.value.any { it.timestamp in startOfDay until endOfDay }
+            booleanList.add(hasWorkout)
+        }
+        return booleanList
     }
 }

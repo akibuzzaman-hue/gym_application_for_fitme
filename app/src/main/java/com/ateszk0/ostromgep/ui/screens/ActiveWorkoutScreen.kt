@@ -189,16 +189,22 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         }
 
         if (showBottomSheet) {
-            ModalBottomSheet(onDismissRequest = { showBottomSheet = false }, sheetState = sheetState, containerColor = SurfaceDark) {
-                LazyColumn {
-                    items(library) { exDef ->
-                        ListItem(
-                            headlineContent = { Text(exDef.name, color = Color.White) },
-                            modifier = Modifier.clickable { viewModel.addNewExerciseBlock(exDef.name); showBottomSheet = false },
-                            colors = ListItemDefaults.colors(containerColor = Color.Transparent)
-                        )
-                    }
-                }
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = sheetState,
+                containerColor = Color.Black,
+                modifier = Modifier.fillMaxHeight(0.95f)
+            ) {
+                AddExerciseContent(
+                    library = library,
+                    recentExercises = emptyList(),
+                    onExerciseSelected = { exDef ->
+                        viewModel.addNewExerciseBlock(exDef.name)
+                        showBottomSheet = false
+                    },
+                    onClose = { showBottomSheet = false },
+                    themeColor = themeColor
+                )
             }
         }
 

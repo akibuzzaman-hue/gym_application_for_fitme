@@ -27,6 +27,7 @@ import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutSetData
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
+import com.ateszk0.ostromgep.ui.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -188,25 +189,28 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
         }
         
         if (showBottomSheet) {
-            ModalBottomSheet(onDismissRequest = { showBottomSheet = false }, sheetState = sheetState, containerColor = SurfaceDark) {
-                LazyColumn {
-                    items(library) { exDef ->
-                        ListItem(
-                            headlineContent = { Text(exDef.name, color = Color.White, fontWeight = FontWeight.Bold) },
-                            modifier = Modifier.clickable { 
-                                val newSession = ExerciseSessionData(
-                                    id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
-                                    name = exDef.name,
-                                    restTimerDuration = 90,
-                                    sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
-                                )
-                                draftExercises = draftExercises + newSession
-                                showBottomSheet = false 
-                            },
-                            colors = ListItemDefaults.colors(containerColor = Color.Transparent)
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = sheetState,
+                containerColor = Color.Black,
+                modifier = Modifier.fillMaxHeight(0.95f)
+            ) {
+                AddExerciseContent(
+                    library = library,
+                    recentExercises = emptyList(),
+                    onExerciseSelected = { exDef ->
+                        val newSession = ExerciseSessionData(
+                            id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
+                            name = exDef.name,
+                            restTimerDuration = 90,
+                            sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
                         )
-                    }
-                }
+                        draftExercises = draftExercises + newSession
+                        showBottomSheet = false 
+                    },
+                    onClose = { showBottomSheet = false },
+                    themeColor = themeColor
+                )
             }
         }
     }

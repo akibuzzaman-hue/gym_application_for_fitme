@@ -106,7 +106,7 @@ fun ExerciseEditDialog(
 ) {
     var minI by remember { mutableStateOf(exercise.minReps.toString()) }
     var maxI by remember { mutableStateOf(exercise.maxReps.toString()) }
-    var musc by remember { mutableStateOf(exercise.muscleGroups) }
+    var musc by remember { mutableStateOf(exercise.muscleGroups ?: emptyList()) }
     
     var imgUri by remember { mutableStateOf(exercise.imageUri) }
     val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
@@ -116,10 +116,15 @@ fun ExerciseEditDialog(
     }
 
     AlertDialog(
-        onDismissRequest = onDismiss, 
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+        modifier = Modifier.fillMaxWidth(0.95f),
         title = { Text("Edit: ${exercise.name}", color = Color.White) }, 
         text = { 
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) { 
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) { 
                 item {
                     Text("Rep Range", color = TextGray)
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
@@ -149,7 +154,7 @@ fun ExerciseEditDialog(
                 item {
                     Text("Muscle Groups", color = TextGray)
                 }
-                items(MuscleGroup.values()) { mg ->
+                items(MuscleGroup.values().toList()) { mg ->
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable { 
                         musc = if (musc.contains(mg)) musc - mg else musc + mg 
                     }) {

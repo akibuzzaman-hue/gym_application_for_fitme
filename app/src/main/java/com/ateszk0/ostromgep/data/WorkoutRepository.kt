@@ -22,7 +22,8 @@ class WorkoutRepository(context: Context) {
     fun getExerciseLibrary(): List<ExerciseDef> {
         val libJsonV2 = prefs.getString("library_v2", null)
         if (libJsonV2 != null) {
-            return gson.fromJson(libJsonV2, object : TypeToken<List<ExerciseDef>>() {}.type)
+            val raw: List<ExerciseDef> = gson.fromJson(libJsonV2, object : TypeToken<List<ExerciseDef>>() {}.type)
+            return raw.map { it.normalize() }
         }
         
         // Fallback or old data
@@ -45,7 +46,8 @@ class WorkoutRepository(context: Context) {
 
     fun getSavedTemplates(): List<WorkoutTemplate> {
         val json = prefs.getString("templates", null) ?: return emptyList()
-        return gson.fromJson(json, object : TypeToken<List<WorkoutTemplate>>() {}.type)
+        val raw: List<WorkoutTemplate> = gson.fromJson(json, object : TypeToken<List<WorkoutTemplate>>() {}.type)
+        return raw.map { it.normalize() }
     }
 
     fun saveSavedTemplates(templates: List<WorkoutTemplate>) {
@@ -54,7 +56,8 @@ class WorkoutRepository(context: Context) {
 
     fun getWorkoutHistory(): List<WorkoutHistoryEntry> {
         val json = prefs.getString("history", null) ?: return emptyList()
-        return gson.fromJson(json, object : TypeToken<List<WorkoutHistoryEntry>>() {}.type)
+        val raw: List<WorkoutHistoryEntry> = gson.fromJson(json, object : TypeToken<List<WorkoutHistoryEntry>>() {}.type)
+        return raw.map { it.normalize() }
     }
 
     fun saveWorkoutHistory(history: List<WorkoutHistoryEntry>) {
