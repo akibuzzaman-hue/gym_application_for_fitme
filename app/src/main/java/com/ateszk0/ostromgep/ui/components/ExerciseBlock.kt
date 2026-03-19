@@ -57,6 +57,7 @@ fun ExerciseBlock(
 ) {
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
+    var showImageDialog by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -70,7 +71,7 @@ fun ExerciseBlock(
                         model = imageUri,
                         contentDescription = null,
                         contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).clickable { showImageDialog = imageUri }
                     )
                 } else {
                     Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(SurfaceDark), contentAlignment = Alignment.Center) {
@@ -241,6 +242,18 @@ fun ExerciseBlock(
                 ) { Text("OK", color = Color.White) } 
             }
         ) 
+    }
+    
+    if (showImageDialog != null) {
+        androidx.compose.ui.window.Dialog(onDismissRequest = { showImageDialog = null }) {
+            Box(modifier = Modifier.fillMaxSize().clickable { showImageDialog = null }, contentAlignment = Alignment.Center) {
+                coil.compose.AsyncImage(
+                    model = showImageDialog,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
+                )
+            }
+        }
     }
 }
 

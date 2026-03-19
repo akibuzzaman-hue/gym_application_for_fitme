@@ -1,3 +1,162 @@
 <resources>
     <string name="app_name">Ostromgep</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_workout">Workout</string>
+    <string name="nav_profile">Profile</string>
+    <string name="workouts_label">Workouts</string>
+    <string name="recent_workouts_volume">Recent Workouts (Volume)</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="statistics_btn">Statistics</string>
+    <string name="exercises_btn">Exercises</string>
+    <string name="measures_btn">Measures</string>
+    <string name="calendar_btn">Calendar</string>
+    <string name="workout_log_title">Workout Log</string>
+    <string name="time_label">Time</string>
+    <string name="volume_label">Volume</string>
+    <string name="sets_format">%1$d sets %2$s</string>
+    
+    <string name="log_workout">Log Workout</string>
+    <string name="finish_btn">Finish</string>
+    <string name="skip_btn">Skip</string>
+    <string name="settings_btn">Settings</string>
+    <string name="discard_btn">Discard</string>
+    <string name="duration_label">Duration</string>
+    <string name="sets_label">Sets</string>
+    <string name="add_exercise_btn">Add Exercise</string>
+    
+    <string name="discard_dialog_title">Discard Workout?</string>
+    <string name="discard_dialog_text">All current progress will be lost.</string>
+    <string name="discard_confirm">Discard</string>
+    <string name="cancel_btn">Cancel</string>
+    <string name="finish_dialog_title">Finish</string>
+    <string name="template_name_label">Template Name</string>
+    
+    <string name="create_btn">Create</string>
+    <string name="search_exercise_label">Search exercise</string>
+    <string name="target_reps_format">Target: %1$d-%2$d reps</string>
+    <string name="custom_exercise_title">Custom Exercise</string>
+    <string name="exercise_name_label">Exercise Name</string>
+    <string name="add_btn">Add</string>
+    
+    <string name="rep_range_label">Rep Range</string>
+    <string name="min_label">Min</string>
+    <string name="max_label">Max</string>
+    <string name="image_label">Image</string>
+    <string name="no_img_label">No Img</string>
+    <string name="muscle_groups_label">Muscle Groups</string>
+    <string name="default_muscle_warning">(Default exercise muscle groups cannot be modified)</string>
+    <string name="save_btn">Save</string>
+    <string name="delete_btn">Delete</string>
+    
+    <string name="progressive_overload_title">Progressive Overload</string>
+    <string name="progressive_overload_text">Suggested changes based on your last workout:</string>
+    <string name="weight_increase_suggested">Weight increase suggested!</string>
+    <string name="new_weight_label">New Weight (kg)</string>
+    <string name="edit_label">Edit:</string>
+    <string name="apply_btn">Apply</string>
+    <string name="target_plus_one">Target: +1 rep</string>
+    
+    <string name="profile_settings_title">Profile</string>
+    <string name="theme_label">Theme</string>
+    <string name="name_label">Name:</string>
+    <string name="close_btn">Close</string>
+    <string name="plate_calc_title">Plate Calculator</string>
+    <string name="target_weight_label">Target Weight (kg)</string>
+    <string name="barbell_weight_label">Bar (kg)</string>
+    <string name="plate_format">%1$s plate:</string>
+    <string name="language_label">Language (Nyelv):</string>
+    <string name="pcs_label">pcs</string>
+    <string name="profile_picture">Profile Picture:</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_red">Red</string>
+    <string name="theme_yellow">Yellow</string>
+    <string name="theme_green">Green</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="change_image">Change Image</string>
+    
+    <!-- HomeScreen -->
+    <string name="next_mission">NEXT MISSION</string>
+    <string name="start_mission">Start Mission</string>
+    <string name="next_mission_empty">Engaging protocol... Add templates first.</string>
+    <string name="weekly_battle_log">WEEKLY BATTLE LOG</string>
+    <string name="day_mon">M</string>
+    <string name="day_tue">T</string>
+    <string name="day_wed">W</string>
+    <string name="day_thu">T</string>
+    <string name="day_fri">F</string>
+    <string name="day_sat">S</string>
+    <string name="day_sun">S</string>
+    <string name="ready_to_siege">READY TO SIEGE</string>
+    <string name="wall_of_fame">WALL OF FAME</string>
+    <string name="quick_metrics">QUICK METRICS (KG)</string>
+    <string name="metrics_empty_chart">Log more weight entries to see the chart.</string>
+    
+    <!-- CalendarScreen -->
+    <string name="calendar_title">Calendar</string>
+    <string name="month_jan">January</string>
+    <string name="month_feb">February</string>
+    <string name="month_mar">March</string>
+    <string name="month_apr">April</string>
+    <string name="month_may">May</string>
+    <string name="month_jun">June</string>
+    <string name="month_jul">July</string>
+    <string name="month_aug">August</string>
+    <string name="month_sep">September</string>
+    <string name="month_oct">October</string>
+    <string name="month_nov">November</string>
+    <string name="month_dec">December</string>
+    
+    <string name="day_mon_short">Mon</string>
+    <string name="day_tue_short">Tue</string>
+    <string name="day_wed_short">Wed</string>
+    <string name="day_thu_short">Thu</string>
+    <string name="day_fri_short">Fri</string>
+    <string name="day_sat_short">Sat</string>
+    <string name="day_sun_short">Sun</string>
+    <string name="default_workout_name">Workout</string>
+
+    <!-- WorkoutTabScreen -->
+    <string name="workout_title">Workout</string>
+    <string name="start_empty_workout">Start Empty Workout</string>
+    <string name="routines_title">Routines</string>
+    <string name="new_routine">New Routine</string>
+    <string name="explore_routines">Explore</string>
+    <string name="my_routines">My Routines</string>
+    <string name="my_routines_format">My Routines (%1$d)</string>
+    <string name="start_routine_btn">Start Routine</string>
+
+    <!-- StatisticsScreen -->
+    <string name="statistics_title">Statistics</string>
+    <string name="last_7_days_graph">Last 7 days body graph</string>
+    <string name="advanced_statistics">Advanced statistics</string>
+    <string name="stat_set_count_title">Set count per muscle group</string>
+    <string name="stat_set_count_desc">Number of sets logged for each muscle group.</string>
+    <string name="stat_muscle_chart_title">Muscle distribution (Chart)</string>
+    <string name="stat_muscle_chart_desc">Compare your current and previous muscle distributions.</string>
+    <string name="stat_muscle_body_title">Muscle distribution (Body)</string>
+    <string name="stat_muscle_body_desc">Weekly heat map of muscles worked.</string>
+    <string name="stat_main_exercises_title">Main exercises</string>
+    <string name="stat_main_exercises_desc">List of exercises you do most often.</string>
+    <string name="stat_leaderboard_title">Leaderboard Exercises</string>
+    <string name="stat_leaderboard_desc">List of the leaderboard-eligible exercises.</string>
+    <string name="stat_monthly_report_title">Monthly Report</string>
+    <string name="stat_monthly_report_desc">Recap of your monthly workouts and statistics.</string>
+    <string name="stat_no_records">No records yet.</string>
+    <string name="stat_no_data">No data available yet.</string>
+    
+    <string name="dlg_sets_by_muscle">Sets by Muscle</string>
+    <string name="dlg_muscle_chart">Muscle Chart</string>
+    <string name="dlg_weekly_heat_map">Weekly Heat Map</string>
+    <string name="dlg_top_exercises">Top Exercises</string>
+    <string name="dlg_leaderboard">Leaderboard</string>
+    <string name="dlg_monthly_report">Monthly Report</string>
+    
+    <string name="stat_total_workouts">Total Workouts</string>
+    <string name="stat_total_volume">Total Volume</string>
+    <string name="stat_total_duration">Total Duration</string>
+    
+    <string name="body_front">Front</string>
+    <string name="body_back">Back</string>
+    
+    <string name="exercise_btn_short">Exercise</string>
 </resources>

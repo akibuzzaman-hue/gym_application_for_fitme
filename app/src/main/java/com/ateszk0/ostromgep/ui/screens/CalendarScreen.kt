@@ -24,6 +24,8 @@ import com.ateszk0.ostromgep.model.WorkoutHistoryEntry
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import java.util.Calendar
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @Composable
 fun CalendarScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -> Unit) {
@@ -48,7 +50,7 @@ fun CalendarScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () ->
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Color.White) }
             Spacer(modifier = Modifier.weight(1f))
-            Text("Calendar", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.calendar_title), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(48.dp)) // To balance the back button
         }
@@ -64,7 +66,20 @@ fun CalendarScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () ->
 
 @Composable
 fun CalendarMonthView(year: Int, month: Int, entries: List<WorkoutHistoryEntry>, themeColor: Color) {
-    val monthNames = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    val monthNames = arrayOf(
+        stringResource(R.string.month_jan), 
+        stringResource(R.string.month_feb), 
+        stringResource(R.string.month_mar), 
+        stringResource(R.string.month_apr), 
+        stringResource(R.string.month_may), 
+        stringResource(R.string.month_jun), 
+        stringResource(R.string.month_jul), 
+        stringResource(R.string.month_aug), 
+        stringResource(R.string.month_sep), 
+        stringResource(R.string.month_oct), 
+        stringResource(R.string.month_nov), 
+        stringResource(R.string.month_dec)
+    )
     val currentMonth = "${monthNames[month]} $year"
     
     val cal = Calendar.getInstance().apply {
@@ -81,7 +96,7 @@ fun CalendarMonthView(year: Int, month: Int, entries: List<WorkoutHistoryEntry>,
     entries.forEach { entry ->
         val eCal = Calendar.getInstance().apply { timeInMillis = entry.timestamp }
         val day = eCal.get(Calendar.DAY_OF_MONTH)
-        val name = entry.exercises.firstOrNull()?.name ?: "Workout"
+        val name = entry.exercises.firstOrNull()?.name ?: stringResource(R.string.default_workout_name)
         // keep the shortest name or just the first workout found that day
         workoutDays[day] = name 
     }
@@ -89,7 +104,15 @@ fun CalendarMonthView(year: Int, month: Int, entries: List<WorkoutHistoryEntry>,
     Text(currentMonth, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
     
     Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-        listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun").forEach {
+        listOf(
+            stringResource(R.string.day_mon_short), 
+            stringResource(R.string.day_tue_short), 
+            stringResource(R.string.day_wed_short), 
+            stringResource(R.string.day_thu_short), 
+            stringResource(R.string.day_fri_short), 
+            stringResource(R.string.day_sat_short), 
+            stringResource(R.string.day_sun_short)
+        ).forEach {
             Text(it, color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
         }
     }

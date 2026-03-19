@@ -1,0 +1,162 @@
+<resources>
+    <string name="app_name">Ostromgep</string>
+    <string name="nav_home">Kezdőlap</string>
+    <string name="nav_workout">Edzés</string>
+    <string name="nav_profile">Profil</string>
+    <string name="workouts_label">Edzések</string>
+    <string name="recent_workouts_volume">Utolsó edzések (Volumen)</string>
+    <string name="dashboard_title">Vezérlőpult</string>
+    <string name="statistics_btn">Statisztika</string>
+    <string name="exercises_btn">Gyakorlatok</string>
+    <string name="measures_btn">Méretek</string>
+    <string name="calendar_btn">Naptár</string>
+    <string name="workout_log_title">Edzésnapló</string>
+    <string name="time_label">Idő</string>
+    <string name="volume_label">Volumen</string>
+    <string name="sets_format">%1$d szett %2$s</string>
+    
+    <string name="log_workout">Edzés Naplózása</string>
+    <string name="finish_btn">Befejezés</string>
+    <string name="skip_btn">Ugrás</string>
+    <string name="settings_btn">Beállítások</string>
+    <string name="discard_btn">Elvetés</string>
+    <string name="duration_label">Időtartam</string>
+    <string name="sets_label">Szettek</string>
+    <string name="add_exercise_btn">Gyakorlat Hozzáadása</string>
+    
+    <string name="discard_dialog_title">Biztosan elveted az edzést?</string>
+    <string name="discard_dialog_text">Minden eddigi adatod elveszik.</string>
+    <string name="discard_confirm">Elvetés</string>
+    <string name="cancel_btn">Mégse</string>
+    <string name="finish_dialog_title">Befejezés</string>
+    <string name="template_name_label">Sablon neve</string>
+    
+    <string name="create_btn">Létrehozás</string>
+    <string name="search_exercise_label">Gyakorlat keresése</string>
+    <string name="target_reps_format">Cél: %1$d-%2$d ismétlés</string>
+    <string name="custom_exercise_title">Saját gyakorlat</string>
+    <string name="exercise_name_label">Gyakorlat neve</string>
+    <string name="add_btn">Hozzáadás</string>
+    
+    <string name="rep_range_label">Ism. tartomány</string>
+    <string name="min_label">Min</string>
+    <string name="max_label">Max</string>
+    <string name="image_label">Kép</string>
+    <string name="no_img_label">Nincs Kép</string>
+    <string name="muscle_groups_label">Izomcsoportok</string>
+    <string name="default_muscle_warning">(Alapértelmezett gyakorlat izomcsoportjai nem módosíthatók)</string>
+    <string name="save_btn">Mentés</string>
+    <string name="delete_btn">Törlés</string>
+    
+    <string name="progressive_overload_title">Progresszív Túlterhelés</string>
+    <string name="progressive_overload_text">Javasolt változtatások a múltkori edzésed alapján:</string>
+    <string name="weight_increase_suggested">Súlyemelés javasolt!</string>
+    <string name="new_weight_label">Új Súly (kg)</string>
+    <string name="edit_label">Szerkesztés:</string>
+    <string name="apply_btn">Alkalmaz</string>
+    <string name="target_plus_one">Cél: +1 ismétlés</string>
+    
+    <string name="profile_settings_title">Profil</string>
+    <string name="theme_label">Téma</string>
+    <string name="name_label">Neved:</string>
+    <string name="close_btn">Bezárás</string>
+    <string name="plate_calc_title">Tányér Kalkulátor</string>
+    <string name="target_weight_label">Célsúly (kg)</string>
+    <string name="barbell_weight_label">Rúd (kg)</string>
+    <string name="plate_format">%1$s tárcsa:</string>
+    <string name="language_label">Language (Nyelv):</string>
+    <string name="pcs_label">db</string>
+    <string name="profile_picture">Profilkép:</string>
+    <string name="theme_blue">Kék</string>
+    <string name="theme_red">Piros</string>
+    <string name="theme_yellow">Sárga</string>
+    <string name="theme_green">Zöld</string>
+    <string name="pick_image">Kép kiválasztása</string>
+    <string name="change_image">Kép módosítása</string>
+    
+    <!-- HomeScreen -->
+    <string name="next_mission">KÖVETKEZŐ KÜLDETÉS</string>
+    <string name="start_mission">Küldetés indítása</string>
+    <string name="next_mission_empty">Protokoll indítása... Előbb adj hozzá sablonokat.</string>
+    <string name="weekly_battle_log">HETI HARCI NAPLÓ</string>
+    <string name="day_mon">H</string>
+    <string name="day_tue">K</string>
+    <string name="day_wed">Sz</string>
+    <string name="day_thu">Cs</string>
+    <string name="day_fri">P</string>
+    <string name="day_sat">Sz</string>
+    <string name="day_sun">V</string>
+    <string name="ready_to_siege">OSTROMRA KÉSZ</string>
+    <string name="wall_of_fame">DICSŐSÉGFALA</string>
+    <string name="quick_metrics">GYORS MUTATÓK (KG)</string>
+    <string name="metrics_empty_chart">Naplózz több súlyt a grafikon megjelenítéséhez.</string>
+    
+    <!-- CalendarScreen -->
+    <string name="calendar_title">Naptár</string>
+    <string name="month_jan">Január</string>
+    <string name="month_feb">Február</string>
+    <string name="month_mar">Március</string>
+    <string name="month_apr">Április</string>
+    <string name="month_may">Május</string>
+    <string name="month_jun">Június</string>
+    <string name="month_jul">Július</string>
+    <string name="month_aug">Augusztus</string>
+    <string name="month_sep">Szeptember</string>
+    <string name="month_oct">Október</string>
+    <string name="month_nov">November</string>
+    <string name="month_dec">December</string>
+    
+    <string name="day_mon_short">Hét</string>
+    <string name="day_tue_short">Ked</string>
+    <string name="day_wed_short">Sze</string>
+    <string name="day_thu_short">Csü</string>
+    <string name="day_fri_short">Pén</string>
+    <string name="day_sat_short">Szo</string>
+    <string name="day_sun_short">Vas</string>
+    <string name="default_workout_name">Edzés</string>
+
+    <!-- WorkoutTabScreen -->
+    <string name="workout_title">Edzés</string>
+    <string name="start_empty_workout">Üres edzés indítása</string>
+    <string name="routines_title">Rutinok</string>
+    <string name="new_routine">Új rutin</string>
+    <string name="explore_routines">Felfedezés</string>
+    <string name="my_routines">Saját rutinok</string>
+    <string name="my_routines_format">Saját rutinok (%1$d)</string>
+    <string name="start_routine_btn">Rutin indítása</string>
+
+    <!-- StatisticsScreen -->
+    <string name="statistics_title">Statisztika</string>
+    <string name="last_7_days_graph">Elmúlt 7 nap test grafikon</string>
+    <string name="advanced_statistics">Haladó statisztikák</string>
+    <string name="stat_set_count_title">Sorozatok izomcsoportonként</string>
+    <string name="stat_set_count_desc">Izomcsoportonként naplózott sorozatok száma.</string>
+    <string name="stat_muscle_chart_title">Izomelmegoszlás (Grafikon)</string>
+    <string name="stat_muscle_chart_desc">Hasonlítsd össze a jelenlegi és korábbi izomelmegoszlásokat.</string>
+    <string name="stat_muscle_body_title">Izomelmegoszlás (Test)</string>
+    <string name="stat_muscle_body_desc">Heti hőtérkép a megmozgatott izmokról.</string>
+    <string name="stat_main_exercises_title">Fő gyakorlatok</string>
+    <string name="stat_main_exercises_desc">A leggyakrabban végzett gyakorlatok listája.</string>
+    <string name="stat_leaderboard_title">Ranglista gyakorlatok</string>
+    <string name="stat_leaderboard_desc">A ranglista-képes gyakorlatok listája.</string>
+    <string name="stat_monthly_report_title">Havi jelentés</string>
+    <string name="stat_monthly_report_desc">Havi edzéseid és statisztikáid összefoglalója.</string>
+    <string name="stat_no_records">Még nincsenek rekordok.</string>
+    <string name="stat_no_data">Nincs elérhető adat.</string>
+    
+    <string name="dlg_sets_by_muscle">Sorozatok izomcsoportonként</string>
+    <string name="dlg_muscle_chart">Izomelmegoszlás grafikon</string>
+    <string name="dlg_weekly_heat_map">Heti Hőtérkép</string>
+    <string name="dlg_top_exercises">Legjobb Gyakorlatok</string>
+    <string name="dlg_leaderboard">Ranglista</string>
+    <string name="dlg_monthly_report">Havi Jelentés</string>
+    
+    <string name="stat_total_workouts">Összes Edzés</string>
+    <string name="stat_total_volume">Összes Volumen</string>
+    <string name="stat_total_duration">Összes Időtartam</string>
+    
+    <string name="body_front">Elöl</string>
+    <string name="body_back">Hátul</string>
+    
+    <string name="exercise_btn_short">Gyakorlat</string>
+</resources>

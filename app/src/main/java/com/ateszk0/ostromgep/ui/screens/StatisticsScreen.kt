@@ -26,6 +26,8 @@ import com.ateszk0.ostromgep.ui.theme.SurfaceDark
 import com.ateszk0.ostromgep.ui.theme.TextGray
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import java.util.*
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +40,7 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
 
     Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         CenterAlignedTopAppBar(
-            title = { Text("Statistics", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Medium) },
+            title = { Text(stringResource(R.string.statistics_title), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Medium) },
             navigationIcon = {
                 IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Color.White) }
             },
@@ -52,7 +54,7 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Last 7 days body graph", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.last_7_days_graph), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Icon(Icons.Default.HelpOutline, null, tint = TextGray, modifier = Modifier.size(20.dp))
                 }
             }
@@ -63,7 +65,15 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    val days = listOf("M", "T", "W", "T", "F", "S", "S")
+                    val days = listOf(
+                        stringResource(R.string.day_mon), 
+                        stringResource(R.string.day_tue), 
+                        stringResource(R.string.day_wed), 
+                        stringResource(R.string.day_thu), 
+                        stringResource(R.string.day_fri), 
+                        stringResource(R.string.day_sat), 
+                        stringResource(R.string.day_sun)
+                    )
                     workedDays.forEachIndexed { index, active ->
                         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(36.dp)) {
                             Text(days[index], color = TextGray, fontSize = 12.sp, modifier = Modifier.padding(bottom = 8.dp))
@@ -87,60 +97,60 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
             // Dummy Body representation
             item {
                 Row(modifier = Modifier.fillMaxWidth().height(300.dp).padding(16.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    BodyDummny(title = "Front", worked = workedMuscles, themeColor = themeColor)
-                    BodyDummny(title = "Back", worked = workedMuscles, themeColor = themeColor)
+                    BodyDummny(title = stringResource(R.string.body_front), worked = workedMuscles, themeColor = themeColor)
+                    BodyDummny(title = stringResource(R.string.body_back), worked = workedMuscles, themeColor = themeColor)
                 }
             }
             
             item {
-                Text("Advanced statistics", color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(16.dp))
+                Text(stringResource(R.string.advanced_statistics), color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(16.dp))
             }
 
             item {
                 StatButton(
                     icon = Icons.Default.Timeline,
-                    title = "Set count per muscle group",
-                    subtitle = "Number of sets logged for each muscle group.",
+                    title = stringResource(R.string.stat_set_count_title),
+                    subtitle = stringResource(R.string.stat_set_count_desc),
                     onClick = { activeDialog = "SET_COUNT" }
                 )
             }
             item {
                 StatButton(
                     icon = Icons.Default.PieChart,
-                    title = "Muscle distribution (Chart)",
-                    subtitle = "Compare your current and previous muscle distributions.",
+                    title = stringResource(R.string.stat_muscle_chart_title),
+                    subtitle = stringResource(R.string.stat_muscle_chart_desc),
                     onClick = { activeDialog = "MUSCLE_CHART" }
                 )
             }
             item {
                 StatButton(
                     icon = Icons.Default.AccessibilityNew,
-                    title = "Muscle distribution (Body)",
-                    subtitle = "Weekly heat map of muscles worked.",
+                    title = stringResource(R.string.stat_muscle_body_title),
+                    subtitle = stringResource(R.string.stat_muscle_body_desc),
                     onClick = { activeDialog = "MUSCLE_BODY" }
                 )
             }
             item {
                 StatButton(
                     icon = Icons.Default.List,
-                    title = "Main exercises",
-                    subtitle = "List of exercises you do most often.",
+                    title = stringResource(R.string.stat_main_exercises_title),
+                    subtitle = stringResource(R.string.stat_main_exercises_desc),
                     onClick = { activeDialog = "MAIN_EXERCISES" }
                 )
             }
             item {
                 StatButton(
                     icon = Icons.Default.EmojiEvents,
-                    title = "Leaderboard Exercises",
-                    subtitle = "List of the leaderboard-eligible exercises.",
+                    title = stringResource(R.string.stat_leaderboard_title),
+                    subtitle = stringResource(R.string.stat_leaderboard_desc),
                     onClick = { activeDialog = "LEADERBOARD" }
                 )
             }
             item {
                 StatButton(
                     icon = Icons.Default.Description,
-                    title = "Monthly Report",
-                    subtitle = "Recap of your monthly workouts and statistics.",
+                    title = stringResource(R.string.stat_monthly_report_title),
+                    subtitle = stringResource(R.string.stat_monthly_report_desc),
                     onClick = { activeDialog = "MONTHLY" }
                 )
             }
@@ -163,13 +173,13 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
             title = {
                 Text(
                     text = when (activeDialog) {
-                        "SET_COUNT" -> "Sets by Muscle"
-                        "MUSCLE_CHART" -> "Muscle Chart"
-                        "MUSCLE_BODY" -> "Weekly Heat Map"
-                        "MAIN_EXERCISES" -> "Top Exercises"
-                        "LEADERBOARD" -> "Leaderboard"
-                        "MONTHLY" -> "Monthly Report"
-                        else -> "Statistics"
+                        "SET_COUNT" -> stringResource(R.string.dlg_sets_by_muscle)
+                        "MUSCLE_CHART" -> stringResource(R.string.dlg_muscle_chart)
+                        "MUSCLE_BODY" -> stringResource(R.string.dlg_weekly_heat_map)
+                        "MAIN_EXERCISES" -> stringResource(R.string.dlg_top_exercises)
+                        "LEADERBOARD" -> stringResource(R.string.dlg_leaderboard)
+                        "MONTHLY" -> stringResource(R.string.dlg_monthly_report)
+                        else -> stringResource(R.string.statistics_title)
                     },
                     color = Color.White
                 )
@@ -178,14 +188,14 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
                 LazyColumn(modifier = Modifier.fillMaxHeight(0.6f)) {
                     if (activeDialog == "LEADERBOARD") {
                         val records = viewModel.getPersonalRecords()
-                        if (records.isEmpty()) item { Text("No records yet.", color = TextGray) }
+                        if (records.isEmpty()) item { Text(stringResource(R.string.stat_no_records), color = TextGray) }
                         items(records) { record ->
                             Text(record, color = Color.White, modifier = Modifier.padding(vertical = 4.dp))
                         }
                     } else if (activeDialog == "MUSCLE_CHART" || activeDialog == "MUSCLE_BODY") {
                         val setCount = calculateSetCount(history).entries.sortedByDescending { it.value }
                         val total = setCount.sumOf { it.value.toInt() }
-                        if (total == 0) item { Text("No data.", color = TextGray) }
+                        if (total == 0) item { Text(stringResource(R.string.stat_no_data), color = TextGray) }
                         items(setCount) { (mg, count) ->
                             val perc = if (total > 0) (count.toString().toFloat() / total * 100).toInt() else 0
                             Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -194,11 +204,17 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
                             }
                         }
                     } else {
-                        if (calculatedStats.isEmpty()) item { Text("No data available yet.", color = TextGray) }
+                        if (calculatedStats.isEmpty()) item { Text(stringResource(R.string.stat_no_data), color = TextGray) }
                         items(calculatedStats.entries.toList()) { entry ->
+                            val keyText = when(entry.key) {
+                                "Total Workouts" -> stringResource(R.string.stat_total_workouts)
+                                "Total Volume" -> stringResource(R.string.stat_total_volume)
+                                "Total Duration" -> stringResource(R.string.stat_total_duration)
+                                else -> entry.key
+                            }
                             Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text(entry.key, color = Color.White)
-                                Text(entry.value, color = themeColor, fontWeight = FontWeight.Bold)
+                                Text(keyText, color = Color.White)
+                                Text(entry.value, color = TextGray)
                             }
                         }
                     }
@@ -206,7 +222,7 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
             },
             confirmButton = {
                 Button(onClick = { activeDialog = null }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
-                    Text("Close", color = Color.White)
+                    Text(stringResource(R.string.close_btn), color = Color.White)
                 }
             },
             containerColor = SurfaceDark
@@ -224,7 +240,8 @@ fun BodyDummny(title: String, worked: Set<MuscleGroup>, themeColor: Color) {
                 .background(SurfaceDark.copy(alpha = 0.5f), RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
-            val hasHit = if (title == "Front") {
+            val isFront = title == stringResource(R.string.body_front)
+            val hasHit = if (isFront) {
                 worked.any { it in listOf(MuscleGroup.CHEST, MuscleGroup.ABDOMINALS, MuscleGroup.QUADRICEPS, MuscleGroup.BICEPS, MuscleGroup.SHOULDERS) }
             } else {
                 worked.any { it in listOf(MuscleGroup.UPPER_BACK, MuscleGroup.LATS, MuscleGroup.LOWER_BACK, MuscleGroup.GLUTES, MuscleGroup.HAMSTRINGS, MuscleGroup.CALVES, MuscleGroup.TRICEPS) }

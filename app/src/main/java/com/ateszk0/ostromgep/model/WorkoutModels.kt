@@ -143,7 +143,8 @@ data class ExerciseDef(
     val maxReps: Int = 12,
     val imageUri: String? = null,
     val muscleGroups: List<MuscleGroup> = emptyList(),
-    val equipment: Equipment = Equipment.NONE
+    val equipment: Equipment = Equipment.NONE,
+    val isCustom: Boolean = false
 ) {
     fun normalize(): ExerciseDef {
         @Suppress("SENSELESS_COMPARISON")
@@ -152,7 +153,8 @@ data class ExerciseDef(
             minReps = if (minReps != null && minReps > 0) minReps else 8,
             maxReps = if (maxReps != null && maxReps > 0) maxReps else 12,
             muscleGroups = if (muscleGroups != null) muscleGroups else emptyList(),
-            equipment = if (equipment != null) equipment else Equipment.NONE
+            equipment = if (equipment != null) equipment else Equipment.NONE,
+            isCustom = isCustom
         )
     }
 }

@@ -27,6 +27,8 @@ import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.*
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -42,7 +44,6 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var showBottomSheet by remember { mutableStateOf(false) }
     var showSaveTemplateDialog by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
-    var showSettingsDialog by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
     
@@ -70,10 +71,10 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     Scaffold(
         topBar = { 
             TopAppBar(
-                title = { Text("Log Workout", color = Color.White) }, 
+                title = { Text(stringResource(R.string.log_workout), color = Color.White) }, 
                 actions = { 
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
-                    Button(onClick = { showSaveTemplateDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Finish", color = Color.White) } 
+                    Button(onClick = { showSaveTemplateDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
                 }, 
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
             ) 
@@ -91,12 +92,11 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                             Text("%02d:%02d".format(restTimerSeconds/60, restTimerSeconds%60), color = Color.White, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
                             TimerAdjustButton("+15") { viewModel.adjustRestTimer(15) } 
                         }
-                        Button(onClick = { viewModel.skipRestTimer() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))) { Text("Skip", color = Color.White) } 
+                        Button(onClick = { viewModel.skipRestTimer() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))) { Text(stringResource(R.string.skip_btn), color = Color.White) } 
                     }
                 }
-                Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Button(onClick = { showSettingsDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Settings", color = Color.White) }
-                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Discard", color = Color.Red) }
+                Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.End) {
+                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text(stringResource(R.string.discard_btn), color = Color.Red) }
                 }
             }
         }
@@ -104,9 +104,9 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
             item {
                 Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem("Duration", "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
-                    StatItem("Volume", "${totalVolume.toInt()} kg")
-                    StatItem("Sets", "$completedSetsCount")
+                    StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
+                    StatItem(stringResource(R.string.volume_label), "${totalVolume.toInt()} kg")
+                    StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
                 }
             }
             itemsIndexed(exercises, key = { _, exercise -> exercise.id }) { index, exercise ->
@@ -144,7 +144,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 Button(onClick = { showBottomSheet = true }, modifier = Modifier.fillMaxWidth().padding(16.dp).height(48.dp), colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
                     Icon(Icons.Default.Add, null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add Exercise", color = Color.White)
+                    Text(stringResource(R.string.add_exercise_btn), color = Color.White)
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -153,25 +153,24 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         if (prompts.isNotEmpty()) {
             ProgressiveOverloadDialog(prompts, themeColor, { p -> viewModel.applyOverloadPrompts(p) }, { viewModel.dismissOverloadPrompts() })
         }
-        if (showSettingsDialog) SettingsDialog(viewModel, themeColor) { showSettingsDialog = false }
         if (showPlateCalculator) PlateCalculatorDialog({ showPlateCalculator = false }, themeColor)
 
         if (showDiscardDialog) {
             AlertDialog(
                 onDismissRequest = { showDiscardDialog = false },
-                title = { Text("Biztosan elveted az edzést?", color = Color.White) },
-                text = { Text("Minden eddigi adatod elveszik.", color = TextGray) },
+                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
+                text = { Text(stringResource(R.string.discard_dialog_text), color = TextGray) },
                 confirmButton = {
                     Button(onClick = { 
                         viewModel.finishWorkout(null)
                         showDiscardDialog = false
                         onFinishWorkout() 
                     }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
-                        Text("Elvetés", color = Color.White)
+                        Text(stringResource(R.string.discard_confirm), color = Color.White)
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDiscardDialog = false }) { Text("Mégse", color = themeColor) }
+                    TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
                 }
             )
         }
@@ -212,16 +211,16 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             var n by remember { mutableStateOf("") }
             AlertDialog(
                 onDismissRequest = { showSaveTemplateDialog = false },
-                title = { Text("Befejezés", color = Color.White) },
-                text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text("Sablon neve") }) },
+                title = { Text(stringResource(R.string.finish_dialog_title), color = Color.White) },
+                text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text(stringResource(R.string.template_name_label)) }) },
                 confirmButton = {
                     Button(onClick = { viewModel.finishWorkout(if (n.isNotBlank()) n else null); showSaveTemplateDialog = false; onFinishWorkout() }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
-                        Text("Befejezés", color = Color.White)
+                        Text(stringResource(R.string.finish_btn), color = Color.White)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showSaveTemplateDialog = false }) {
-                        Text("Mégse", color = themeColor)
+                        Text(stringResource(R.string.cancel_btn), color = themeColor)
                     }
                 }
             )

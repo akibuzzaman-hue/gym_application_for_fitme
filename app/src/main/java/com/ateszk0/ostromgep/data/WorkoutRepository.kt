@@ -20,18 +20,27 @@ class WorkoutRepository(private val context: Context) {
         prefs.edit().putString("theme", theme).apply()
     }
 
+    fun getLanguage(): String = prefs.getString("app_language", "en") ?: "en"
+    fun saveLanguage(lang: String) {
+        prefs.edit().putString("app_language", lang).apply()
+    }
+
     fun getExerciseLibrary(): List<ExerciseDef> {
         val libJsonV2 = prefs.getString("library_v2", null)
         if (libJsonV2 != null) {
             val raw: List<ExerciseDef> = gson.fromJson(libJsonV2, object : TypeToken<List<ExerciseDef>>() {}.type)
-            return raw.map { it.normalize() }
+            val defaults = loadDefaultExercises().map { it.name }.toSet()
+            return raw.map { 
+                val norm = it.normalize()
+                if (norm.name !in defaults && !norm.isCustom) norm.copy(isCustom = true) else norm
+            }
         }
         
         // Fallback or old data
         val oldLibJson = prefs.getString("library", null)
         if (oldLibJson != null) {
             val oldList: List<String> = gson.fromJson(oldLibJson, object : TypeToken<List<String>>() {}.type)
-            val mapped = oldList.map { ExerciseDef(it) }
+            val mapped = oldList.map { ExerciseDef(it, isCustom = true) }
             saveExerciseLibrary(mapped)
             return mapped
         }
@@ -88,7 +97,7 @@ class WorkoutRepository(private val context: Context) {
     }
 
     fun getUsername(): String {
-        return prefs.getString("username", "Ostromgép Harcos") ?: "Ostromgép Harcos"
+        return prefs.getString("username", "User") ?: "User"
     }
 
     fun saveUsername(name: String) {

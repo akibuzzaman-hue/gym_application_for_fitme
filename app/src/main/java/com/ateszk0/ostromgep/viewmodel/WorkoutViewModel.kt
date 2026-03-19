@@ -12,14 +12,12 @@ import com.ateszk0.ostromgep.utils.FileHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = WorkoutRepository(application)
-
-    private val _appTheme = MutableStateFlow(repository.getTheme())
-    val appTheme = _appTheme.asStateFlow()
 
     private val _totalSeconds = MutableStateFlow(0)
     val totalSeconds = _totalSeconds.asStateFlow()
@@ -46,7 +44,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     val bodyWeightHistory = _bodyWeightHistory.asStateFlow()
 
     private val _username = MutableStateFlow(repository.getUsername())
-    val username = _username.asStateFlow()
+    val username: StateFlow<String> = _username.asStateFlow()
+
+    private val _appTheme = MutableStateFlow(repository.getTheme())
+    val appTheme: StateFlow<String> = _appTheme.asStateFlow()
+
+    private val _appLanguage = MutableStateFlow(repository.getLanguage())
+    val appLanguage: StateFlow<String> = _appLanguage.asStateFlow()
 
     private val _profilePictureUri = MutableStateFlow(repository.getProfilePictureUri())
     val profilePictureUri = _profilePictureUri.asStateFlow()
@@ -75,10 +79,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun setTheme(colorName: String) { 
-        _appTheme.value = colorName
-        repository.saveTheme(colorName)
-    }
+    fun setTheme(theme: String) { _appTheme.value = theme; repository.saveTheme(theme) }
 
     fun updateUsername(name: String) {
         _username.value = name
@@ -86,12 +87,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun updateProfilePictureUri(uri: String) {
-        val app = getApplication<Application>()
+        val app = getApplication<android.app.Application>()
         val localUri = if (uri.startsWith("content://")) {
-            FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(uri)) ?: uri
+            com.ateszk0.ostromgep.utils.FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(uri)) ?: uri
         } else uri
         _profilePictureUri.value = localUri
         repository.saveProfilePictureUri(localUri)
+    }
+
+    fun setLanguage(lang: String) { 
+        _appLanguage.value = lang
+        repository.saveLanguage(lang)
     }
 
     fun deleteTemplate(templateId: Int) { 
@@ -214,10 +220,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun createCustomExercise(name: String) { 
         if (name.isNotBlank() && _exerciseLibrary.value.none { it.name == name }) { 
-            val newLib = _exerciseLibrary.value + ExerciseDef(name)
+            val newLib = _exerciseLibrary.value + ExerciseDef(name, isCustom = true)
             _exerciseLibrary.value = newLib
             repository.saveExerciseLibrary(newLib)
         } 
+    }
+
+    fun deleteCustomExercise(name: String) {
+        val newLib = _exerciseLibrary.value.filter { it.name != name }
+        _exerciseLibrary.value = newLib
+        repository.saveExerciseLibrary(newLib)
     }
 
     fun addNewExerciseBlock(exerciseName: String) {
