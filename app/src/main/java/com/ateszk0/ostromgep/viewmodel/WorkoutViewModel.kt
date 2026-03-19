@@ -288,6 +288,36 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = _activeExercises.value.filter { it.id != exerciseId } 
     }
     
+    fun pairSuperset(sourceId: Int, targetIds: List<Int>) {
+        if (targetIds.isEmpty()) return
+        val allIdsToPair = listOf(sourceId) + targetIds
+        val currentList = _activeExercises.value.toMutableList()
+        val existingSupersetId = allIdsToPair.mapNotNull { id -> currentList.find { it.id == id }?.supersetId }.firstOrNull()
+        val newSupersetId = existingSupersetId ?: java.util.UUID.randomUUID().toString()
+        
+        val itemsToGroup = currentList.filter { it.id in allIdsToPair }.map { it.copy(supersetId = newSupersetId) }
+        val newList = mutableListOf<ExerciseSessionData>()
+        var inserted = false
+        
+        for (item in currentList) {
+            if (item.id in allIdsToPair) {
+                if (!inserted) {
+                    newList.addAll(itemsToGroup)
+                    inserted = true
+                }
+            } else {
+                newList.add(item)
+            }
+        }
+        _activeExercises.value = newList
+    }
+
+    fun removeSuperset(exerciseId: Int) {
+        _activeExercises.value = _activeExercises.value.map { 
+            if (it.id == exerciseId) it.copy(supersetId = null) else it 
+        }
+    }
+    
     fun updateExerciseNote(exerciseId: Int, newNote: String) { 
         updateExercise(exerciseId) { it.updateNote(newNote) }
     }
@@ -345,6 +375,107 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun updateExerciseRestTime(eId: Int, durationSeconds: Int) { 
         updateExercise(eId) { it.updateRestTimer(durationSeconds) }
     }
+
+    fun importCsvHistory(context: android.content.Context, uri: android.net.Uri): Boolean {
+        try {
+            val inputStream = context.contentResolver.openInputStream(uri) ?: return false
+            val reader = java.io.BufferedReader(java.io.InputStreamReader(inputStream))
+            val lines = reader.readLines()
+            if (lines.isEmpty()) return false
+            
+            // Expected headers: title,"start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"
+            val workoutsMap = mutableMapOf<String, MutableList<String>>() // Key: start_time, Value: List of rows
+            
+            // Skip header (index 0)
+            for (i in 1 until lines.size) {
+                val row = lines[i]
+                if (row.isBlank()) continue
+                // Very basic split by comma ignoring quotes, usually standard parsers are better
+                // For simplicity, assuming no commas inside the values except maybe dates which are quoted.
+                // A regex to split by comma outside quotes:
+                val tokens = row.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                if (tokens.size >= 11) {
+                    val startTime = tokens[1]
+                    workoutsMap.getOrPut(startTime) { mutableListOf() }.add(row)
+                }
+            }
+            
+            val sdf = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.ENGLISH)
+            val newEntries = mutableListOf<WorkoutHistoryEntry>()
+            
+            for ((startTimeStr, rows) in workoutsMap) {
+                val timestamp = try { sdf.parse(startTimeStr)?.time ?: System.currentTimeMillis() } catch (e: Exception) { System.currentTimeMillis() }
+                
+                // Group by exercise_title and superset_id
+                // Row format assumed: title [0], start_time [1], end_time [2], description [3], exercise_title [4], superset_id [5], 
+                // exercise_notes [6], set_index [7], set_type [8], weight_kg [9], reps [10], distance_km [11], duration_seconds [12], rpe [13]
+                
+                val exercisesMap = mutableMapOf<Pair<String, String>, MutableList<List<String>>>()
+                for (row in rows) {
+                    val tokens = row.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                    if (tokens.size < 11) continue
+                    val exTitle = tokens[4]
+                    val supersetId = tokens[5].takeIf { it.isNotBlank() } ?: "none"
+                    exercisesMap.getOrPut(exTitle to supersetId) { mutableListOf() }.add(tokens)
+                }
+                
+                val finalExercises = mutableListOf<ExerciseSessionData>()
+                var exIdCounter = 1
+                for ((key, setTokensList) in exercisesMap) {
+                    val sets = mutableListOf<WorkoutSetData>()
+                    var setIdCounter = 1
+                    for (t in setTokensList.sortedBy { it[7].toIntOrNull() ?: 0 }) {
+                        val isWarmup = t[8].equals("warmup", ignoreCase = true) || t[8].equals("warm up", ignoreCase = true)
+                        sets.add(
+                            WorkoutSetData(
+                                id = setIdCounter++,
+                                setLabel = if (isWarmup) "W" else (setIdCounter - 1).toString(),
+                                kg = t[9],
+                                reps = t[10],
+                                rpe = if (t.size > 13) t[13] else "",
+                                isCompleted = true,
+                                isWarmup = isWarmup
+                            )
+                        )
+                    }
+                    val trueSupersetId = if (key.second == "none") null else key.second
+                    finalExercises.add(
+                        ExerciseSessionData(
+                            id = exIdCounter++,
+                            name = key.first,
+                            supersetId = trueSupersetId,
+                            sets = sets
+                        )
+                    )
+                }
+                
+                val totalVol = finalExercises.sumOf { it.totalVolume() }
+                val startMs = timestamp
+                var endMs = startMs + 3600000 // default 1 hr
+                if (rows.isNotEmpty()) {
+                    val firstRowTokens = rows[0].split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                    if (firstRowTokens.size > 2) {
+                        try { endMs = sdf.parse(firstRowTokens[2])?.time ?: endMs } catch (e: Exception) {}
+                    }
+                }
+                val durationSec = ((endMs - startMs) / 1000).coerceAtLeast(0).toInt()
+                
+                newEntries.add(WorkoutHistoryEntry(timestamp, totalVol, durationSec, finalExercises))
+            }
+            
+            if (newEntries.isNotEmpty()) {
+                val combined = (_workoutHistory.value + newEntries).sortedByDescending { it.timestamp }
+                _workoutHistory.value = combined
+                repository.saveWorkoutHistory(combined)
+                return true
+            }
+            return false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
     
     private fun updateExercise(eId: Int, updater: (ExerciseSessionData) -> ExerciseSessionData) {
         _activeExercises.value = _activeExercises.value.map { if (it.id == eId) updater(it) else it }

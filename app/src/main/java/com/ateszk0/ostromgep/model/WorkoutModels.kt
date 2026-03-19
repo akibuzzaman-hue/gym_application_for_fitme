@@ -34,6 +34,7 @@ data class ExerciseSessionData(
     val name: String,
     val note: String = "",
     val restTimerDuration: Int = 90,
+    val supersetId: String? = null,
     val sets: List<WorkoutSetData> = listOf(WorkoutSetData())
 ) {
     fun normalize(): ExerciseSessionData {
@@ -42,6 +43,7 @@ data class ExerciseSessionData(
             name = if (name != null) name else "Unknown Exercise",
             note = if (note != null) note else "",
             restTimerDuration = if (restTimerDuration != null && restTimerDuration != 0) restTimerDuration else 90,
+            supersetId = if (supersetId != null) supersetId else null,
             sets = if (sets != null) sets.map { it.normalize() } else emptyList()
         )
     }

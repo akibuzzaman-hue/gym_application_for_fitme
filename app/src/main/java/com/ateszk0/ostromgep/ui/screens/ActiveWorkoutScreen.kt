@@ -2,6 +2,7 @@ package com.ateszk0.ostromgep.ui.screens
 
 import android.media.RingtoneManager
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -46,6 +47,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var showPlateCalculator by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
+    var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
     
     androidx.activity.compose.BackHandler(enabled = true) {
         showDiscardDialog = true
@@ -67,6 +69,25 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
 
     var draggedIndex by remember { mutableStateOf<Int?>(null) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
+
+    val groupedExercises = remember(exercises) {
+        val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
+        var currentGroup = mutableListOf<com.ateszk0.ostromgep.model.ExerciseSessionData>()
+        for (ex in exercises) {
+            if (currentGroup.isEmpty()) {
+                currentGroup.add(ex)
+            } else {
+                if (ex.supersetId != null && ex.supersetId == currentGroup.last().supersetId) {
+                    currentGroup.add(ex)
+                } else {
+                    groups.add(currentGroup)
+                    currentGroup = mutableListOf(ex)
+                }
+            }
+        }
+        if (currentGroup.isNotEmpty()) groups.add(currentGroup)
+        groups
+    }
 
     Scaffold(
         topBar = { 
@@ -101,6 +122,25 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             }
         }
     ) { innerPadding ->
+        val groupedExercises = remember(exercises) {
+            val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
+            var currentGroup = mutableListOf<com.ateszk0.ostromgep.model.ExerciseSessionData>()
+            for (ex in exercises) {
+                if (currentGroup.isEmpty()) {
+                    currentGroup.add(ex)
+                } else {
+                    if (ex.supersetId != null && ex.supersetId == currentGroup.last().supersetId) {
+                        currentGroup.add(ex)
+                    } else {
+                        groups.add(currentGroup)
+                        currentGroup = mutableListOf(ex)
+                    }
+                }
+            }
+            if (currentGroup.isNotEmpty()) groups.add(currentGroup)
+            groups
+        }
+
         LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
             item {
                 Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -109,34 +149,50 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
                 }
             }
-            itemsIndexed(exercises, key = { _, exercise -> exercise.id }) { index, exercise ->
-                val isDragged = draggedIndex == index
-                val zIndex = if (isDragged) 1f else 0f
-                val scale = if (isDragged) 1.02f else 1f
-                val alpha = if (isDragged) 0.8f else 1f
-                val translationY = if (isDragged) dragOffset else 0f
-                val elevation = if (isDragged) 8.dp else 0.dp
-                Box(
-                    modifier = Modifier.fillMaxWidth().zIndex(zIndex).graphicsLayer { this.translationY = translationY; this.scaleX = scale; this.scaleY = scale; this.alpha = alpha }
-                    .shadow(elevation, RoundedCornerShape(8.dp))
-                    .background(if (isDragged) SurfaceDark.copy(0.5f) else Color.Transparent)
-                    .animateItemPlacement()
+
+            items(groupedExercises, key = { grp -> grp.first().id }) { group ->
+                val isSuperset = group.size > 1 && group.first().supersetId != null
+                Column(
+                    modifier = Modifier.fillMaxWidth().run {
+                        if (isSuperset) this.border(2.dp, Color(0xFF9C27B0), RoundedCornerShape(8.dp)).padding(2.dp) else this
+                    }
                 ) {
-                    val def = library.find { it.name == exercise.name }
-                    ExerciseBlock(
-                        exercise, def?.imageUri, index, exercises.size, themeColor,
-                        { viewModel.moveExerciseUp(index) },
-                        { viewModel.moveExerciseDown(index) },
-                        { s -> viewModel.updateSet(exercise.id, s) },
-                        { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) },
-                        { viewModel.addSet(exercise.id) },
-                        { id -> viewModel.deleteSet(exercise.id, id) },
-                        { sec -> viewModel.updateExerciseRestTime(exercise.id, sec) },
-                        { id -> viewModel.toggleWarmup(exercise.id, id) },
-                        { note -> viewModel.updateExerciseNote(exercise.id, note) },
-                        { viewModel.deleteExercise(exercise.id) },
-                        { exerciseToEditRepRange = exercise.name }
-                    )
+                    group.forEachIndexed { idxInGroup, exercise ->
+                        val index = exercises.indexOf(exercise)
+                        val isDragged = draggedIndex == index
+                        val zIndex = if (isDragged) 1f else 0f
+                        val scale = if (isDragged) 1.02f else 1f
+                        val alpha = if (isDragged) 0.8f else 1f
+                        val translationY = if (isDragged) dragOffset else 0f
+                        val elevation = if (isDragged) 8.dp else 0.dp
+                        Box(
+                            modifier = Modifier.fillMaxWidth().zIndex(zIndex).graphicsLayer { this.translationY = translationY; this.scaleX = scale; this.scaleY = scale; this.alpha = alpha }
+                            .shadow(elevation, RoundedCornerShape(8.dp))
+                            .background(if (isDragged) SurfaceDark.copy(0.5f) else Color.Transparent)
+                            .animateItemPlacement()
+                        ) {
+                            val def = library.find { it.name == exercise.name }
+                            ExerciseBlock(
+                                exercise, def?.imageUri, index, exercises.size, themeColor,
+                                { viewModel.moveExerciseUp(index) },
+                                { viewModel.moveExerciseDown(index) },
+                                { s -> viewModel.updateSet(exercise.id, s) },
+                                { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) },
+                                { viewModel.addSet(exercise.id) },
+                                { id -> viewModel.deleteSet(exercise.id, id) },
+                                { sec -> viewModel.updateExerciseRestTime(exercise.id, sec) },
+                                { id -> viewModel.toggleWarmup(exercise.id, id) },
+                                { note -> viewModel.updateExerciseNote(exercise.id, note) },
+                                { viewModel.deleteExercise(exercise.id) },
+                                { exerciseToEditRepRange = exercise.name },
+                                { supersetSourceExercise = exercise },
+                                { viewModel.removeSuperset(exercise.id) }
+                            )
+                        }
+                        if (idxInGroup < group.size - 1 && !isSuperset) {
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -222,6 +278,49 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     TextButton(onClick = { showSaveTemplateDialog = false }) {
                         Text(stringResource(R.string.cancel_btn), color = themeColor)
                     }
+                }
+            )
+        }
+        
+        if (supersetSourceExercise != null) {
+            var selectedTargets by remember { mutableStateOf(setOf<Int>()) }
+            val sourceId = supersetSourceExercise!!.id
+            val otherExercises = exercises.filter { it.id != sourceId }
+            
+            AlertDialog(
+                onDismissRequest = { supersetSourceExercise = null },
+                title = { Text("Create Superset", color = Color.White) },
+                text = {
+                    LazyColumn(modifier = Modifier.heightIn(max = 300.dp)) {
+                        items(otherExercises) { ex ->
+                            Row(modifier = Modifier.fillMaxWidth().clickable {
+                                selectedTargets = if (selectedTargets.contains(ex.id)) selectedTargets - ex.id else selectedTargets + ex.id
+                            }, verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = selectedTargets.contains(ex.id), 
+                                    onCheckedChange = { chk ->
+                                        selectedTargets = if (chk) selectedTargets + ex.id else selectedTargets - ex.id
+                                    },
+                                    colors = CheckboxDefaults.colors(checkedColor = themeColor)
+                                )
+                                Text(ex.name, color = Color.White)
+                            }
+                        }
+                        if (otherExercises.isEmpty()) {
+                            item { Text("No other exercises in workout.", color = TextGray) }
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = { 
+                        viewModel.pairSuperset(sourceId, selectedTargets.toList())
+                        supersetSourceExercise = null
+                    }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                        Text(stringResource(R.string.save_btn), color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { supersetSourceExercise = null }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
                 }
             )
         }

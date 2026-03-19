@@ -53,7 +53,9 @@ fun ExerciseBlock(
     onToggleWarmup: (Int) -> Unit, 
     onNoteUpdate: (String) -> Unit, 
     onDeleteExercise: () -> Unit, 
-    onEditRepRange: () -> Unit
+    onEditRepRange: () -> Unit,
+    onSuperset: () -> Unit,
+    onRemoveSuperset: () -> Unit
 ) {
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -97,6 +99,7 @@ fun ExerciseBlock(
                         DropdownMenuItem(text = { Text("Move Up ↑", color = Color.White) }, onClick = { showMenu = false; onMoveUp() })
                         DropdownMenuItem(text = { Text("Move Down ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
                         DropdownMenuItem(text = { Text("Rep Range", color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
+                        DropdownMenuItem(text = { Text(if (exercise.supersetId == null) "Superset" else "Remove Superset", color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
                         DropdownMenuItem(text = { Text("Delete", color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
                     }
                 }

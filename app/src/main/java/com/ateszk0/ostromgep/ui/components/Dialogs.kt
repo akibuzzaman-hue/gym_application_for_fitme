@@ -280,6 +280,24 @@ fun SettingsDialog(
                         }, colors = RadioButtonDefaults.colors(selectedColor = currentThemeColor, unselectedColor = TextGray))
                         Text("Magyar", color = Color.White)
                     }
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text("Adatok", fontWeight = FontWeight.Bold, color = Color.White)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    val csvLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+                        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+                    ) { uri: android.net.Uri? ->
+                        uri?.let {
+                            val success = viewModel.importCsvHistory(context, it)
+                            android.widget.Toast.makeText(context, if (success) "Sikeres importálás" else "Sikertelen importálás", android.widget.Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    Button(
+                        onClick = { csvLauncher.launch("*/*") },
+                        colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)
+                    ) {
+                        Text("CSV Importálása", color = Color.White)
+                    }
                 } 
             }
         },
