@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Fekvenyomás",
+    "minReps": 8,
+    "maxReps": 12,
+    "muscleGroups": [
+      "CHEST",
+      "TRICEPS"
+    ]
+  },
+  {
+    "name": "Guggolás",
+    "minReps": 8,
+    "maxReps": 12,
+    "muscleGroups": [
+      "QUADRICEPS",
+      "GLUTES"
+    ]
+  },
+  {
+    "name": "Felhúzás",
+    "minReps": 5,
+    "maxReps": 8,
+    "muscleGroups": [
+      "LOWER_BACK",
+      "HAMSTRINGS"
+    ]
+  },
+  {
+    "name": "Húzódzkodás",
+    "minReps": 5,
+    "maxReps": 12,
+    "muscleGroups": [
+      "LATS",
+      "BICEPS"
+    ]
+  },
+  {
+    "name": "Vállból nyomás",
+    "minReps": 8,
+    "maxReps": 12,
+    "muscleGroups": [
+      "SHOULDERS",
+      "TRICEPS"
+    ]
+  }
+]

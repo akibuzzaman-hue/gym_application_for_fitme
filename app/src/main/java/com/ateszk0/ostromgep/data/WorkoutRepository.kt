@@ -6,8 +6,9 @@ import com.ateszk0.ostromgep.model.WorkoutHistoryEntry
 import com.ateszk0.ostromgep.model.WorkoutTemplate
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.io.InputStreamReader
 
-class WorkoutRepository(context: Context) {
+class WorkoutRepository(private val context: Context) {
     private val prefs = context.getSharedPreferences("ostromgep_prefs", Context.MODE_PRIVATE)
     private val gson = Gson()
 
@@ -35,9 +36,22 @@ class WorkoutRepository(context: Context) {
             return mapped
         }
 
-        val defaultList = listOf(ExerciseDef("Fekvenyomás"), ExerciseDef("Guggolás"), ExerciseDef("Felhúzás"))
+        val defaultList = loadDefaultExercises()
         saveExerciseLibrary(defaultList)
         return defaultList
+    }
+
+    private fun loadDefaultExercises(): List<ExerciseDef> {
+        return try {
+            val inputStream = context.assets.open("default_exercises.json")
+            val reader = InputStreamReader(inputStream)
+            val type = object : TypeToken<List<ExerciseDef>>() {}.type
+            val list: List<ExerciseDef> = gson.fromJson(reader, type)
+            reader.close()
+            list
+        } catch (e: Exception) {
+            listOf(ExerciseDef("Fekvenyomás"), ExerciseDef("Guggolás"), ExerciseDef("Felhúzás"))
+        }
     }
 
     fun saveExerciseLibrary(library: List<ExerciseDef>) {
