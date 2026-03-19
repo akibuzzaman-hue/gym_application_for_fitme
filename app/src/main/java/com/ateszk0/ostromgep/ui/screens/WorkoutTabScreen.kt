@@ -31,8 +31,17 @@ import androidx.compose.ui.res.stringResource
 import com.ateszk0.ostromgep.R
 
 @Composable
-fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Unit, onNavigateToRoutineEditor: () -> Unit) {
+fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Unit, onNavigateToRoutineEditor: () -> Unit, onNavigateToExplore: () -> Unit) {
     val templates by viewModel.savedTemplates.collectAsState()
+    var showFoldersDialog by remember { mutableStateOf(false) }
+    
+    if (showFoldersDialog) {
+        com.ateszk0.ostromgep.ui.components.ManageFoldersDialog(
+            viewModel = viewModel,
+            themeColor = themeColor,
+            onDismiss = { showFoldersDialog = false }
+        )
+    }
     
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) { 
@@ -61,7 +70,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.routines_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            IconButton(onClick = { /* TODO: Manage Folders */ }) {
+            IconButton(onClick = { showFoldersDialog = true }) {
                 Icon(Icons.Default.Folder, contentDescription = "Folders", tint = TextGray)
             }
         }
@@ -80,7 +89,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                 Text(stringResource(R.string.new_routine), color = Color.White, fontSize = 14.sp)
             }
             Button(
-                onClick = { },
+                onClick = { onNavigateToExplore() },
                 modifier = Modifier.weight(1f).height(48.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)

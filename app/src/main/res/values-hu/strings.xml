@@ -124,6 +124,13 @@
     <string name="my_routines">Saját rutinok</string>
     <string name="my_routines_format">Saját rutinok (%1$d)</string>
     <string name="start_routine_btn">Rutin indítása</string>
+    
+    <string name="manage_folders_title">Mappák kezelése</string>
+    <string name="folder_routines_count">%1$d rutin</string>
+    <string name="no_folders_yet">Még nincsenek mappák.</string>
+    <string name="new_folder_btn">Új Mappa</string>
+    <string name="create_folder_title">Mappa Létrehozása</string>
+    <string name="folder_name_label">Mappa neve</string>
 
     <!-- StatisticsScreen -->
     <string name="statistics_title">Statisztika</string>

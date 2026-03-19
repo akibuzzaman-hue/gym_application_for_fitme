@@ -336,3 +336,110 @@ fun PlateCalculatorDialog(
         confirmButton = { Button(onClick = onDismiss, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.close_btn), color = Color.White) } }
     )
 }
+
+@Composable
+fun ManageFoldersDialog(
+    viewModel: WorkoutViewModel,
+    themeColor: Color,
+    onDismiss: () -> Unit
+) {
+    var isCreating by remember { mutableStateOf(false) }
+    
+    if (isCreating) {
+        CreateFolderDialog(viewModel, themeColor, onDismiss = { isCreating = false })
+    } else {
+        val folders by viewModel.routineFolders.collectAsState()
+        val activeId by viewModel.activeFolderId.collectAsState()
+        
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(stringResource(R.string.manage_folders_title), color = Color.White) },
+            text = {
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(folders) { folder ->
+                        val isActive = folder.id == activeId
+                        Row(modifier = Modifier.fillMaxWidth().clickable { viewModel.setActiveFolder(if (isActive) null else folder.id) }, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(folder.name, color = Color.White, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.folder_routines_count, folder.templateIds.size), color = TextGray, fontSize = 12.sp)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                if (isActive) {
+                                    Icon(Icons.Default.CheckCircle, null, tint = themeColor)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                }
+                                IconButton(onClick = { viewModel.deleteFolder(folder.id) }) {
+                                    Icon(Icons.Default.Delete, null, tint = Color.Red)
+                                }
+                            }
+                        }
+                    }
+                    if (folders.isEmpty()) {
+                        item { Text(stringResource(R.string.no_folders_yet), color = TextGray) }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = { isCreating = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                    Text(stringResource(R.string.new_folder_btn), color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.close_btn), color = themeColor) }
+            }
+        )
+    }
+}
+
+@Composable
+fun CreateFolderDialog(
+    viewModel: WorkoutViewModel,
+    themeColor: Color,
+    onDismiss: () -> Unit
+) {
+    var name by remember { mutableStateOf("") }
+    var selectedTemplates by remember { mutableStateOf(setOf<Int>()) }
+    val templates by viewModel.savedTemplates.collectAsState()
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.create_folder_title), color = Color.White) },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = name, 
+                    onValueChange = { name = it }, 
+                    label = { Text(stringResource(R.string.folder_name_label)) }, 
+                    textStyle = TextStyle(color = Color.White),
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn(modifier = Modifier.heightIn(max = 200.dp)) {
+                    items(templates) { template ->
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable {
+                            selectedTemplates = if (selectedTemplates.contains(template.id)) selectedTemplates - template.id else selectedTemplates + template.id
+                        }) {
+                            Checkbox(checked = selectedTemplates.contains(template.id), onCheckedChange = { chk ->
+                                selectedTemplates = if (chk) selectedTemplates + template.id else selectedTemplates - template.id
+                            }, colors = CheckboxDefaults.colors(checkedColor = themeColor))
+                            Text(template.templateName, color = Color.White)
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(onClick = { 
+                if (name.isNotBlank()) {
+                    viewModel.createFolder(name, selectedTemplates.toList())
+                    onDismiss()
+                }
+            }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                Text(stringResource(R.string.save_btn), color = Color.White)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
+        }
+    )
+}

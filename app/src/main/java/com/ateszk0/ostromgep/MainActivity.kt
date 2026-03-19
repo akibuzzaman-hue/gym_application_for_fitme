@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor }
+enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor, ExploreRoutines }
 
 @Composable
 fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
@@ -140,8 +140,9 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                         currentScreen = AppScreen.Workout
                         isWorkoutActive = true 
                     })
-                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor })
+                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor }, onNavigateToExplore = { currentScreen = AppScreen.ExploreRoutines })
                     AppScreen.RoutineEditor -> RoutineEditorScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
+                    AppScreen.ExploreRoutines -> ExploreRoutinesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
                     AppScreen.Profile -> DashboardProfile(
                         viewModel, 
                         themeColor, 

@@ -4,6 +4,7 @@ import android.content.Context
 import com.ateszk0.ostromgep.model.ExerciseDef
 import com.ateszk0.ostromgep.model.WorkoutHistoryEntry
 import com.ateszk0.ostromgep.model.WorkoutTemplate
+import com.ateszk0.ostromgep.model.RoutineFolder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
@@ -75,6 +76,27 @@ class WorkoutRepository(private val context: Context) {
 
     fun saveSavedTemplates(templates: List<WorkoutTemplate>) {
         prefs.edit().putString("templates", gson.toJson(templates)).apply()
+    }
+
+    fun getRoutineFolders(): List<RoutineFolder> {
+        val json = prefs.getString("routine_folders", null) ?: return emptyList()
+        return gson.fromJson(json, object : TypeToken<List<RoutineFolder>>() {}.type)
+    }
+
+    fun saveRoutineFolders(folders: List<RoutineFolder>) {
+        prefs.edit().putString("routine_folders", gson.toJson(folders)).apply()
+    }
+
+    fun getActiveFolderId(): String? {
+        return prefs.getString("active_folder_id", null)
+    }
+
+    fun saveActiveFolderId(id: String?) {
+        if (id == null) {
+            prefs.edit().remove("active_folder_id").apply()
+        } else {
+            prefs.edit().putString("active_folder_id", id).apply()
+        }
     }
 
     fun getWorkoutHistory(): List<WorkoutHistoryEntry> {

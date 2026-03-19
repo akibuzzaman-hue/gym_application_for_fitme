@@ -31,6 +31,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _savedTemplates = MutableStateFlow(repository.getSavedTemplates())
     val savedTemplates = _savedTemplates.asStateFlow()
 
+    private val _routineFolders = MutableStateFlow(repository.getRoutineFolders())
+    val routineFolders = _routineFolders.asStateFlow()
+
+    private val _activeFolderId = MutableStateFlow(repository.getActiveFolderId())
+    val activeFolderId = _activeFolderId.asStateFlow()
+
     private val _workoutHistory = MutableStateFlow(repository.getWorkoutHistory())
     val workoutHistory = _workoutHistory.asStateFlow()
 
@@ -218,6 +224,33 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         repository.saveSavedTemplates(updated)
     }
 
+    fun createFolder(name: String, templateIds: List<Int>) {
+        val newFolder = RoutineFolder(name = name, templateIds = templateIds)
+        val updated = _routineFolders.value + newFolder
+        _routineFolders.value = updated
+        repository.saveRoutineFolders(updated)
+    }
+
+    fun updateFolder(id: String, name: String, templateIds: List<Int>) {
+        val updated = _routineFolders.value.map { if (it.id == id) it.copy(name = name, templateIds = templateIds) else it }
+        _routineFolders.value = updated
+        repository.saveRoutineFolders(updated)
+    }
+
+    fun deleteFolder(id: String) {
+        val updated = _routineFolders.value.filter { it.id != id }
+        _routineFolders.value = updated
+        repository.saveRoutineFolders(updated)
+        if (_activeFolderId.value == id) {
+            setActiveFolder(null)
+        }
+    }
+
+    fun setActiveFolder(id: String?) {
+        _activeFolderId.value = id
+        repository.saveActiveFolderId(id)
+    }
+
     fun createCustomExercise(name: String) { 
         if (name.isNotBlank() && _exerciseLibrary.value.none { it.name == name }) { 
             val newLib = _exerciseLibrary.value + ExerciseDef(name, isCustom = true)
@@ -360,10 +393,18 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun suggestNextMission(): WorkoutTemplate? {
-        val templates = _savedTemplates.value
-        if (templates.isEmpty()) return null
+        val activeFolderId = _activeFolderId.value
+        val validTemplates = if (activeFolderId != null) {
+            val folder = _routineFolders.value.find { it.id == activeFolderId }
+            val folderTemplates = folder?.templateIds?.mapNotNull { id -> _savedTemplates.value.find { it.id == id } }
+            if (folderTemplates.isNullOrEmpty()) _savedTemplates.value else folderTemplates
+        } else {
+            _savedTemplates.value
+        }
         
-        val templateLastUsed = templates.associateWith { t ->
+        if (validTemplates.isEmpty()) return null
+        
+        val templateLastUsed = validTemplates.associateWith { t ->
             val latestEntry = _workoutHistory.value.filter {
                 it.exercises.map { e -> e.name }.containsAll(t.exercises.map { e -> e.name })
             }.maxByOrNull { it.timestamp }

@@ -124,6 +124,13 @@
     <string name="my_routines">My Routines</string>
     <string name="my_routines_format">My Routines (%1$d)</string>
     <string name="start_routine_btn">Start Routine</string>
+    
+    <string name="manage_folders_title">Manage Folders</string>
+    <string name="folder_routines_count">%1$d routines</string>
+    <string name="no_folders_yet">No folders yet.</string>
+    <string name="new_folder_btn">New Folder</string>
+    <string name="create_folder_title">Create Folder</string>
+    <string name="folder_name_label">Folder Name</string>
 
     <!-- StatisticsScreen -->
     <string name="statistics_title">Statistics</string>
