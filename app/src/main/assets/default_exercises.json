@@ -656,5 +656,362 @@
     "maxReps": 12,
     "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Incline_Bench_Press/0.jpg",
     "muscleGroups": ["CHEST"]
+  },
+  {
+    "name": "Burpees",
+    "minReps": 10,
+    "maxReps": 20,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Burpees/0.jpg",
+    "muscleGroups": ["CARDIO", "QUADRICEPS", "CHEST"]
+  },
+  {
+    "name": "Mountain Climbers",
+    "minReps": 20,
+    "maxReps": 30,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
+    "muscleGroups": ["ABDOMINALS", "CARDIO"]
+  },
+  {
+    "name": "Plank",
+    "minReps": 1,
+    "maxReps": 1,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
+    "muscleGroups": ["ABDOMINALS"]
+  },
+  {
+    "name": "Sit-up",
+    "minReps": 15,
+    "maxReps": 25,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Sit-up/0.jpg",
+    "muscleGroups": ["ABDOMINALS"]
+  },
+  {
+    "name": "Leg Raise (Floor)",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Raises/0.jpg",
+    "muscleGroups": ["ABDOMINALS"]
+  },
+  {
+    "name": "Superman",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
+    "muscleGroups": ["LOWER_BACK"]
+  },
+  {
+    "name": "Bird Dog",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bird_Dog/0.jpg",
+    "muscleGroups": ["ABDOMINALS", "LOWER_BACK"]
+  },
+  {
+    "name": "Glute Bridge",
+    "minReps": 15,
+    "maxReps": 20,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/0.jpg",
+    "muscleGroups": ["GLUTES", "HAMSTRINGS"]
+  },
+  {
+    "name": "Lunges (Bodyweight)",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lunges/0.jpg",
+    "muscleGroups": ["QUADRICEPS", "GLUTES"]
+  },
+  {
+    "name": "Russian Twist",
+    "minReps": 20,
+    "maxReps": 30,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg",
+    "muscleGroups": ["ABDOMINALS"]
+  },
+  {
+    "name": "Bicycle Crunch",
+    "minReps": 20,
+    "maxReps": 30,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycle_Crunches/0.jpg",
+    "muscleGroups": ["ABDOMINALS"]
+  },
+  {
+    "name": "Diamond Push-up",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Diamond_Pushups/0.jpg",
+    "muscleGroups": ["TRICEPS", "CHEST"]
+  },
+  {
+    "name": "Dips (Chest)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips/0.jpg",
+    "muscleGroups": ["CHEST", "TRICEPS"]
+  },
+  {
+    "name": "Barbell Row (Bent Over)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bent_Over_Row/0.jpg",
+    "muscleGroups": ["BACK", "LATS"]
+  },
+  {
+    "name": "Romanian Deadlift (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Romanian_Deadlift/0.jpg",
+    "muscleGroups": ["HAMSTRINGS", "GLUTES"]
+  },
+  {
+    "name": "Stiff Leg Deadlift (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Stiff_Legged_Deadlift/0.jpg",
+    "muscleGroups": ["HAMSTRINGS", "LOWER_BACK"]
+  },
+  {
+    "name": "Barbell Shrug",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shrug/0.jpg",
+    "muscleGroups": ["TRAPS"]
+  },
+  {
+    "name": "Incline Bench Press (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Incline_Bench_Press/0.jpg",
+    "muscleGroups": ["CHEST", "TRICEPS"]
+  },
+  {
+    "name": "Decline Bench Press (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Decline_Bench_Press/0.jpg",
+    "muscleGroups": ["CHEST", "TRICEPS"]
+  },
+  {
+    "name": "Close Grip Bench Press (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Barbell_Bench_Press/0.jpg",
+    "muscleGroups": ["TRICEPS", "CHEST"]
+  },
+  {
+    "name": "Barbell Curl",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg",
+    "muscleGroups": ["BICEPS"]
+  },
+  {
+    "name": "Skull Crusher (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension/0.jpg",
+    "muscleGroups": ["TRICEPS"]
+  },
+  {
+    "name": "Z-Bar Curl",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Curl/0.jpg",
+    "muscleGroups": ["BICEPS"]
+  },
+  {
+    "name": "French Press (Barbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_French_Press/0.jpg",
+    "muscleGroups": ["TRICEPS"]
+  },
+  {
+    "name": "Dumbbell Flyes",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/0.jpg",
+    "muscleGroups": ["CHEST"]
+  },
+  {
+    "name": "Dumbbell Row (Single Arm)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Row/0.jpg",
+    "muscleGroups": ["BACK", "LATS"]
+  },
+  {
+    "name": "Dumbbell Pullover",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Pullover/0.jpg",
+    "muscleGroups": ["CHEST", "LATS"]
+  },
+  {
+    "name": "Dumbbell Lunges",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Lunges/0.jpg",
+    "muscleGroups": ["QUADRICEPS", "GLUTES"]
+  },
+  {
+    "name": "Dumbbell Step-up",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Step_Up/0.jpg",
+    "muscleGroups": ["QUADRICEPS", "GLUTES"]
+  },
+  {
+    "name": "Incline Dumbbell Press",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Bench_Press/0.jpg",
+    "muscleGroups": ["CHEST", "TRICEPS"]
+  },
+  {
+    "name": "Arnold Press",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Press/0.jpg",
+    "muscleGroups": ["SHOULDERS"]
+  },
+  {
+    "name": "Dumbbell Rear Delt Fly",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Rear_Delt_Row/0.jpg",
+    "muscleGroups": ["SHOULDERS"]
+  },
+  {
+    "name": "Concentration Curl",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Concentration_Curl/0.jpg",
+    "muscleGroups": ["BICEPS"]
+  },
+  {
+    "name": "French Press (Dumbbell)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_French_Press/0.jpg",
+    "muscleGroups": ["TRICEPS"]
+  },
+  {
+    "name": "Dumbbell Calf Raise",
+    "minReps": 12,
+    "maxReps": 20,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Calf_Raise/0.jpg",
+    "muscleGroups": ["CALVES"]
+  },
+  {
+    "name": "Goblet Squat",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squats/0.jpg",
+    "muscleGroups": ["QUADRICEPS", "GLUTES"]
+  },
+  {
+    "name": "Cable Pullover",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Straight_Arm_Pulldown/0.jpg",
+    "muscleGroups": ["LATS"]
+  },
+  {
+    "name": "Cable Chest Press",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Bench_Press/0.jpg",
+    "muscleGroups": ["CHEST", "TRICEPS"]
+  },
+  {
+    "name": "Cable Row (Wide Grip)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Seated_Cable_Row/0.jpg",
+    "muscleGroups": ["BACK", "LATS"]
+  },
+  {
+    "name": "Cable Row (Neutral Grip)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+    "muscleGroups": ["BACK", "LATS"]
+  },
+  {
+    "name": "Cable Face Pull",
+    "minReps": 12,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
+    "muscleGroups": ["SHOULDERS", "TRAPS"]
+  },
+  {
+    "name": "Cable Shrug",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Shrug/0.jpg",
+    "muscleGroups": ["TRAPS"]
+  },
+  {
+    "name": "Leg Press (Horizontal)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+    "muscleGroups": ["QUADRICEPS", "GLUTES"]
+  },
+  {
+    "name": "Hack Squat (Machine)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/0.jpg",
+    "muscleGroups": ["QUADRICEPS", "GLUTES"]
+  },
+  {
+    "name": "Chest Press (Machine - Wide)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bench_Press/0.jpg",
+    "muscleGroups": ["CHEST", "TRICEPS"]
+  },
+  {
+    "name": "Row (Machine)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Row/0.jpg",
+    "muscleGroups": ["BACK", "LATS"]
+  },
+  {
+    "name": "Rear Delt Fly (Machine)",
+    "minReps": 10,
+    "maxReps": 15,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Reverse_Machine_Flyes/0.jpg",
+    "muscleGroups": ["SHOULDERS"]
+  },
+  {
+    "name": "Bicep Curl (Machine)",
+    "minReps": 8,
+    "maxReps": 12,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bicep_Curl/0.jpg",
+    "muscleGroups": ["BICEPS"]
+  },
+  {
+    "name": "Stair Climber",
+    "minReps": 1,
+    "maxReps": 1,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stair_Climber/0.jpg",
+    "muscleGroups": ["CARDIO", "GLUTES", "CALVES"]
+  },
+  {
+    "name": "Rowing Machine",
+    "minReps": 1,
+    "maxReps": 1,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Rowing_Machine/0.jpg",
+    "muscleGroups": ["CARDIO", "BACK", "LEGS"]
+  },
+  {
+    "name": "Elliptical",
+    "minReps": 1,
+    "maxReps": 1,
+    "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Elliptical_Trainer/0.jpg",
+    "muscleGroups": ["CARDIO"]
   }
 ]
