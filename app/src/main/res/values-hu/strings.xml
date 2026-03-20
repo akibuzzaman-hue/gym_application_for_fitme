@@ -166,4 +166,26 @@
     <string name="body_back">Hátul</string>
     
     <string name="exercise_btn_short">Gyakorlat</string>
+    <string name="save_workout_title">Edzés mentése</string>
+    <string name="workout_title_label">Edzés neve</string>
+    <string name="when_label">Mikor</string>
+    <string name="add_photo_video">Kép / videó hozzáadása</string>
+    <string name="description_label">Leírás</string>
+    <string name="how_did_it_go">Hogy ment az edzés? Írj ide pár jegyzetet...</string>
+    <string name="visibility_label">Láthatóság</string>
+    <string name="visibility_everyone">Mindenki</string>
+    <string name="routine_settings_label">Rutin beállítások</string>
+    <string name="sync_with_label">Szinkronizálás</string>
+    <string name="health_connect">Health Connect</string>
+    
+    <string name="update_routine_title">A(z) \"%1$s\" frissítése</string>
+    <string name="changes_added_exercises">hozzáadtál %1$d gyakorlatot</string>
+    <string name="changes_removed_exercises">eltávolítottál %1$d gyakorlatot</string>
+    <string name="changes_added_sets">hozzáadtál %1$d szettet</string>
+    <string name="changes_removed_sets">eltávolítottál %1$d szettet</string>
+    <string name="changes_and">és</string>
+    <string name="changes_you">%1$s.</string>
+    <string name="update_routine_btn">Rutin frissítése</string>
+    <string name="keep_original_btn">Eredeti rutin megtartása</string>
+    <string name="discard_workout_btn">Edzés elvetése</string>
 </resources>

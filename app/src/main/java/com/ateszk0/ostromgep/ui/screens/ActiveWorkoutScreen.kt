@@ -43,7 +43,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     val prompts by viewModel.overloadPrompts.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    var showSaveTemplateDialog by remember { mutableStateOf(false) }
+    var isSavingWorkout by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
@@ -89,13 +89,28 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         groups
     }
 
+    if (isSavingWorkout) {
+        SaveWorkoutScreen(
+            viewModel = viewModel,
+            themeColor = themeColor,
+            onSave = { updateRoutine ->
+                viewModel.finishWorkout(updateOriginalRoutine = updateRoutine)
+                onFinishWorkout()
+            },
+            onDiscard = {
+                viewModel.discardWorkout()
+                onFinishWorkout()
+            },
+            onBack = { isSavingWorkout = false }
+        )
+    } else {
     Scaffold(
         topBar = { 
             TopAppBar(
                 title = { Text(stringResource(R.string.log_workout), color = Color.White) }, 
                 actions = { 
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
-                    Button(onClick = { showSaveTemplateDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
+                    Button(onClick = { isSavingWorkout = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
                 }, 
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
             ) 
@@ -218,7 +233,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 text = { Text(stringResource(R.string.discard_dialog_text), color = TextGray) },
                 confirmButton = {
                     Button(onClick = { 
-                        viewModel.finishWorkout(null)
+                        viewModel.discardWorkout()
                         showDiscardDialog = false
                         onFinishWorkout() 
                     }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
@@ -261,25 +276,6 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     themeColor = themeColor
                 )
             }
-        }
-
-        if (showSaveTemplateDialog) {
-            var n by remember { mutableStateOf("") }
-            AlertDialog(
-                onDismissRequest = { showSaveTemplateDialog = false },
-                title = { Text(stringResource(R.string.finish_dialog_title), color = Color.White) },
-                text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text(stringResource(R.string.template_name_label)) }) },
-                confirmButton = {
-                    Button(onClick = { viewModel.finishWorkout(if (n.isNotBlank()) n else null); showSaveTemplateDialog = false; onFinishWorkout() }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
-                        Text(stringResource(R.string.finish_btn), color = Color.White)
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showSaveTemplateDialog = false }) {
-                        Text(stringResource(R.string.cancel_btn), color = themeColor)
-                    }
-                }
-            )
         }
         
         if (supersetSourceExercise != null) {
@@ -324,6 +320,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 }
             )
         }
+    }
     }
 
 }

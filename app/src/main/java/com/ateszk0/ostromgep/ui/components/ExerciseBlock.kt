@@ -139,13 +139,11 @@ fun ExerciseBlock(
                     Box(
                         modifier = Modifier
                             .matchParentSize()
-                            .padding(horizontal = 16.dp, vertical = 2.dp)
-                            .clip(RoundedCornerShape(8.dp))
                             .background(Color.Red)
                             .clickable { onDeleteSet(set.id) },
                         contentAlignment = Alignment.CenterEnd
                     ) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White, modifier = Modifier.padding(end = 16.dp))
+                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White, modifier = Modifier.padding(end = 24.dp))
                     }
 
                     val rowBg = if (set.isCompleted) CompletedGreen.copy(alpha = 0.2f) else Color.Transparent

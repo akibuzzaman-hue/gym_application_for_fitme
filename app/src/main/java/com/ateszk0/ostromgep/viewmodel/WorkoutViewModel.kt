@@ -43,6 +43,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _activeExercises = MutableStateFlow<List<ExerciseSessionData>>(emptyList())
     val activeExercises = _activeExercises.asStateFlow()
 
+    private val _activeTemplateId = MutableStateFlow<Int?>(null)
+    val activeTemplateId = _activeTemplateId.asStateFlow()
+
     private val _overloadPrompts = MutableStateFlow<List<OverloadPrompt>>(emptyList())
     val overloadPrompts = _overloadPrompts.asStateFlow()
 
@@ -133,12 +136,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun startEmptyWorkout() {
+        _activeTemplateId.value = null
         _activeExercises.value = emptyList()
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
     }
 
     fun startWorkoutFromTemplate(template: WorkoutTemplate) {
+        _activeTemplateId.value = template.id
         val newSession = template.exercises.map { templateEx ->
             val prevSets = getLastPerformedSets(templateEx.name)
             templateEx.copy(sets = templateEx.sets.mapIndexed { i, s ->
@@ -190,31 +195,65 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun dismissOverloadPrompts() { _overloadPrompts.value = emptyList() }
 
-    fun finishWorkout(saveAsTemplateName: String?) {
+    fun finishWorkout(updateOriginalRoutine: Boolean = false) {
         val vol = _activeExercises.value.sumOf { it.totalVolume() }
         val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value)
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
 
-        if (!saveAsTemplateName.isNullOrBlank()) {
-            val existing = _savedTemplates.value.find { it.templateName == saveAsTemplateName }
-            if (existing != null) {
-                val updatedTemplates = _savedTemplates.value.map { 
-                    if (it.id == existing.id) it.copy(exercises = _activeExercises.value) else it 
-                }
-                _savedTemplates.value = updatedTemplates
-                repository.saveSavedTemplates(updatedTemplates)
-            } else {
-                val newTemplates = _savedTemplates.value + WorkoutTemplate(
-                    id = (_savedTemplates.value.maxOfOrNull { it.id } ?: 0) + 1, 
-                    templateName = saveAsTemplateName, 
-                    exercises = _activeExercises.value
-                )
-                _savedTemplates.value = newTemplates
-                repository.saveSavedTemplates(newTemplates)
+        if (updateOriginalRoutine && _activeTemplateId.value != null) {
+            val updatedTemplates = _savedTemplates.value.map {
+                if (it.id == _activeTemplateId.value) it.copy(exercises = _activeExercises.value) else it
+            }
+            _savedTemplates.value = updatedTemplates
+            repository.saveSavedTemplates(updatedTemplates)
+        }
+        
+        _activeExercises.value = emptyList()
+        _activeTemplateId.value = null
+    }
+
+    fun discardWorkout() {
+        _activeExercises.value = emptyList()
+        _activeTemplateId.value = null
+        _totalSeconds.value = 0
+        _restTimerSeconds.value = 0
+    }
+
+    fun getRoutineChanges(): RoutineChanges? {
+        val activeId = _activeTemplateId.value ?: return null
+        val originalTemplate = _savedTemplates.value.find { it.id == activeId } ?: return null
+        
+        var addedExercises = 0
+        var removedExercises = 0
+        var addedSets = 0
+        var removedSets = 0
+        
+        val originalNames = originalTemplate.exercises.map { it.name }.toSet()
+        val currentExercises = _activeExercises.value
+        val currentNames = currentExercises.map { it.name }.toSet()
+        
+        addedExercises += (currentNames - originalNames).size
+        removedExercises += (originalNames - currentNames).size
+        
+        val commonNames = originalNames.intersect(currentNames)
+        for (name in commonNames) {
+            val origSetCount = originalTemplate.exercises.find { it.name == name }?.sets?.count { !it.isWarmup } ?: 0
+            val currSetCount = currentExercises.find { it.name == name }?.sets?.count { !it.isWarmup } ?: 0
+            if (currSetCount > origSetCount) {
+                addedSets += (currSetCount - origSetCount)
+            } else if (origSetCount > currSetCount) {
+                removedSets += (origSetCount - currSetCount)
             }
         }
-        _activeExercises.value = emptyList()
+        
+        return RoutineChanges(
+            templateName = originalTemplate.templateName,
+            addedExercises = addedExercises,
+            removedExercises = removedExercises,
+            addedSets = addedSets,
+            removedSets = removedSets
+        )
     }
 
     fun saveNewTemplate(name: String, exercises: List<ExerciseSessionData>) {

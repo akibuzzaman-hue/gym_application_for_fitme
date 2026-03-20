@@ -178,3 +178,13 @@ data class OverloadPrompt(
         fun formatWeight(w: Double): String = if (w % 1.0 == 0.0) w.toInt().toString() else w.toString()
     }
 }
+
+data class RoutineChanges(
+    val templateName: String,
+    val addedExercises: Int,
+    val removedExercises: Int,
+    val addedSets: Int,
+    val removedSets: Int
+) {
+    fun hasChanges(): Boolean = addedExercises > 0 || removedExercises > 0 || addedSets > 0 || removedSets > 0
+}

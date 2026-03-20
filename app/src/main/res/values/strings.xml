@@ -166,4 +166,26 @@
     <string name="body_back">Back</string>
     
     <string name="exercise_btn_short">Exercise</string>
+    <string name="save_workout_title">Save Workout</string>
+    <string name="workout_title_label">Workout title</string>
+    <string name="when_label">When</string>
+    <string name="add_photo_video">Add a photo / video</string>
+    <string name="description_label">Description</string>
+    <string name="how_did_it_go">How did your workout go? Leave some notes here...</string>
+    <string name="visibility_label">Visibility</string>
+    <string name="visibility_everyone">Everyone</string>
+    <string name="routine_settings_label">Routine Settings</string>
+    <string name="sync_with_label">Sync With</string>
+    <string name="health_connect">Health Connect</string>
+    
+    <string name="update_routine_title">Update \"%1$s\"</string>
+    <string name="changes_added_exercises">added %1$d exercise(s)</string>
+    <string name="changes_removed_exercises">removed %1$d exercise(s)</string>
+    <string name="changes_added_sets">added %1$d set(s)</string>
+    <string name="changes_removed_sets">removed %1$d set(s)</string>
+    <string name="changes_and">and</string>
+    <string name="changes_you">You %1$s.</string>
+    <string name="update_routine_btn">Update Routine</string>
+    <string name="keep_original_btn">Keep Original Routine</string>
+    <string name="discard_workout_btn">Discard Workout</string>
 </resources>

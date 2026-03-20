@@ -30,11 +30,21 @@ class WorkoutRepository(private val context: Context) {
         val libJsonV2 = prefs.getString("library_v2", null)
         if (libJsonV2 != null) {
             val raw: List<ExerciseDef> = gson.fromJson(libJsonV2, object : TypeToken<List<ExerciseDef>>() {}.type)
-            val defaults = loadDefaultExercises().map { it.name }.toSet()
-            return raw.map { 
+            val defaults = loadDefaultExercises()
+            val defaultNames = defaults.map { it.name }.toSet()
+            val normalized = raw.map { 
                 val norm = it.normalize()
-                if (norm.name !in defaults && !norm.isCustom) norm.copy(isCustom = true) else norm
+                if (norm.name !in defaultNames && !norm.isCustom) norm.copy(isCustom = true) else norm
             }
+            // Migration: merge in any new default exercises not yet in the user's library
+            val existingNames = normalized.map { it.name }.toSet()
+            val newDefaults = defaults.filter { it.name !in existingNames }
+            if (newDefaults.isNotEmpty()) {
+                val merged = normalized + newDefaults
+                saveExerciseLibrary(merged)
+                return merged
+            }
+            return normalized
         }
         
         // Fallback or old data
