@@ -2,6 +2,7 @@ package com.ateszk0.ostromgep.ui.screens
 
 import android.media.RingtoneManager
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,8 @@ import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.*
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -40,11 +43,11 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     val prompts by viewModel.overloadPrompts.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    var showSaveTemplateDialog by remember { mutableStateOf(false) }
+    var isSavingWorkout by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
-    var showSettingsDialog by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
+    var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
     
     androidx.activity.compose.BackHandler(enabled = true) {
         showDiscardDialog = true
@@ -67,13 +70,47 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var draggedIndex by remember { mutableStateOf<Int?>(null) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
 
+    val groupedExercises = remember(exercises) {
+        val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
+        var currentGroup = mutableListOf<com.ateszk0.ostromgep.model.ExerciseSessionData>()
+        for (ex in exercises) {
+            if (currentGroup.isEmpty()) {
+                currentGroup.add(ex)
+            } else {
+                if (ex.supersetId != null && ex.supersetId == currentGroup.last().supersetId) {
+                    currentGroup.add(ex)
+                } else {
+                    groups.add(currentGroup)
+                    currentGroup = mutableListOf(ex)
+                }
+            }
+        }
+        if (currentGroup.isNotEmpty()) groups.add(currentGroup)
+        groups
+    }
+
+    if (isSavingWorkout) {
+        SaveWorkoutScreen(
+            viewModel = viewModel,
+            themeColor = themeColor,
+            onSave = { updateRoutine ->
+                viewModel.finishWorkout(updateOriginalRoutine = updateRoutine)
+                onFinishWorkout()
+            },
+            onDiscard = {
+                viewModel.discardWorkout()
+                onFinishWorkout()
+            },
+            onBack = { isSavingWorkout = false }
+        )
+    } else {
     Scaffold(
         topBar = { 
             TopAppBar(
-                title = { Text("Log Workout", color = Color.White) }, 
+                title = { Text(stringResource(R.string.log_workout), color = Color.White) }, 
                 actions = { 
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
-                    Button(onClick = { showSaveTemplateDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Finish", color = Color.White) } 
+                    Button(onClick = { isSavingWorkout = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
                 }, 
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
             ) 
@@ -91,52 +128,86 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                             Text("%02d:%02d".format(restTimerSeconds/60, restTimerSeconds%60), color = Color.White, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
                             TimerAdjustButton("+15") { viewModel.adjustRestTimer(15) } 
                         }
-                        Button(onClick = { viewModel.skipRestTimer() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))) { Text("Skip", color = Color.White) } 
+                        Button(onClick = { viewModel.skipRestTimer() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))) { Text(stringResource(R.string.skip_btn), color = Color.White) } 
                     }
                 }
-                Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Button(onClick = { showSettingsDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Settings", color = Color.White) }
-                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text("Discard", color = Color.Red) }
+                Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.End) {
+                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text(stringResource(R.string.discard_btn), color = Color.Red) }
                 }
             }
         }
     ) { innerPadding ->
+        val groupedExercises = remember(exercises) {
+            val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
+            var currentGroup = mutableListOf<com.ateszk0.ostromgep.model.ExerciseSessionData>()
+            for (ex in exercises) {
+                if (currentGroup.isEmpty()) {
+                    currentGroup.add(ex)
+                } else {
+                    if (ex.supersetId != null && ex.supersetId == currentGroup.last().supersetId) {
+                        currentGroup.add(ex)
+                    } else {
+                        groups.add(currentGroup)
+                        currentGroup = mutableListOf(ex)
+                    }
+                }
+            }
+            if (currentGroup.isNotEmpty()) groups.add(currentGroup)
+            groups
+        }
+
         LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
             item {
                 Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem("Duration", "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
-                    StatItem("Volume", "${totalVolume.toInt()} kg")
-                    StatItem("Sets", "$completedSetsCount")
+                    StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
+                    StatItem(stringResource(R.string.volume_label), "${totalVolume.toInt()} kg")
+                    StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
                 }
             }
-            itemsIndexed(exercises, key = { _, exercise -> exercise.id }) { index, exercise ->
-                val isDragged = draggedIndex == index
-                val zIndex = if (isDragged) 1f else 0f
-                val scale = if (isDragged) 1.02f else 1f
-                val alpha = if (isDragged) 0.8f else 1f
-                val translationY = if (isDragged) dragOffset else 0f
-                val elevation = if (isDragged) 8.dp else 0.dp
-                Box(
-                    modifier = Modifier.fillMaxWidth().zIndex(zIndex).graphicsLayer { this.translationY = translationY; this.scaleX = scale; this.scaleY = scale; this.alpha = alpha }
-                    .shadow(elevation, RoundedCornerShape(8.dp))
-                    .background(if (isDragged) SurfaceDark.copy(0.5f) else Color.Transparent)
-                    .animateItemPlacement()
+
+            items(groupedExercises, key = { grp -> grp.first().id }) { group ->
+                val isSuperset = group.size > 1 && group.first().supersetId != null
+                Column(
+                    modifier = Modifier.fillMaxWidth().run {
+                        if (isSuperset) this.border(2.dp, Color(0xFF9C27B0), RoundedCornerShape(8.dp)).padding(2.dp) else this
+                    }
                 ) {
-                    val def = library.find { it.name == exercise.name }
-                    ExerciseBlock(
-                        exercise, def?.imageUri, index, exercises.size, themeColor,
-                        { viewModel.moveExerciseUp(index) },
-                        { viewModel.moveExerciseDown(index) },
-                        { s -> viewModel.updateSet(exercise.id, s) },
-                        { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) },
-                        { viewModel.addSet(exercise.id) },
-                        { id -> viewModel.deleteSet(exercise.id, id) },
-                        { sec -> viewModel.updateExerciseRestTime(exercise.id, sec) },
-                        { id -> viewModel.toggleWarmup(exercise.id, id) },
-                        { note -> viewModel.updateExerciseNote(exercise.id, note) },
-                        { viewModel.deleteExercise(exercise.id) },
-                        { exerciseToEditRepRange = exercise.name }
-                    )
+                    group.forEachIndexed { idxInGroup, exercise ->
+                        val index = exercises.indexOf(exercise)
+                        val isDragged = draggedIndex == index
+                        val zIndex = if (isDragged) 1f else 0f
+                        val scale = if (isDragged) 1.02f else 1f
+                        val alpha = if (isDragged) 0.8f else 1f
+                        val translationY = if (isDragged) dragOffset else 0f
+                        val elevation = if (isDragged) 8.dp else 0.dp
+                        Box(
+                            modifier = Modifier.fillMaxWidth().zIndex(zIndex).graphicsLayer { this.translationY = translationY; this.scaleX = scale; this.scaleY = scale; this.alpha = alpha }
+                            .shadow(elevation, RoundedCornerShape(8.dp))
+                            .background(if (isDragged) SurfaceDark.copy(0.5f) else Color.Transparent)
+                            .animateItemPlacement()
+                        ) {
+                            val def = library.find { it.name == exercise.name }
+                            ExerciseBlock(
+                                exercise, def?.imageUri, index, exercises.size, themeColor,
+                                { viewModel.moveExerciseUp(index) },
+                                { viewModel.moveExerciseDown(index) },
+                                { s -> viewModel.updateSet(exercise.id, s) },
+                                { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) },
+                                { viewModel.addSet(exercise.id) },
+                                { id -> viewModel.deleteSet(exercise.id, id) },
+                                { sec -> viewModel.updateExerciseRestTime(exercise.id, sec) },
+                                { id -> viewModel.toggleWarmup(exercise.id, id) },
+                                { note -> viewModel.updateExerciseNote(exercise.id, note) },
+                                { viewModel.deleteExercise(exercise.id) },
+                                { exerciseToEditRepRange = exercise.name },
+                                { supersetSourceExercise = exercise },
+                                { viewModel.removeSuperset(exercise.id) }
+                            )
+                        }
+                        if (idxInGroup < group.size - 1 && !isSuperset) {
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -144,7 +215,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 Button(onClick = { showBottomSheet = true }, modifier = Modifier.fillMaxWidth().padding(16.dp).height(48.dp), colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
                     Icon(Icons.Default.Add, null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add Exercise", color = Color.White)
+                    Text(stringResource(R.string.add_exercise_btn), color = Color.White)
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -153,25 +224,24 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         if (prompts.isNotEmpty()) {
             ProgressiveOverloadDialog(prompts, themeColor, { p -> viewModel.applyOverloadPrompts(p) }, { viewModel.dismissOverloadPrompts() })
         }
-        if (showSettingsDialog) SettingsDialog(viewModel, themeColor) { showSettingsDialog = false }
         if (showPlateCalculator) PlateCalculatorDialog({ showPlateCalculator = false }, themeColor)
 
         if (showDiscardDialog) {
             AlertDialog(
                 onDismissRequest = { showDiscardDialog = false },
-                title = { Text("Biztosan elveted az edzést?", color = Color.White) },
-                text = { Text("Minden eddigi adatod elveszik.", color = TextGray) },
+                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
+                text = { Text(stringResource(R.string.discard_dialog_text), color = TextGray) },
                 confirmButton = {
                     Button(onClick = { 
-                        viewModel.finishWorkout(null)
+                        viewModel.discardWorkout()
                         showDiscardDialog = false
                         onFinishWorkout() 
                     }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
-                        Text("Elvetés", color = Color.White)
+                        Text(stringResource(R.string.discard_confirm), color = Color.White)
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDiscardDialog = false }) { Text("Mégse", color = themeColor) }
+                    TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
                 }
             )
         }
@@ -189,37 +259,68 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         }
 
         if (showBottomSheet) {
-            ModalBottomSheet(onDismissRequest = { showBottomSheet = false }, sheetState = sheetState, containerColor = SurfaceDark) {
-                LazyColumn {
-                    items(library) { exDef ->
-                        ListItem(
-                            headlineContent = { Text(exDef.name, color = Color.White) },
-                            modifier = Modifier.clickable { viewModel.addNewExerciseBlock(exDef.name); showBottomSheet = false },
-                            colors = ListItemDefaults.colors(containerColor = Color.Transparent)
-                        )
-                    }
-                }
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                sheetState = sheetState,
+                containerColor = Color.Black,
+                modifier = Modifier.fillMaxHeight(0.95f)
+            ) {
+                AddExerciseContent(
+                    library = library,
+                    recentExercises = emptyList(),
+                    onExerciseSelected = { exDef ->
+                        viewModel.addNewExerciseBlock(exDef.name)
+                        showBottomSheet = false
+                    },
+                    onClose = { showBottomSheet = false },
+                    themeColor = themeColor
+                )
             }
         }
-
-        if (showSaveTemplateDialog) {
-            var n by remember { mutableStateOf("") }
+        
+        if (supersetSourceExercise != null) {
+            var selectedTargets by remember { mutableStateOf(setOf<Int>()) }
+            val sourceId = supersetSourceExercise!!.id
+            val otherExercises = exercises.filter { it.id != sourceId }
+            
             AlertDialog(
-                onDismissRequest = { showSaveTemplateDialog = false },
-                title = { Text("Befejezés", color = Color.White) },
-                text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text("Sablon neve") }) },
+                onDismissRequest = { supersetSourceExercise = null },
+                title = { Text("Create Superset", color = Color.White) },
+                text = {
+                    LazyColumn(modifier = Modifier.heightIn(max = 300.dp)) {
+                        items(otherExercises) { ex ->
+                            Row(modifier = Modifier.fillMaxWidth().clickable {
+                                selectedTargets = if (selectedTargets.contains(ex.id)) selectedTargets - ex.id else selectedTargets + ex.id
+                            }, verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = selectedTargets.contains(ex.id), 
+                                    onCheckedChange = { chk ->
+                                        selectedTargets = if (chk) selectedTargets + ex.id else selectedTargets - ex.id
+                                    },
+                                    colors = CheckboxDefaults.colors(checkedColor = themeColor)
+                                )
+                                Text(ex.name, color = Color.White)
+                            }
+                        }
+                        if (otherExercises.isEmpty()) {
+                            item { Text("No other exercises in workout.", color = TextGray) }
+                        }
+                    }
+                },
                 confirmButton = {
-                    Button(onClick = { viewModel.finishWorkout(if (n.isNotBlank()) n else null); showSaveTemplateDialog = false; onFinishWorkout() }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
-                        Text("Befejezés", color = Color.White)
+                    Button(onClick = { 
+                        viewModel.pairSuperset(sourceId, selectedTargets.toList())
+                        supersetSourceExercise = null
+                    }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                        Text(stringResource(R.string.save_btn), color = Color.White)
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showSaveTemplateDialog = false }) {
-                        Text("Mégse", color = themeColor)
-                    }
+                    TextButton(onClick = { supersetSourceExercise = null }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
                 }
             )
         }
+    }
     }
 
 }

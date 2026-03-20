@@ -27,15 +27,26 @@ import androidx.compose.ui.unit.sp
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import androidx.compose.foundation.border
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @Composable
-fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Unit, onNavigateToRoutineEditor: () -> Unit) {
+fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Unit, onNavigateToRoutineEditor: () -> Unit, onNavigateToExplore: () -> Unit) {
     val templates by viewModel.savedTemplates.collectAsState()
+    var showFoldersDialog by remember { mutableStateOf(false) }
+    
+    if (showFoldersDialog) {
+        com.ateszk0.ostromgep.ui.components.ManageFoldersDialog(
+            viewModel = viewModel,
+            themeColor = themeColor,
+            onDismiss = { showFoldersDialog = false }
+        )
+    }
     
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) { 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Workout", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(stringResource(R.string.workout_title), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
             }
         }
 
@@ -51,15 +62,15 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Add, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Start Empty Workout", fontSize = 16.sp, color = Color.White)
+                Text(stringResource(R.string.start_empty_workout), fontSize = 16.sp, color = Color.White)
             }
         }
         
         Spacer(modifier = Modifier.height(24.dp))
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("Routines", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            IconButton(onClick = { /* TODO: Manage Folders */ }) {
+            Text(stringResource(R.string.routines_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            IconButton(onClick = { showFoldersDialog = true }) {
                 Icon(Icons.Default.Folder, contentDescription = "Folders", tint = TextGray)
             }
         }
@@ -75,17 +86,17 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
             ) {
                 Icon(Icons.Default.Assignment, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("New Routine", color = Color.White, fontSize = 14.sp)
+                Text(stringResource(R.string.new_routine), color = Color.White, fontSize = 14.sp)
             }
             Button(
-                onClick = { },
+                onClick = { onNavigateToExplore() },
                 modifier = Modifier.weight(1f).height(48.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)
             ) {
                 Icon(Icons.Default.Search, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Explore", color = Color.White, fontSize = 14.sp)
+                Text(stringResource(R.string.explore_routines), color = Color.White, fontSize = 14.sp)
             }
         }
         
@@ -94,7 +105,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Default.KeyboardArrowDown, null, tint = TextGray, modifier = Modifier.size(16.dp))
             Spacer(modifier = Modifier.width(4.dp))
-            Text("My Routines (${templates.size})", color = TextGray, fontSize = 14.sp)
+            Text(stringResource(R.string.my_routines_format, templates.size), color = TextGray, fontSize = 14.sp)
         }
         
         Spacer(modifier = Modifier.height(12.dp))
@@ -113,7 +124,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                             Box { 
                                 androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.MoreVert, null, tint = TextGray, modifier = Modifier.clickable { showMenu = true }.padding(4.dp))
                                 DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(SurfaceDark)) { 
-                                    DropdownMenuItem(text = { Text("Delete", color = Color.Red) }, onClick = { showMenu = false; viewModel.deleteTemplate(template.id) }) 
+                                    DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; viewModel.deleteTemplate(template.id) }) 
                                 } 
                             } 
                         }
@@ -134,7 +145,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                             colors = ButtonDefaults.buttonColors(containerColor = themeColor),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Start Routine", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Text(stringResource(R.string.start_routine_btn), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                         }
                     }
                 } 

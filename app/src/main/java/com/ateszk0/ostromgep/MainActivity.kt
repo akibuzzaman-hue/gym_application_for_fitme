@@ -22,6 +22,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ateszk0.ostromgep.ui.screens.*
@@ -41,6 +45,9 @@ class MainActivity : ComponentActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+            val prefs = getSharedPreferences("ostromgep_prefs", android.content.Context.MODE_PRIVATE)
+            val lang = prefs.getString("app_language", "en") ?: "en"
+            getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale(lang))
         }
 
         setContent {
@@ -75,7 +82,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor }
+enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor, ExploreRoutines }
 
 @Composable
 fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
@@ -105,21 +112,21 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                 NavigationBar(containerColor = SurfaceDark, tonalElevation = 0.dp) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Home, null) }, 
-                        label = { Text("Home") }, 
+                        label = { Text(stringResource(R.string.nav_home)) }, 
                         selected = currentScreen == AppScreen.Home, 
                         onClick = { currentScreen = AppScreen.Home }, 
                         colors = NavigationBarItemDefaults.colors(selectedIconColor = themeColor, indicatorColor = Color.Transparent, selectedTextColor = themeColor)
                     )
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.FitnessCenter, null) }, 
-                        label = { Text("Workout") }, 
+                        label = { Text(stringResource(R.string.nav_workout)) }, 
                         selected = currentScreen == AppScreen.Workout, 
                         onClick = { currentScreen = AppScreen.Workout }, 
                         colors = NavigationBarItemDefaults.colors(selectedIconColor = themeColor, indicatorColor = Color.Transparent, selectedTextColor = themeColor)
                     )
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Person, null) }, 
-                        label = { Text("Profile") }, 
+                        label = { Text(stringResource(R.string.nav_profile)) }, 
                         selected = currentScreen == AppScreen.Profile, 
                         onClick = { currentScreen = AppScreen.Profile }, 
                         colors = NavigationBarItemDefaults.colors(selectedIconColor = themeColor, indicatorColor = Color.Transparent, selectedTextColor = themeColor)
@@ -133,8 +140,9 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                         currentScreen = AppScreen.Workout
                         isWorkoutActive = true 
                     })
-                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor })
+                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor }, onNavigateToExplore = { currentScreen = AppScreen.ExploreRoutines })
                     AppScreen.RoutineEditor -> RoutineEditorScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
+                    AppScreen.ExploreRoutines -> ExploreRoutinesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
                     AppScreen.Profile -> DashboardProfile(
                         viewModel, 
                         themeColor, 

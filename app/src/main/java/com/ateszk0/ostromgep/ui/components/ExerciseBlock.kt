@@ -53,10 +53,13 @@ fun ExerciseBlock(
     onToggleWarmup: (Int) -> Unit, 
     onNoteUpdate: (String) -> Unit, 
     onDeleteExercise: () -> Unit, 
-    onEditRepRange: () -> Unit
+    onEditRepRange: () -> Unit,
+    onSuperset: () -> Unit,
+    onRemoveSuperset: () -> Unit
 ) {
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
+    var showImageDialog by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -70,7 +73,7 @@ fun ExerciseBlock(
                         model = imageUri,
                         contentDescription = null,
                         contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).clickable { showImageDialog = imageUri }
                     )
                 } else {
                     Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(SurfaceDark), contentAlignment = Alignment.Center) {
@@ -96,6 +99,7 @@ fun ExerciseBlock(
                         DropdownMenuItem(text = { Text("Move Up ↑", color = Color.White) }, onClick = { showMenu = false; onMoveUp() })
                         DropdownMenuItem(text = { Text("Move Down ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
                         DropdownMenuItem(text = { Text("Rep Range", color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
+                        DropdownMenuItem(text = { Text(if (exercise.supersetId == null) "Superset" else "Remove Superset", color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
                         DropdownMenuItem(text = { Text("Delete", color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
                     }
                 }
@@ -135,13 +139,11 @@ fun ExerciseBlock(
                     Box(
                         modifier = Modifier
                             .matchParentSize()
-                            .padding(horizontal = 16.dp, vertical = 2.dp)
-                            .clip(RoundedCornerShape(8.dp))
                             .background(Color.Red)
                             .clickable { onDeleteSet(set.id) },
                         contentAlignment = Alignment.CenterEnd
                     ) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White, modifier = Modifier.padding(end = 16.dp))
+                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.White, modifier = Modifier.padding(end = 24.dp))
                     }
 
                     val rowBg = if (set.isCompleted) CompletedGreen.copy(alpha = 0.2f) else Color.Transparent
@@ -241,6 +243,18 @@ fun ExerciseBlock(
                 ) { Text("OK", color = Color.White) } 
             }
         ) 
+    }
+    
+    if (showImageDialog != null) {
+        androidx.compose.ui.window.Dialog(onDismissRequest = { showImageDialog = null }) {
+            Box(modifier = Modifier.fillMaxSize().clickable { showImageDialog = null }, contentAlignment = Alignment.Center) {
+                coil.compose.AsyncImage(
+                    model = showImageDialog,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
+                )
+            }
+        }
     }
 }
 

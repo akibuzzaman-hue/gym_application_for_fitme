@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import com.ateszk0.ostromgep.model.MuscleGroup
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
+import com.ateszk0.ostromgep.R
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorkout: () -> Unit) {
@@ -74,7 +76,7 @@ fun NextMissionCard(nextMission: com.ateszk0.ostromgep.model.WorkoutTemplate?, t
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            Text("NEXT MISSION", color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.next_mission), color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
             if (nextMission != null) {
                 Text(nextMission.templateName, color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -87,10 +89,10 @@ fun NextMissionCard(nextMission: com.ateszk0.ostromgep.model.WorkoutTemplate?, t
                 ) {
                     Icon(Icons.Default.PlayArrow, contentDescription = null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Start Mission", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.start_mission), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             } else {
-                Text("Engaging protocol... Add templates first.", color = TextGray, fontSize = 14.sp)
+                Text(stringResource(R.string.next_mission_empty), color = TextGray, fontSize = 14.sp)
             }
         }
     }
@@ -99,10 +101,18 @@ fun NextMissionCard(nextMission: com.ateszk0.ostromgep.model.WorkoutTemplate?, t
 @Composable
 fun WeeklyBattleLog(log: List<Boolean>, themeColor: Color) {
     Column {
-        Text("WEEKLY BATTLE LOG", color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.weekly_battle_log), color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            val days = listOf("M", "T", "W", "T", "F", "S", "S")
+            val days = listOf(
+                stringResource(R.string.day_mon), 
+                stringResource(R.string.day_tue), 
+                stringResource(R.string.day_wed), 
+                stringResource(R.string.day_thu), 
+                stringResource(R.string.day_fri), 
+                stringResource(R.string.day_sat), 
+                stringResource(R.string.day_sun)
+            )
             days.forEachIndexed { index, day ->
                 val isCompleted = log.getOrNull(index) ?: false
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -138,7 +148,7 @@ fun ReadyToSiegeHeatmap(recoveryMap: Map<MuscleGroup, String>) {
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text("READY TO SIEGE", color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ready_to_siege), color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
             
             val columns = 4
@@ -192,7 +202,7 @@ fun WallOfFameTicker(records: List<String>, themeColor: Color) {
     if (records.isEmpty()) return
     
     Column {
-        Text("WALL OF FAME", color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.wall_of_fame), color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(12.dp))
         
         val scrollState = rememberScrollState()
@@ -230,7 +240,7 @@ fun QuickMetricsChart(viewModel: WorkoutViewModel, themeColor: Color) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("QUICK METRICS (KG)", color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.quick_metrics), color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     OutlinedTextField(
@@ -310,7 +320,7 @@ fun QuickMetricsChart(viewModel: WorkoutViewModel, themeColor: Color) {
                     }
                 }
             } else {
-                Text("Log more weight entries to see the chart.", color = TextGray, fontSize = 12.sp)
+                Text(stringResource(R.string.metrics_empty_chart), color = TextGray, fontSize = 12.sp)
             }
         }
     }

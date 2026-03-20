@@ -24,6 +24,8 @@ import com.ateszk0.ostromgep.model.ExerciseDef
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.ExerciseEditDialog
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @Composable
 fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -> Unit) {
@@ -35,14 +37,14 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) { 
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null, tint = Color.White) }
-            Text("Exercises", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            TextButton(onClick = { showNewExerciseDialog = true }) { Text("Create", color = themeColor) } 
+            Text(stringResource(R.string.exercises_btn), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            TextButton(onClick = { showNewExerciseDialog = true }) { Text(stringResource(R.string.create_btn), color = themeColor) } 
         }
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = search, 
             onValueChange = { search = it }, 
-            label = { Text("Search exercise") }, 
+            label = { Text(stringResource(R.string.search_exercise_label)) }, 
             modifier = Modifier.fillMaxWidth(), 
             leadingIcon = { Icon(Icons.Default.Search, null) }, 
             singleLine = true
@@ -57,13 +59,22 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) { 
                     Row(verticalAlignment = Alignment.CenterVertically) { 
-                        Box(modifier = Modifier.size(48.dp).clip(CircleShape).background(SurfaceDark), contentAlignment = Alignment.Center) { 
-                            Icon(Icons.Default.FitnessCenter, null, tint = TextGray) 
+                        Box(modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) { 
+                            if (!exDef.imageUri.isNullOrEmpty()) {
+                                coil.compose.AsyncImage(
+                                    model = exDef.imageUri,
+                                    contentDescription = null,
+                                    contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            } else {
+                                Icon(Icons.Default.FitnessCenter, null, tint = TextGray) 
+                            }
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Column { 
                             Text(exDef.name, color = Color.White, fontSize = 18.sp)
-                            Text("Target: ${exDef.minReps}-${exDef.maxReps} reps", color = TextGray, fontSize = 12.sp) 
+                            Text(stringResource(R.string.target_reps_format, exDef.minReps, exDef.maxReps), color = TextGray, fontSize = 12.sp) 
                         } 
                     }
                     Icon(Icons.Default.Edit, null, tint = TextGray) 
@@ -76,16 +87,16 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
         var n by remember { mutableStateOf("") }
         AlertDialog(
             onDismissRequest = { showNewExerciseDialog = false }, 
-            title = { Text("Saját gyakorlat") }, 
-            text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text("Gyakorlat neve") }) }, 
+            title = { Text(stringResource(R.string.custom_exercise_title)) }, 
+            text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text(stringResource(R.string.exercise_name_label)) }) }, 
             confirmButton = { 
                 Button(onClick = { viewModel.createCustomExercise(n); showNewExerciseDialog = false }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { 
-                    Text("Hozzáadás", color = Color.White) 
+                    Text(stringResource(R.string.add_btn), color = Color.White) 
                 } 
             }, 
             dismissButton = { 
                 TextButton(onClick = { showNewExerciseDialog = false }) { 
-                    Text("Mégse", color = themeColor) 
+                    Text(stringResource(R.string.cancel_btn), color = themeColor) 
                 } 
             }
         ) 
@@ -95,7 +106,8 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
         ExerciseEditDialog(
             ex, themeColor, 
             { exerciseToEdit = null }, 
-            { name, min, max, imgUri, muscles -> viewModel.updateExerciseDetails(name, min, max, imgUri, muscles); exerciseToEdit = null }
+            { name, min, max, imgUri, muscles -> viewModel.updateExerciseDetails(name, min, max, imgUri, muscles); exerciseToEdit = null },
+            if (ex.isCustom) { { viewModel.deleteCustomExercise(ex.name); exerciseToEdit = null } } else null
         ) 
     }
 }

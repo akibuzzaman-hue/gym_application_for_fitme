@@ -29,6 +29,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @Composable
 fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit, onNavigateToCalendar: () -> Unit, onNavigateToStatistics: () -> Unit) {
@@ -71,7 +73,7 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 4.dp)) { 
                         Column { 
-                            Text("Workouts", color = TextGray, fontSize = 12.sp)
+                            Text(stringResource(R.string.workouts_label), color = TextGray, fontSize = 12.sp)
                             Text("${history.size}", color = Color.White, fontWeight = FontWeight.Bold) 
                         }
                     } 
@@ -80,7 +82,7 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             Spacer(modifier = Modifier.height(24.dp)) 
         }
         item { 
-            Text("Utolsó edzések (Volumen)", color = Color.White, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.recent_workouts_volume), color = Color.White, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth().height(120.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.Bottom) { 
                 chartData.forEach { heightRatio -> 
@@ -90,40 +92,40 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             Spacer(modifier = Modifier.height(24.dp)) 
         }
         item { 
-            Text("Dashboard", color = TextGray)
+            Text(stringResource(R.string.dashboard_title), color = TextGray)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { 
-                DashboardButton("Statistics", Icons.Default.BarChart, Modifier.weight(1f)) { onNavigateToStatistics() }
-                DashboardButton("Exercises", Icons.Default.FitnessCenter, Modifier.weight(1f)) { onNavigateToExercises() } 
+                DashboardButton(stringResource(R.string.statistics_btn), Icons.Default.BarChart, Modifier.weight(1f)) { onNavigateToStatistics() }
+                DashboardButton(stringResource(R.string.exercise_btn_short), Icons.Default.FitnessCenter, Modifier.weight(1f)) { onNavigateToExercises() } 
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { 
-                DashboardButton("Measures", Icons.Default.Accessibility, Modifier.weight(1f)) {}
-                DashboardButton("Calendar", Icons.Default.CalendarMonth, Modifier.weight(1f)) { onNavigateToCalendar() } 
+                DashboardButton(stringResource(R.string.measures_btn), Icons.Default.Accessibility, Modifier.weight(1f)) {}
+                DashboardButton(stringResource(R.string.calendar_btn), Icons.Default.CalendarMonth, Modifier.weight(1f)) { onNavigateToCalendar() } 
             }
             Spacer(modifier = Modifier.height(32.dp)) 
         }
         item { 
-            Text("Workouts", color = TextGray)
+            Text(stringResource(R.string.workouts_label), color = TextGray)
             Spacer(modifier = Modifier.height(8.dp)) 
         }
         items(history.reversed().take(5)) { workout -> 
             Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), colors = CardDefaults.cardColors(containerColor = SurfaceDark)) { 
                 Column(modifier = Modifier.padding(16.dp)) { 
-                    Text("Edzésnapló", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
+                    Text(stringResource(R.string.workout_log_title), fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 8.dp)) { 
                         Column { 
-                            Text("Time", color = TextGray, fontSize = 12.sp)
+                            Text(stringResource(R.string.time_label), color = TextGray, fontSize = 12.sp)
                             Text("${workout.durationSeconds/60}m", color = Color.White) 
                         }
                         Column { 
-                            Text("Volume", color = TextGray, fontSize = 12.sp)
+                            Text(stringResource(R.string.volume_label), color = TextGray, fontSize = 12.sp)
                             Text("${workout.totalVolume.toInt()} kg", color = Color.White) 
                         } 
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     workout.exercises.take(3).forEach { ex -> 
-                        Text("${ex.sets.count { it.isCompleted }} sets ${ex.name}", color = TextGray, fontSize = 14.sp) 
+                        Text(stringResource(R.string.sets_format, ex.sets.count { it.isCompleted }, ex.name), color = TextGray, fontSize = 14.sp) 
                     } 
                 } 
             } 

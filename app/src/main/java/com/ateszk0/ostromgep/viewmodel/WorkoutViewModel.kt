@@ -12,15 +12,12 @@ import com.ateszk0.ostromgep.utils.FileHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
-
     private val repository = WorkoutRepository(application)
-
-    private val _appTheme = MutableStateFlow(repository.getTheme())
-    val appTheme = _appTheme.asStateFlow()
 
     private val _totalSeconds = MutableStateFlow(0)
     val totalSeconds = _totalSeconds.asStateFlow()
@@ -28,17 +25,26 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _restTimerSeconds = MutableStateFlow(0)
     val restTimerSeconds = _restTimerSeconds.asStateFlow()
 
-    private val _exerciseLibrary = MutableStateFlow(repository.getExerciseLibrary())
+    private val _exerciseLibrary = MutableStateFlow<List<ExerciseDef>>(emptyList())
     val exerciseLibrary = _exerciseLibrary.asStateFlow()
 
     private val _savedTemplates = MutableStateFlow(repository.getSavedTemplates())
     val savedTemplates = _savedTemplates.asStateFlow()
+
+    private val _routineFolders = MutableStateFlow(repository.getRoutineFolders())
+    val routineFolders = _routineFolders.asStateFlow()
+
+    private val _activeFolderId = MutableStateFlow(repository.getActiveFolderId())
+    val activeFolderId = _activeFolderId.asStateFlow()
 
     private val _workoutHistory = MutableStateFlow(repository.getWorkoutHistory())
     val workoutHistory = _workoutHistory.asStateFlow()
 
     private val _activeExercises = MutableStateFlow<List<ExerciseSessionData>>(emptyList())
     val activeExercises = _activeExercises.asStateFlow()
+
+    private val _activeTemplateId = MutableStateFlow<Int?>(null)
+    val activeTemplateId = _activeTemplateId.asStateFlow()
 
     private val _overloadPrompts = MutableStateFlow<List<OverloadPrompt>>(emptyList())
     val overloadPrompts = _overloadPrompts.asStateFlow()
@@ -47,12 +53,20 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     val bodyWeightHistory = _bodyWeightHistory.asStateFlow()
 
     private val _username = MutableStateFlow(repository.getUsername())
-    val username = _username.asStateFlow()
+    val username: StateFlow<String> = _username.asStateFlow()
+
+    private val _appTheme = MutableStateFlow(repository.getTheme())
+    val appTheme: StateFlow<String> = _appTheme.asStateFlow()
+
+    private val _appLanguage = MutableStateFlow(repository.getLanguage())
+    val appLanguage: StateFlow<String> = _appLanguage.asStateFlow()
 
     private val _profilePictureUri = MutableStateFlow(repository.getProfilePictureUri())
     val profilePictureUri = _profilePictureUri.asStateFlow()
 
     init {
+        _exerciseLibrary.value = repository.getExerciseLibrary().sortedBy { it.name }
+        
         viewModelScope.launch {
             WorkoutEventBus.events.collect { action ->
                 when(action) {
@@ -74,10 +88,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun setTheme(colorName: String) { 
-        _appTheme.value = colorName
-        repository.saveTheme(colorName)
-    }
+    fun setTheme(theme: String) { _appTheme.value = theme; repository.saveTheme(theme) }
 
     fun updateUsername(name: String) {
         _username.value = name
@@ -85,12 +96,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun updateProfilePictureUri(uri: String) {
-        val app = getApplication<Application>()
+        val app = getApplication<android.app.Application>()
         val localUri = if (uri.startsWith("content://")) {
-            FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(uri)) ?: uri
+            com.ateszk0.ostromgep.utils.FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(uri)) ?: uri
         } else uri
         _profilePictureUri.value = localUri
         repository.saveProfilePictureUri(localUri)
+    }
+
+    fun setLanguage(lang: String) { 
+        _appLanguage.value = lang
+        repository.saveLanguage(lang)
     }
 
     fun deleteTemplate(templateId: Int) { 
@@ -120,12 +136,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun startEmptyWorkout() {
+        _activeTemplateId.value = null
         _activeExercises.value = emptyList()
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
     }
 
     fun startWorkoutFromTemplate(template: WorkoutTemplate) {
+        _activeTemplateId.value = template.id
         val newSession = template.exercises.map { templateEx ->
             val prevSets = getLastPerformedSets(templateEx.name)
             templateEx.copy(sets = templateEx.sets.mapIndexed { i, s ->
@@ -177,31 +195,65 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun dismissOverloadPrompts() { _overloadPrompts.value = emptyList() }
 
-    fun finishWorkout(saveAsTemplateName: String?) {
+    fun finishWorkout(updateOriginalRoutine: Boolean = false) {
         val vol = _activeExercises.value.sumOf { it.totalVolume() }
         val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value)
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
 
-        if (!saveAsTemplateName.isNullOrBlank()) {
-            val existing = _savedTemplates.value.find { it.templateName == saveAsTemplateName }
-            if (existing != null) {
-                val updatedTemplates = _savedTemplates.value.map { 
-                    if (it.id == existing.id) it.copy(exercises = _activeExercises.value) else it 
-                }
-                _savedTemplates.value = updatedTemplates
-                repository.saveSavedTemplates(updatedTemplates)
-            } else {
-                val newTemplates = _savedTemplates.value + WorkoutTemplate(
-                    id = (_savedTemplates.value.maxOfOrNull { it.id } ?: 0) + 1, 
-                    templateName = saveAsTemplateName, 
-                    exercises = _activeExercises.value
-                )
-                _savedTemplates.value = newTemplates
-                repository.saveSavedTemplates(newTemplates)
+        if (updateOriginalRoutine && _activeTemplateId.value != null) {
+            val updatedTemplates = _savedTemplates.value.map {
+                if (it.id == _activeTemplateId.value) it.copy(exercises = _activeExercises.value) else it
+            }
+            _savedTemplates.value = updatedTemplates
+            repository.saveSavedTemplates(updatedTemplates)
+        }
+        
+        _activeExercises.value = emptyList()
+        _activeTemplateId.value = null
+    }
+
+    fun discardWorkout() {
+        _activeExercises.value = emptyList()
+        _activeTemplateId.value = null
+        _totalSeconds.value = 0
+        _restTimerSeconds.value = 0
+    }
+
+    fun getRoutineChanges(): RoutineChanges? {
+        val activeId = _activeTemplateId.value ?: return null
+        val originalTemplate = _savedTemplates.value.find { it.id == activeId } ?: return null
+        
+        var addedExercises = 0
+        var removedExercises = 0
+        var addedSets = 0
+        var removedSets = 0
+        
+        val originalNames = originalTemplate.exercises.map { it.name }.toSet()
+        val currentExercises = _activeExercises.value
+        val currentNames = currentExercises.map { it.name }.toSet()
+        
+        addedExercises += (currentNames - originalNames).size
+        removedExercises += (originalNames - currentNames).size
+        
+        val commonNames = originalNames.intersect(currentNames)
+        for (name in commonNames) {
+            val origSetCount = originalTemplate.exercises.find { it.name == name }?.sets?.count { !it.isWarmup } ?: 0
+            val currSetCount = currentExercises.find { it.name == name }?.sets?.count { !it.isWarmup } ?: 0
+            if (currSetCount > origSetCount) {
+                addedSets += (currSetCount - origSetCount)
+            } else if (origSetCount > currSetCount) {
+                removedSets += (origSetCount - currSetCount)
             }
         }
-        _activeExercises.value = emptyList()
+        
+        return RoutineChanges(
+            templateName = originalTemplate.templateName,
+            addedExercises = addedExercises,
+            removedExercises = removedExercises,
+            addedSets = addedSets,
+            removedSets = removedSets
+        )
     }
 
     fun saveNewTemplate(name: String, exercises: List<ExerciseSessionData>) {
@@ -211,12 +263,45 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         repository.saveSavedTemplates(updated)
     }
 
+    fun createFolder(name: String, templateIds: List<Int>) {
+        val newFolder = RoutineFolder(name = name, templateIds = templateIds)
+        val updated = _routineFolders.value + newFolder
+        _routineFolders.value = updated
+        repository.saveRoutineFolders(updated)
+    }
+
+    fun updateFolder(id: String, name: String, templateIds: List<Int>) {
+        val updated = _routineFolders.value.map { if (it.id == id) it.copy(name = name, templateIds = templateIds) else it }
+        _routineFolders.value = updated
+        repository.saveRoutineFolders(updated)
+    }
+
+    fun deleteFolder(id: String) {
+        val updated = _routineFolders.value.filter { it.id != id }
+        _routineFolders.value = updated
+        repository.saveRoutineFolders(updated)
+        if (_activeFolderId.value == id) {
+            setActiveFolder(null)
+        }
+    }
+
+    fun setActiveFolder(id: String?) {
+        _activeFolderId.value = id
+        repository.saveActiveFolderId(id)
+    }
+
     fun createCustomExercise(name: String) { 
         if (name.isNotBlank() && _exerciseLibrary.value.none { it.name == name }) { 
-            val newLib = _exerciseLibrary.value + ExerciseDef(name)
+            val newLib = _exerciseLibrary.value + ExerciseDef(name, isCustom = true)
             _exerciseLibrary.value = newLib
             repository.saveExerciseLibrary(newLib)
         } 
+    }
+
+    fun deleteCustomExercise(name: String) {
+        val newLib = _exerciseLibrary.value.filter { it.name != name }
+        _exerciseLibrary.value = newLib
+        repository.saveExerciseLibrary(newLib)
     }
 
     fun addNewExerciseBlock(exerciseName: String) {
@@ -240,6 +325,36 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteExercise(exerciseId: Int) { 
         _activeExercises.value = _activeExercises.value.filter { it.id != exerciseId } 
+    }
+    
+    fun pairSuperset(sourceId: Int, targetIds: List<Int>) {
+        if (targetIds.isEmpty()) return
+        val allIdsToPair = listOf(sourceId) + targetIds
+        val currentList = _activeExercises.value.toMutableList()
+        val existingSupersetId = allIdsToPair.mapNotNull { id -> currentList.find { it.id == id }?.supersetId }.firstOrNull()
+        val newSupersetId = existingSupersetId ?: java.util.UUID.randomUUID().toString()
+        
+        val itemsToGroup = currentList.filter { it.id in allIdsToPair }.map { it.copy(supersetId = newSupersetId) }
+        val newList = mutableListOf<ExerciseSessionData>()
+        var inserted = false
+        
+        for (item in currentList) {
+            if (item.id in allIdsToPair) {
+                if (!inserted) {
+                    newList.addAll(itemsToGroup)
+                    inserted = true
+                }
+            } else {
+                newList.add(item)
+            }
+        }
+        _activeExercises.value = newList
+    }
+
+    fun removeSuperset(exerciseId: Int) {
+        _activeExercises.value = _activeExercises.value.map { 
+            if (it.id == exerciseId) it.copy(supersetId = null) else it 
+        }
     }
     
     fun updateExerciseNote(exerciseId: Int, newNote: String) { 
@@ -299,6 +414,107 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun updateExerciseRestTime(eId: Int, durationSeconds: Int) { 
         updateExercise(eId) { it.updateRestTimer(durationSeconds) }
     }
+
+    fun importCsvHistory(context: android.content.Context, uri: android.net.Uri): Boolean {
+        try {
+            val inputStream = context.contentResolver.openInputStream(uri) ?: return false
+            val reader = java.io.BufferedReader(java.io.InputStreamReader(inputStream))
+            val lines = reader.readLines()
+            if (lines.isEmpty()) return false
+            
+            // Expected headers: title,"start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"
+            val workoutsMap = mutableMapOf<String, MutableList<String>>() // Key: start_time, Value: List of rows
+            
+            // Skip header (index 0)
+            for (i in 1 until lines.size) {
+                val row = lines[i]
+                if (row.isBlank()) continue
+                // Very basic split by comma ignoring quotes, usually standard parsers are better
+                // For simplicity, assuming no commas inside the values except maybe dates which are quoted.
+                // A regex to split by comma outside quotes:
+                val tokens = row.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                if (tokens.size >= 11) {
+                    val startTime = tokens[1]
+                    workoutsMap.getOrPut(startTime) { mutableListOf() }.add(row)
+                }
+            }
+            
+            val sdf = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.ENGLISH)
+            val newEntries = mutableListOf<WorkoutHistoryEntry>()
+            
+            for ((startTimeStr, rows) in workoutsMap) {
+                val timestamp = try { sdf.parse(startTimeStr)?.time ?: System.currentTimeMillis() } catch (e: Exception) { System.currentTimeMillis() }
+                
+                // Group by exercise_title and superset_id
+                // Row format assumed: title [0], start_time [1], end_time [2], description [3], exercise_title [4], superset_id [5], 
+                // exercise_notes [6], set_index [7], set_type [8], weight_kg [9], reps [10], distance_km [11], duration_seconds [12], rpe [13]
+                
+                val exercisesMap = mutableMapOf<Pair<String, String>, MutableList<List<String>>>()
+                for (row in rows) {
+                    val tokens = row.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                    if (tokens.size < 11) continue
+                    val exTitle = tokens[4]
+                    val supersetId = tokens[5].takeIf { it.isNotBlank() } ?: "none"
+                    exercisesMap.getOrPut(exTitle to supersetId) { mutableListOf() }.add(tokens)
+                }
+                
+                val finalExercises = mutableListOf<ExerciseSessionData>()
+                var exIdCounter = 1
+                for ((key, setTokensList) in exercisesMap) {
+                    val sets = mutableListOf<WorkoutSetData>()
+                    var setIdCounter = 1
+                    for (t in setTokensList.sortedBy { it[7].toIntOrNull() ?: 0 }) {
+                        val isWarmup = t[8].equals("warmup", ignoreCase = true) || t[8].equals("warm up", ignoreCase = true)
+                        sets.add(
+                            WorkoutSetData(
+                                id = setIdCounter++,
+                                setLabel = if (isWarmup) "W" else (setIdCounter - 1).toString(),
+                                kg = t[9],
+                                reps = t[10],
+                                rpe = if (t.size > 13) t[13] else "",
+                                isCompleted = true,
+                                isWarmup = isWarmup
+                            )
+                        )
+                    }
+                    val trueSupersetId = if (key.second == "none") null else key.second
+                    finalExercises.add(
+                        ExerciseSessionData(
+                            id = exIdCounter++,
+                            name = key.first,
+                            supersetId = trueSupersetId,
+                            sets = sets
+                        )
+                    )
+                }
+                
+                val totalVol = finalExercises.sumOf { it.totalVolume() }
+                val startMs = timestamp
+                var endMs = startMs + 3600000 // default 1 hr
+                if (rows.isNotEmpty()) {
+                    val firstRowTokens = rows[0].split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                    if (firstRowTokens.size > 2) {
+                        try { endMs = sdf.parse(firstRowTokens[2])?.time ?: endMs } catch (e: Exception) {}
+                    }
+                }
+                val durationSec = ((endMs - startMs) / 1000).coerceAtLeast(0).toInt()
+                
+                newEntries.add(WorkoutHistoryEntry(timestamp, totalVol, durationSec, finalExercises))
+            }
+            
+            if (newEntries.isNotEmpty()) {
+                val combined = (_workoutHistory.value + newEntries).sortedByDescending { it.timestamp }
+                _workoutHistory.value = combined
+                repository.saveWorkoutHistory(combined)
+                return true
+            }
+            return false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
     
     private fun updateExercise(eId: Int, updater: (ExerciseSessionData) -> ExerciseSessionData) {
         _activeExercises.value = _activeExercises.value.map { if (it.id == eId) updater(it) else it }
@@ -347,10 +563,18 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun suggestNextMission(): WorkoutTemplate? {
-        val templates = _savedTemplates.value
-        if (templates.isEmpty()) return null
+        val activeFolderId = _activeFolderId.value
+        val validTemplates = if (activeFolderId != null) {
+            val folder = _routineFolders.value.find { it.id == activeFolderId }
+            val folderTemplates = folder?.templateIds?.mapNotNull { id -> _savedTemplates.value.find { it.id == id } }
+            if (folderTemplates.isNullOrEmpty()) _savedTemplates.value else folderTemplates
+        } else {
+            _savedTemplates.value
+        }
         
-        val templateLastUsed = templates.associateWith { t ->
+        if (validTemplates.isEmpty()) return null
+        
+        val templateLastUsed = validTemplates.associateWith { t ->
             val latestEntry = _workoutHistory.value.filter {
                 it.exercises.map { e -> e.name }.containsAll(t.exercises.map { e -> e.name })
             }.maxByOrNull { it.timestamp }
@@ -410,7 +634,6 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         exerciseMaxWeight[exSession.name] = sessionMaxWeight
                     }
                 }
-                
                 if (sessionTotalVolume > 0) {
                     val prevMaxVol = exerciseMaxVolume[exSession.name] ?: 0.0
                     if (sessionTotalVolume > prevMaxVol && prevMaxVol > 0.0) {
@@ -421,5 +644,43 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             }
         }
         return records.takeLast(10).reversed()
+    }
+
+    fun getWorkedMusclesLast7Days(): Set<MuscleGroup> {
+        val now = System.currentTimeMillis()
+        val sevenDaysMs = 7L * 24 * 60 * 60 * 1000
+        val workedMuscles = mutableSetOf<MuscleGroup>()
+
+        _workoutHistory.value.filter { now - it.timestamp <= sevenDaysMs }.forEach { entry ->
+            entry.exercises.forEach { exSession ->
+                val def = _exerciseLibrary.value.find { it.name == exSession.name }
+                def?.muscleGroups?.forEach { mg ->
+                    workedMuscles.add(mg)
+                }
+            }
+        }
+        return workedMuscles
+    }
+
+    fun getWorkedDaysLast7Days(): List<Boolean> {
+        val nowMs = System.currentTimeMillis()
+        val dayMs = 24 * 60 * 60 * 1000L
+        val booleanList = mutableListOf<Boolean>()
+        
+        // We want the last 7 days including today (index 6 is today, 0 is 6 days ago)
+        val todayStart = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        for (i in 6 downTo 0) {
+            val startOfDay = todayStart - (i * dayMs)
+            val endOfDay = startOfDay + dayMs
+            val hasWorkout = _workoutHistory.value.any { it.timestamp in startOfDay until endOfDay }
+            booleanList.add(hasWorkout)
+        }
+        return booleanList
     }
 }

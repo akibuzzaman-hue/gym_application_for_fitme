@@ -1,0 +1,111 @@
+[
+  {
+    "id": -1,
+    "templateName": "Push Day (Chest, Shoulders, Triceps)",
+    "exercises": [
+      {
+        "id": 1,
+        "name": "Barbell Bench Press",
+        "restTimerDuration": 120,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "60", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "60", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "60", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Overhead Press",
+        "restTimerDuration": 90,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "40", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "40", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "40", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Triceps Pushdown",
+        "restTimerDuration": 60,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "20", "reps": "12", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "20", "reps": "12", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "20", "reps": "12", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": -2,
+    "templateName": "Pull Day (Back, Biceps)",
+    "exercises": [
+      {
+        "id": 1,
+        "name": "Pull Up",
+        "restTimerDuration": 120,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "0", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "0", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "0", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Barbell Row",
+        "restTimerDuration": 120,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "60", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "60", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "60", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Bicep Curl",
+        "restTimerDuration": 60,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "15", "reps": "12", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "15", "reps": "12", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "15", "reps": "12", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": -3,
+    "templateName": "Leg Day (Quads, Hamstrings, Calves)",
+    "exercises": [
+      {
+        "id": 1,
+        "name": "Barbell Squat",
+        "restTimerDuration": 120,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 4, "setLabel": "4", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Romanian Deadlift",
+        "restTimerDuration": 120,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "80", "reps": "8", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Standing Calf Raise",
+        "restTimerDuration": 60,
+        "sets": [
+          { "id": 1, "setLabel": "1", "kg": "20", "reps": "15", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 2, "setLabel": "2", "kg": "20", "reps": "15", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" },
+          { "id": 3, "setLabel": "3", "kg": "20", "reps": "15", "rpe": "", "isWarmup": false, "isCompleted": false, "previousText": "-" }
+        ]
+      }
+    ]
+  }
+]
