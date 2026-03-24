@@ -5,7 +5,7 @@
     "exercises": [
       {
         "id": 1,
-        "name": "Barbell Bench Press",
+        "name": "Bench Press (Barbell)",
         "restTimerDuration": 120,
         "sets": [
           {
@@ -42,7 +42,7 @@
       },
       {
         "id": 2,
-        "name": "Overhead Press",
+        "name": "Shoulder Press",
         "restTimerDuration": 90,
         "sets": [
           {
@@ -159,7 +159,7 @@
       },
       {
         "id": 2,
-        "name": "Barbell Row",
+        "name": "Barbell Row (Bent Over)",
         "restTimerDuration": 120,
         "sets": [
           {
@@ -196,7 +196,7 @@
       },
       {
         "id": 3,
-        "name": "Bicep Curl",
+        "name": "Bicep Curl (Dumbbell)",
         "restTimerDuration": 60,
         "sets": [
           {
@@ -286,7 +286,7 @@
       },
       {
         "id": 2,
-        "name": "Romanian Deadlift",
+        "name": "Romanian Deadlift (Barbell)",
         "restTimerDuration": 120,
         "sets": [
           {
@@ -551,7 +551,7 @@
       },
       {
         "id": 6,
-        "name": "Cable Crunch",
+        "name": "Cable Crunch (Cable)",
         "restTimerDuration": 60,
         "sets": [
           {
@@ -943,7 +943,7 @@
       },
       {
         "id": 4,
-        "name": "Cable Y-Raise",
+        "name": "Cable Y-Raise (Cable)",
         "restTimerDuration": 60,
         "sets": [
           {
