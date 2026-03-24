@@ -2,6 +2,7 @@ package com.ateszk0.ostromgep.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
@@ -55,7 +56,8 @@ fun ExerciseBlock(
     onDeleteExercise: () -> Unit, 
     onEditRepRange: () -> Unit,
     onSuperset: () -> Unit,
-    onRemoveSuperset: () -> Unit
+    onRemoveSuperset: () -> Unit,
+    onRpeClick: (WorkoutSetData) -> Unit
 ) {
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -67,7 +69,7 @@ fun ExerciseBlock(
             verticalAlignment = Alignment.CenterVertically, 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                 if (!imageUri.isNullOrEmpty()) {
                     coil.compose.AsyncImage(
                         model = imageUri,
@@ -81,8 +83,16 @@ fun ExerciseBlock(
                     }
                 }
                 Spacer(modifier = Modifier.width(12.dp))
-                Text(text = exercise.name, color = themeColor, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = exercise.name, 
+                    color = themeColor, 
+                    fontSize = 16.sp, 
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
             }
+            Spacer(modifier = Modifier.width(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Row(
                     modifier = Modifier.clickable { showRest = true }.background(SurfaceDark, RoundedCornerShape(4.dp)).padding(horizontal = 8.dp, vertical = 4.dp), 
@@ -192,8 +202,22 @@ fun ExerciseBlock(
                         Box(modifier = Modifier.weight(0.2f).padding(horizontal = 4.dp)) { 
                             CustomTextField(set.reps, { onSetUpdate(set.copy(reps = it)) }, set.isCompleted, themeColor) 
                         }
-                        Box(modifier = Modifier.weight(0.15f).padding(horizontal = 4.dp)) { 
-                            CustomTextField(set.rpe, { onSetUpdate(set.copy(rpe = it)) }, set.isCompleted, themeColor) 
+                        Box(
+                            modifier = Modifier
+                                .weight(0.15f)
+                                .padding(horizontal = 4.dp)
+                                .height(36.dp)
+                                .background(if (set.isCompleted) Color.Transparent else SurfaceDark, RoundedCornerShape(4.dp))
+                                .border(1.dp, if (set.isCompleted) Color.Transparent else Color.DarkGray, RoundedCornerShape(4.dp))
+                                .clip(RoundedCornerShape(4.dp))
+                                .clickable { onRpeClick(set) },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (set.rpe.isBlank()) "-" else set.rpe,
+                                color = if (set.isCompleted) TextGray else Color.White,
+                                textAlign = TextAlign.Center
+                            )
                         }
                         Box(
                             modifier = Modifier
@@ -238,7 +262,7 @@ fun ExerciseBlock(
             }, 
             confirmButton = { 
                 Button(
-                    onClick = { onUpdateRestTime(t.toIntOrNull() ?: 90); showRest = false }, 
+                    onClick = { onUpdateRestTime(t.toIntOrNull() ?: 90); showRest = false },
                     colors = ButtonDefaults.buttonColors(containerColor = themeColor)
                 ) { Text("OK", color = Color.White) } 
             }

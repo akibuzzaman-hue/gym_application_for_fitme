@@ -45,14 +45,51 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
+        val activeExercises by viewModel.activeExercises.collectAsState()
+        var showOverrideConfirm by remember { mutableStateOf<(() -> Unit)?>(null) }
+    
+        if (showOverrideConfirm != null) {
+            AlertDialog(
+                onDismissRequest = { showOverrideConfirm = null },
+                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) }, 
+                text = { Text("Biztosan új edzést kezdesz? A jelenlegi progressz elveszik.", color = TextGray) },
+                confirmButton = {
+                    Button(
+                        onClick = { 
+                            showOverrideConfirm?.invoke()
+                            showOverrideConfirm = null 
+                        }, 
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                    ) {
+                        Text("Folytatás", color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showOverrideConfirm = null }) { 
+                        Text(stringResource(R.string.cancel_btn), color = themeColor) 
+                    }
+                }
+            )
+        }
+    
+        val handleStartWorkout: (() -> Unit) -> Unit = { startAction ->
+            if (activeExercises.isNotEmpty()) {
+                showOverrideConfirm = startAction
+            } else {
+                startAction()
+            }
+        }
+
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text("Ostromgép", fontSize = 28.sp, fontWeight = FontWeight.Black, color = Color.White)
         }
         
         NextMissionCard(nextMission = nextMission, themeColor = themeColor, onStart = {
             if (nextMission != null) {
-                viewModel.startWorkoutFromTemplate(nextMission)
-                onNavigateToWorkout()
+                handleStartWorkout {
+                    viewModel.startWorkoutFromTemplate(nextMission)
+                    onNavigateToWorkout()
+                }
             }
         })
 

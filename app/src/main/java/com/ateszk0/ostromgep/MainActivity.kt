@@ -8,15 +8,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.content.ContextCompat
+import androidx.compose.animation.with
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,6 +45,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ateszk0.ostromgep.ui.screens.*
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
 
@@ -84,10 +102,13 @@ class MainActivity : ComponentActivity() {
 
 enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor, ExploreRoutines }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
     var currentScreen by remember { mutableStateOf(AppScreen.Home) }
     var isWorkoutActive by remember { mutableStateOf(false) }
+    var isWorkoutMinimized by remember { mutableStateOf(false) }
+    var showDiscardDialog by remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
     
     // Prevent exiting app from the bottom nav
@@ -104,12 +125,80 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
         }
     }
 
-    if (isWorkoutActive) {
-        ActiveWorkoutScreen(viewModel = viewModel, themeColor = themeColor, onFinishWorkout = { isWorkoutActive = false })
+    if (isWorkoutActive && !isWorkoutMinimized) {
+        ActiveWorkoutScreen(
+            viewModel = viewModel, 
+            themeColor = themeColor, 
+            onFinishWorkout = { isWorkoutActive = false; isWorkoutMinimized = false },
+            onMinimize = { isWorkoutMinimized = true }
+        )
     } else {
         Scaffold(
             bottomBar = {
-                NavigationBar(containerColor = SurfaceDark, tonalElevation = 0.dp) {
+                androidx.compose.foundation.layout.Column {
+                    // Floating workout bar when minimized
+                    if (isWorkoutActive && isWorkoutMinimized) {
+                        val totalSeconds by viewModel.totalSeconds.collectAsState()
+                        val exercises by viewModel.activeExercises.collectAsState()
+                        val mins = totalSeconds / 60
+                        val secs = totalSeconds % 60
+                        val currentExerciseName = exercises.lastOrNull()?.name ?: ""
+                        
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 4.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(SurfaceDark)
+                                .clickable { isWorkoutMinimized = false }
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            // Up arrow to restore
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.DarkGray),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.KeyboardArrowUp,
+                                    contentDescription = "Restore workout",
+                                    tint = Color.White
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
+                            // Workout info
+                            androidx.compose.foundation.layout.Column(modifier = Modifier.weight(1f)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(Color(0xFF32D74B)))
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Workout ${mins}min ${secs}s", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                }
+                                if (currentExerciseName.isNotEmpty()) {
+                                    Text(currentExerciseName, color = com.ateszk0.ostromgep.ui.theme.TextGray, fontSize = 12.sp)
+                                }
+                            }
+                            // Discard button
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.DarkGray)
+                                    .clickable { showDiscardDialog = true },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Discard workout",
+                                    tint = Color.Red
+                                )
+                            }
+                        }
+                    }
+                    NavigationBar(containerColor = SurfaceDark, tonalElevation = 0.dp) {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Home, null) }, 
                         label = { Text(stringResource(R.string.nav_home)) }, 
@@ -132,27 +221,59 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                         colors = NavigationBarItemDefaults.colors(selectedIconColor = themeColor, indicatorColor = Color.Transparent, selectedTextColor = themeColor)
                     )
                 }
-            }
+            } // End of bottomBar Column
+        } // End of bottomBar lambda
         ) { padding ->
             Box(modifier = Modifier.padding(padding).fillMaxSize()) {
-                when (currentScreen) {
-                    AppScreen.Home -> HomeScreen(viewModel, themeColor, onNavigateToWorkout = { 
-                        currentScreen = AppScreen.Workout
-                        isWorkoutActive = true 
-                    })
-                    AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor }, onNavigateToExplore = { currentScreen = AppScreen.ExploreRoutines })
-                    AppScreen.RoutineEditor -> RoutineEditorScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
-                    AppScreen.ExploreRoutines -> ExploreRoutinesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
-                    AppScreen.Profile -> DashboardProfile(
-                        viewModel, 
-                        themeColor, 
-                        onNavigateToExercises = { currentScreen = AppScreen.ExercisesList },
-                        onNavigateToCalendar = { currentScreen = AppScreen.Calendar },
-                        onNavigateToStatistics = { currentScreen = AppScreen.Statistics }
+                if (showDiscardDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDiscardDialog = false },
+                        title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
+                        text = { Text(stringResource(R.string.discard_dialog_text), color = com.ateszk0.ostromgep.ui.theme.TextGray) },
+                        confirmButton = {
+                            Button(onClick = { 
+                                viewModel.discardWorkout()
+                                isWorkoutActive = false
+                                isWorkoutMinimized = false
+                                showDiscardDialog = false
+                            }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
+                                Text(stringResource(R.string.discard_confirm), color = Color.White)
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
+                        }
                     )
-                    AppScreen.ExercisesList -> ExercisesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
-                    AppScreen.Calendar -> CalendarScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
-                    AppScreen.Statistics -> StatisticsScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
+                }
+
+                androidx.compose.animation.AnimatedContent(
+                    targetState = currentScreen,
+                    transitionSpec = {
+                        (androidx.compose.animation.fadeIn(animationSpec = androidx.compose.animation.core.tween(220, delayMillis = 90)) +
+                        androidx.compose.animation.scaleIn(initialScale = 0.92f, animationSpec = androidx.compose.animation.core.tween(220, delayMillis = 90))) with
+                        androidx.compose.animation.fadeOut(animationSpec = androidx.compose.animation.core.tween(90))
+                    },
+                    label = "screen_transition"
+                ) { targetScreen ->
+                    when (targetScreen) {
+                        AppScreen.Home -> HomeScreen(viewModel, themeColor, onNavigateToWorkout = { 
+                            currentScreen = AppScreen.Workout
+                            isWorkoutActive = true 
+                        })
+                        AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor }, onNavigateToExplore = { currentScreen = AppScreen.ExploreRoutines })
+                        AppScreen.RoutineEditor -> RoutineEditorScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
+                        AppScreen.ExploreRoutines -> ExploreRoutinesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
+                        AppScreen.Profile -> DashboardProfile(
+                            viewModel, 
+                            themeColor, 
+                            onNavigateToExercises = { currentScreen = AppScreen.ExercisesList },
+                            onNavigateToCalendar = { currentScreen = AppScreen.Calendar },
+                            onNavigateToStatistics = { currentScreen = AppScreen.Statistics }
+                        )
+                        AppScreen.ExercisesList -> ExercisesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
+                        AppScreen.Calendar -> CalendarScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
+                        AppScreen.Statistics -> StatisticsScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
+                    }
                 }
             }
         }

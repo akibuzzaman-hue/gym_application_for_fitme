@@ -43,6 +43,41 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         )
     }
     
+    val activeExercises by viewModel.activeExercises.collectAsState()
+    var showOverrideConfirm by remember { mutableStateOf<(() -> Unit)?>(null) }
+
+    if (showOverrideConfirm != null) {
+        AlertDialog(
+            onDismissRequest = { showOverrideConfirm = null },
+            title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) }, 
+            text = { Text("Biztosan új edzést kezdesz? A jelenlegi progressz elveszik.", color = TextGray) },
+            confirmButton = {
+                Button(
+                    onClick = { 
+                        showOverrideConfirm?.invoke()
+                        showOverrideConfirm = null 
+                    }, 
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) {
+                    Text("Folytatás", color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showOverrideConfirm = null }) { 
+                    Text(stringResource(R.string.cancel_btn), color = themeColor) 
+                }
+            }
+        )
+    }
+
+    val handleStartWorkout: (() -> Unit) -> Unit = { startAction ->
+        if (activeExercises.isNotEmpty()) {
+            showOverrideConfirm = startAction
+        } else {
+            startAction()
+        }
+    }
+    
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) { 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -55,7 +90,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
                 .background(SurfaceDark)
-                .clickable { viewModel.startEmptyWorkout(); onStart() }
+                .clickable { handleStartWorkout { viewModel.startEmptyWorkout(); onStart() } }
                 .padding(vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -140,7 +175,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                         )
                         
                         Button(
-                            onClick = { viewModel.startWorkoutFromTemplate(template); onStart() },
+                            onClick = { handleStartWorkout { viewModel.startWorkoutFromTemplate(template); onStart() } },
                             modifier = Modifier.fillMaxWidth().height(48.dp).padding(top = 8.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = themeColor),
                             shape = RoundedCornerShape(8.dp)

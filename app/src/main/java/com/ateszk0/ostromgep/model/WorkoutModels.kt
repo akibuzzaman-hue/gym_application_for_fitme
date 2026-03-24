@@ -135,7 +135,7 @@ enum class Equipment {
 }
 
 enum class MuscleGroup {
-    ABDOMINALS, ABDUCTORS, ADDUCTORS, BICEPS, CALVES, CARDIO, CHEST, FOREARMS, FULL_BODY, 
+    ABDOMINALS, ABDUCTORS, ADDUCTORS, BICEPS, CALVES, CARDIO, CHEST, FOREARMS, 
     GLUTES, HAMSTRINGS, LATS, LOWER_BACK, NECK, QUADRICEPS, SHOULDERS, TRAPS, TRICEPS, UPPER_BACK, OTHER
 }
 
@@ -154,9 +154,9 @@ data class ExerciseDef(
             name = if (name != null) name else "Unknown Exercise",
             minReps = if (minReps != null && minReps > 0) minReps else 8,
             maxReps = if (maxReps != null && maxReps > 0) maxReps else 12,
-            muscleGroups = if (muscleGroups != null) muscleGroups else emptyList(),
+            muscleGroups = if (muscleGroups != null) muscleGroups.filterNotNull() else emptyList(),
             equipment = if (equipment != null) equipment else Equipment.NONE,
-            isCustom = isCustom
+            isCustom = if (isCustom != null) isCustom else false
         )
     }
 }

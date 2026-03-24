@@ -32,14 +32,22 @@ class WorkoutRepository(private val context: Context) {
             val raw: List<ExerciseDef> = gson.fromJson(libJsonV2, object : TypeToken<List<ExerciseDef>>() {}.type)
             val defaults = loadDefaultExercises()
             val defaultNames = defaults.map { it.name }.toSet()
+            var changed = false
             val normalized = raw.map { 
                 val norm = it.normalize()
-                if (norm.name !in defaultNames && !norm.isCustom) norm.copy(isCustom = true) else norm
+                val def = defaults.find { d -> d.name == norm.name }
+                if (norm.name !in defaultNames && !norm.isCustom) {
+                    changed = true
+                    norm.copy(isCustom = true) 
+                } else if (def != null && (norm.equipment == com.ateszk0.ostromgep.model.Equipment.NONE || norm.equipment == null)) {
+                    changed = true
+                    norm.copy(equipment = def.equipment, muscleGroups = def.muscleGroups)
+                } else norm
             }
             // Migration: merge in any new default exercises not yet in the user's library
             val existingNames = normalized.map { it.name }.toSet()
             val newDefaults = defaults.filter { it.name !in existingNames }
-            if (newDefaults.isNotEmpty()) {
+            if (newDefaults.isNotEmpty() || changed) {
                 val merged = normalized + newDefaults
                 saveExerciseLibrary(merged)
                 return merged
