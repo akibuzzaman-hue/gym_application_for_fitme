@@ -47,26 +47,26 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
     ) {
         val activeExercises by viewModel.activeExercises.collectAsState()
         var showOverrideConfirm by remember { mutableStateOf<(() -> Unit)?>(null) }
-    
+
         if (showOverrideConfirm != null) {
             AlertDialog(
                 onDismissRequest = { showOverrideConfirm = null },
-                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) }, 
-                text = { Text("Biztosan új edzést kezdesz? A jelenlegi progressz elveszik.", color = TextGray) },
+                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
+                text = { Text("Are you sure you want to start a new workout? The current progress will be lost.", color = TextGray) },
                 confirmButton = {
                     Button(
-                        onClick = { 
+                        onClick = {
                             showOverrideConfirm?.invoke()
-                            showOverrideConfirm = null 
-                        }, 
+                            showOverrideConfirm = null
+                        },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                     ) {
-                        Text("Folytatás", color = Color.White)
+                        Text("Continue", color = Color.White)
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showOverrideConfirm = null }) { 
-                        Text(stringResource(R.string.cancel_btn), color = themeColor) 
+                    TextButton(onClick = { showOverrideConfirm = null }) {
+                        Text(stringResource(R.string.cancel_btn), color = themeColor)
                     }
                 }
             )

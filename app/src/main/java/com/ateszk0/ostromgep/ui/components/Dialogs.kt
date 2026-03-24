@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.model.OverloadPrompt
 import com.ateszk0.ostromgep.model.ExerciseDef
 import com.ateszk0.ostromgep.model.Equipment
@@ -142,13 +143,20 @@ fun ExerciseEditDialog(
     androidx.compose.animation.AnimatedVisibility(
         visible = visible,
         enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
-        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it })
+        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+        modifier = Modifier.zIndex(20f)
     ) {
         Surface(modifier = Modifier.fillMaxSize(), color = DarkBackground) {
-            Column(modifier = Modifier.fillMaxSize().padding(top = 48.dp)) {
-                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.cancel_btn), color = themeColor, modifier = Modifier.clickable { onDismiss() })
-                    Text(stringResource(R.string.edit_label) + " ${exercise.name}", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.weight(1f).padding(horizontal = 8.dp), textAlign = TextAlign.Center, maxLines = 1)
+            Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { 
+                            visible = false
+                            onDismiss() 
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = themeColor)
+                        }
+                        Text(stringResource(R.string.edit_label) + " ${exercise.name}", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.weight(1f).padding(horizontal = 8.dp), textAlign = TextAlign.Center, maxLines = 1)
                     Text(
                         stringResource(R.string.save_btn), 
                         color = if (musc.isNotEmpty()) themeColor else TextGray, 
@@ -232,6 +240,7 @@ fun ExerciseEditDialog(
                     }
                 } 
             }
+            }
         }
     }
 }
@@ -261,13 +270,20 @@ fun CreateExerciseDialog(
     androidx.compose.animation.AnimatedVisibility(
         visible = visible,
         enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
-        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it })
+        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+        modifier = Modifier.zIndex(20f)
     ) {
         Surface(modifier = Modifier.fillMaxSize(), color = DarkBackground) {
-            Column(modifier = Modifier.fillMaxSize().padding(top = 48.dp)) {
-                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.cancel_btn), color = themeColor, modifier = Modifier.clickable { onDismiss() })
-                    Text(stringResource(R.string.custom_exercise_title), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { 
+                            visible = false
+                            onDismiss() 
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = themeColor)
+                        }
+                        Text(stringResource(R.string.custom_exercise_title), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center, maxLines = 1)
                     val e = equip
                     val canSave = name.isNotBlank() && musc.isNotEmpty() && e != null
                     Text(
@@ -352,6 +368,7 @@ fun CreateExerciseDialog(
                         }
                     }
                 } 
+            }
             }
         }
     }

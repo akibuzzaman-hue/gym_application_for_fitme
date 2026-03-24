@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.content.ContextCompat
 import androidx.compose.animation.with
-
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -125,20 +125,37 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
         }
     }
 
-    if (isWorkoutActive && !isWorkoutMinimized) {
-        ActiveWorkoutScreen(
-            viewModel = viewModel, 
-            themeColor = themeColor, 
-            onFinishWorkout = { isWorkoutActive = false; isWorkoutMinimized = false },
-            onMinimize = { isWorkoutMinimized = true }
-        )
-    } else {
-        Scaffold(
-            bottomBar = {
-                androidx.compose.foundation.layout.Column {
-                    // Floating workout bar when minimized
-                    if (isWorkoutActive && isWorkoutMinimized) {
-                        val totalSeconds by viewModel.totalSeconds.collectAsState()
+    androidx.compose.animation.AnimatedContent(
+        targetState = isWorkoutActive && !isWorkoutMinimized,
+        transitionSpec = {
+            if (targetState) {
+                androidx.compose.animation.slideInVertically(initialOffsetY = { it }) + androidx.compose.animation.fadeIn() togetherWith 
+                androidx.compose.animation.fadeOut() + androidx.compose.animation.scaleOut(targetScale = 0.95f)
+            } else {
+                androidx.compose.animation.fadeIn() + androidx.compose.animation.scaleIn(initialScale = 0.95f) togetherWith
+                androidx.compose.animation.slideOutVertically(targetOffsetY = { it }) + androidx.compose.animation.fadeOut()
+            }
+        },
+        label = "workout_fullscreen"
+    ) { showFullscreenWorkout ->
+        if (showFullscreenWorkout) {
+            ActiveWorkoutScreen(
+                viewModel = viewModel, 
+                themeColor = themeColor, 
+                onFinishWorkout = { isWorkoutActive = false; isWorkoutMinimized = false },
+                onMinimize = { isWorkoutMinimized = true }
+            )
+        } else {
+            Scaffold(
+                bottomBar = {
+                    androidx.compose.foundation.layout.Column {
+                        // Floating workout bar when minimized
+                        androidx.compose.animation.AnimatedVisibility(
+                            visible = isWorkoutActive && isWorkoutMinimized,
+                            enter = androidx.compose.animation.slideInVertically(initialOffsetY = { it }) + androidx.compose.animation.fadeIn(),
+                            exit = androidx.compose.animation.slideOutVertically(targetOffsetY = { it }) + androidx.compose.animation.fadeOut()
+                        ) {
+                            val totalSeconds by viewModel.totalSeconds.collectAsState()
                         val exercises by viewModel.activeExercises.collectAsState()
                         val mins = totalSeconds / 60
                         val secs = totalSeconds % 60
@@ -276,6 +293,7 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                     }
                 }
             }
+        }
         }
     }
 }

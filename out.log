@@ -7,7 +7,7 @@
 > Task :app:generateDebugRFile UP-TO-DATE
 
 > Task :app:compileDebugKotlin FAILED
-e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseSelectionSheets.kt:15:28 Unresolved reference 'zIndex'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/MainActivity.kt:300:1 Syntax error: Expecting a top level declaration.
 
 FAILURE: Build failed with an exception.
 

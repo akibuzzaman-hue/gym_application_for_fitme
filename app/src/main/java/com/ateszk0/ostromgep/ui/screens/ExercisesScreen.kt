@@ -59,7 +59,7 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
                     verticalAlignment = Alignment.CenterVertically, 
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) { 
-                    Row(verticalAlignment = Alignment.CenterVertically) { 
+                    Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) { 
                         Box(modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) { 
                             if (!exDef.imageUri.isNullOrEmpty()) {
                                 coil.compose.AsyncImage(
@@ -73,11 +73,18 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
                             }
                         }
                         Spacer(modifier = Modifier.width(16.dp))
-                        Column { 
-                            Text(exDef.name, color = Color.White, fontSize = 18.sp)
+                        Column(modifier = Modifier.weight(1f)) { 
+                            Text(
+                                text = exDef.name, 
+                                color = Color.White, 
+                                fontSize = 18.sp,
+                                maxLines = 2,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
                             Text(stringResource(R.string.target_reps_format, exDef.minReps, exDef.maxReps), color = TextGray, fontSize = 12.sp) 
                         } 
                     }
+                    Spacer(modifier = Modifier.width(16.dp))
                     Icon(Icons.Default.Edit, null, tint = TextGray) 
                 } 
             } 
