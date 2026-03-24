@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import com.ateszk0.ostromgep.R
 
 @Composable
-fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit, onNavigateToCalendar: () -> Unit, onNavigateToStatistics: () -> Unit) {
+fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit, onNavigateToCalendar: () -> Unit, onNavigateToStatistics: () -> Unit, onNavigateToWorkoutLog: (Long?) -> Unit) {
     val history by viewModel.workoutHistory.collectAsState()
     val chartData = viewModel.getChartData()
     val username by viewModel.username.collectAsState()
@@ -97,7 +97,7 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { 
-                DashboardButton(stringResource(R.string.measures_btn), Icons.Default.Accessibility, Modifier.weight(1f)) {}
+                DashboardButton(stringResource(R.string.workouts_btn), Icons.Default.FormatListBulleted, Modifier.weight(1f)) { onNavigateToWorkoutLog(null) }
                 DashboardButton(stringResource(R.string.calendar_btn), Icons.Default.CalendarMonth, Modifier.weight(1f)) { onNavigateToCalendar() } 
             }
             Spacer(modifier = Modifier.height(32.dp)) 
@@ -107,9 +107,16 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             Spacer(modifier = Modifier.height(8.dp)) 
         }
         items(history.reversed().take(5)) { workout -> 
-            Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), colors = CardDefaults.cardColors(containerColor = SurfaceDark)) { 
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable { onNavigateToWorkoutLog(workout.timestamp) }, 
+                colors = CardDefaults.cardColors(containerColor = SurfaceDark)
+            ) { 
                 Column(modifier = Modifier.padding(16.dp)) { 
-                    Text(stringResource(R.string.workout_log_title), fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Text(stringResource(R.string.workout_log_title), fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
+                        Text(sdf.format(java.util.Date(workout.timestamp)), color = TextGray, fontSize = 12.sp)
+                    }
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 8.dp)) { 
                         Column { 
                             Text(stringResource(R.string.time_label), color = TextGray, fontSize = 12.sp)
@@ -124,6 +131,9 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
                     workout.exercises.take(3).forEach { ex -> 
                         Text(stringResource(R.string.sets_format, ex.sets.count { it.isCompleted }, ex.name), color = TextGray, fontSize = 14.sp) 
                     } 
+                    if (workout.exercises.size > 3) {
+                        Text(stringResource(R.string.more_exercises_format, workout.exercises.size - 3), color = themeColor, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
+                    }
                 } 
             } 
         }

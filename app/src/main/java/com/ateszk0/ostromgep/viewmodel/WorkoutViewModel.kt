@@ -533,7 +533,64 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    
+    fun deleteWorkoutHistory(timestamp: Long) {
+        val updated = _workoutHistory.value.filter { it.timestamp != timestamp }
+        _workoutHistory.value = updated
+        repository.saveWorkoutHistory(updated)
+    }
+
+    fun copyWorkoutAsNewActive(entry: WorkoutHistoryEntry) {
+        _activeTemplateId.value = null
+        val newExercises = entry.exercises.mapIndexed { exIdx, ex ->
+            val renumberedSets = ex.sets.mapIndexed { setIdx, set ->
+                set.copy(
+                    id = setIdx + 1,
+                    isCompleted = false,
+                    rpe = "",
+                    previousText = if (set.kg.isNotBlank()) "${set.kg}kg x ${set.reps}" else "-"
+                )
+            }
+            ex.copy(id = exIdx + 1, sets = renumberedSets)
+        }
+        _activeExercises.value = newExercises
+        _totalSeconds.value = 0
+        _restTimerSeconds.value = 0
+    }
+
+    fun saveHistoryEntryAsRoutine(entry: WorkoutHistoryEntry, name: String) {
+        saveNewTemplate(name, entry.exercises)
+    }
+
+    fun exportWorkoutsAsCsv(context: android.content.Context, uri: android.net.Uri): Boolean {
+        return try {
+            val outputStream = context.contentResolver.openOutputStream(uri) ?: return false
+            val writer = java.io.BufferedWriter(java.io.OutputStreamWriter(outputStream))
+            val sdf = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.ENGLISH)
+            // Write header
+            writer.write("title,start_time,end_time,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,rpe")
+            writer.newLine()
+            _workoutHistory.value.sortedByDescending { it.timestamp }.forEach { entry ->
+                val startTime = sdf.format(java.util.Date(entry.timestamp))
+                val endTime = sdf.format(java.util.Date(entry.timestamp + entry.durationSeconds * 1000L))
+                val title = "Workout"
+                entry.exercises.forEachIndexed { exIdx, ex ->
+                    ex.sets.forEachIndexed { setIdx, set ->
+                        val setType = if (set.isWarmup) "warmup" else "normal"
+                        val supersetId = ex.supersetId ?: ""
+                        writer.write("\"$title\",\"$startTime\",\"$endTime\",\"${ex.name}\",\"$supersetId\",\"${ex.note}\",$setIdx,$setType,${set.kg},${set.reps},${set.rpe}")
+                        writer.newLine()
+                    }
+                }
+            }
+            writer.flush()
+            writer.close()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
     private fun updateExercise(eId: Int, updater: (ExerciseSessionData) -> ExerciseSessionData) {
         _activeExercises.value = _activeExercises.value.map { if (it.id == eId) updater(it) else it }
     }

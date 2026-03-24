@@ -188,4 +188,18 @@
     <string name="update_routine_btn">Rutin frissítése</string>
     <string name="keep_original_btn">Eredeti rutin megtartása</string>
     <string name="discard_workout_btn">Edzés elvetése</string>
+
+    <!-- Workout Log -->
+    <string name="workouts_btn">Edzések</string>
+    <string name="workout_log_screen_title">Edzések előzményei</string>
+    <string name="copy_workout">Edzés másolása</string>
+    <string name="save_as_routine">Mentés rutinként</string>
+    <string name="delete_workout">Edzés törlése</string>
+    <string name="more_exercises_format">+ %1$d további gyakorlat</string>
+    <string name="export_workouts_csv">Edzések exportálása CSV-be</string>
+    <string name="routine_name_label">Rutin neve</string>
+    <string name="no_workouts_yet">Még nem naplóztál edzést.</string>
+    <string name="workout_detail_title">Edzés részletei</string>
+    <string name="export_success">CSV sikeresen exportálva</string>
+    <string name="export_failure">Exportálás sikertelen</string>
 </resources>

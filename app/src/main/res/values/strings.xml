@@ -188,4 +188,18 @@
     <string name="update_routine_btn">Update Routine</string>
     <string name="keep_original_btn">Keep Original Routine</string>
     <string name="discard_workout_btn">Discard Workout</string>
+
+    <!-- Workout Log -->
+    <string name="workouts_btn">Workouts</string>
+    <string name="workout_log_screen_title">Workout History</string>
+    <string name="copy_workout">Copy Workout</string>
+    <string name="save_as_routine">Save as Routine</string>
+    <string name="delete_workout">Delete Workout</string>
+    <string name="more_exercises_format">+ %1$d more exercises</string>
+    <string name="export_workouts_csv">Export Workouts as CSV</string>
+    <string name="routine_name_label">Routine Name</string>
+    <string name="no_workouts_yet">No workouts logged yet.</string>
+    <string name="workout_detail_title">Workout Details</string>
+    <string name="export_success">CSV exported successfully</string>
+    <string name="export_failure">Export failed</string>
 </resources>

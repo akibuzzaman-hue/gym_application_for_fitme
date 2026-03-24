@@ -100,7 +100,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor, ExploreRoutines }
+enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor, ExploreRoutines, WorkoutLog }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -109,6 +109,7 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
     var isWorkoutActive by remember { mutableStateOf(false) }
     var isWorkoutMinimized by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
+    var workoutLogTimestampToShow by remember { mutableStateOf<Long?>(null) }
     val context = androidx.compose.ui.platform.LocalContext.current
     
     // Prevent exiting app from the bottom nav
@@ -285,11 +286,25 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                             themeColor, 
                             onNavigateToExercises = { currentScreen = AppScreen.ExercisesList },
                             onNavigateToCalendar = { currentScreen = AppScreen.Calendar },
-                            onNavigateToStatistics = { currentScreen = AppScreen.Statistics }
+                            onNavigateToStatistics = { currentScreen = AppScreen.Statistics },
+                            onNavigateToWorkoutLog = { timestamp ->
+                                workoutLogTimestampToShow = timestamp
+                                currentScreen = AppScreen.WorkoutLog
+                            }
                         )
                         AppScreen.ExercisesList -> ExercisesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
                         AppScreen.Calendar -> CalendarScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
                         AppScreen.Statistics -> StatisticsScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Profile })
+                        AppScreen.WorkoutLog -> WorkoutLogScreen(
+                            viewModel = viewModel,
+                            themeColor = themeColor,
+                            onBack = { currentScreen = AppScreen.Profile },
+                            onNavigateToActiveWorkout = {
+                                currentScreen = AppScreen.Workout
+                                isWorkoutActive = true
+                            },
+                            initialEntryTimestamp = workoutLogTimestampToShow
+                        )
                     }
                 }
             }

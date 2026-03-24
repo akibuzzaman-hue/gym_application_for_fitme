@@ -511,8 +511,22 @@ fun SettingsDialog(
                             
                             Spacer(modifier = Modifier.height(24.dp))
                             Text("Adatok", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
-                            Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(SurfaceDark).clickable { csvLauncher.launch("*/*") }.padding(16.dp)) {
-                                Text("CSV Importálása", fontSize = 16.sp, color = Color.White)
+                            val exportLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+                                contract = androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv")
+                            ) { uri: android.net.Uri? ->
+                                uri?.let {
+                                    val success = viewModel.exportWorkoutsAsCsv(context, it)
+                                    android.widget.Toast.makeText(context, if (success) context.getString(R.string.export_success) else context.getString(R.string.export_failure), android.widget.Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            Column(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                                Row(modifier = Modifier.fillMaxWidth().clickable { csvLauncher.launch("*/*") }.padding(16.dp)) {
+                                    Text("CSV Importálása", fontSize = 16.sp, color = Color.White)
+                                }
+                                Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                                Row(modifier = Modifier.fillMaxWidth().clickable { exportLauncher.launch("workouts.csv") }.padding(16.dp)) {
+                                    Text(stringResource(R.string.export_workouts_csv), fontSize = 16.sp, color = Color.White)
+                                }
                             }
                             Spacer(modifier = Modifier.height(32.dp))
                         }
