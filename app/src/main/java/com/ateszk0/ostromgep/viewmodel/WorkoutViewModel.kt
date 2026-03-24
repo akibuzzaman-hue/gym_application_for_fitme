@@ -265,7 +265,18 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun saveNewTemplate(name: String, exercises: List<ExerciseSessionData>) {
         val id = (_savedTemplates.value.maxOfOrNull { it.id } ?: 0) + 1
-        val updated = _savedTemplates.value + WorkoutTemplate(id, name, exercises)
+        // 1. normalize() fixes any nulls that Gson may inject into non-null Kotlin fields
+        //    (e.g. `sets`, `note`, `rpe`) when fields are missing in the JSON.
+        // 2. Renumber IDs so that explore-page templates (which all use IDs 1, 2, 3)
+        //    get unique IDs and don't cause duplicate-key crashes in the Compose LazyColumn.
+        val normalizedExercises = exercises.mapIndexed { exIdx, ex ->
+            val safe = ex.normalize()
+            val renumberedSets = safe.sets.mapIndexed { setIdx, set ->
+                set.copy(id = setIdx + 1)
+            }
+            safe.copy(id = exIdx + 1, sets = renumberedSets)
+        }
+        val updated = _savedTemplates.value + WorkoutTemplate(id, name, normalizedExercises)
         _savedTemplates.value = updated
         repository.saveSavedTemplates(updated)
     }
