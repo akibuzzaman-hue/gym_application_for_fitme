@@ -49,7 +49,6 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var showCreateDialog by remember { mutableStateOf(false) }
     var isSavingWorkout by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
-    var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
     var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
     var rpeTarget by remember { mutableStateOf<Pair<Int, WorkoutSetData>?>(null) }
@@ -61,7 +60,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             showPlateCalculator = false
             rpeTarget = null
         } else {
-            showDiscardDialog = true
+            onMinimize()
         }
     }
     val totalVolume = exercises.sumOf { it.totalVolume() }
@@ -104,6 +103,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             onBack = { isSavingWorkout = false }
         )
     } else {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         topBar = { 
             TopAppBar(
@@ -117,27 +117,33 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
                     Button(onClick = { isSavingWorkout = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
                 }, 
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground),
+                scrollBehavior = scrollBehavior
             ) 
         },
         bottomBar = {
-            Column {
-                if (restTimerSeconds > 0) {
+            if (restTimerSeconds > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().background(themeColor).padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().background(themeColor).padding(16.dp), 
-                        verticalAlignment = Alignment.CenterVertically, 
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) { 
-                        Row { 
-                            TimerAdjustButton("-15") { viewModel.adjustRestTimer(-15) }
-                            Text("%02d:%02d".format(restTimerSeconds/60, restTimerSeconds%60), color = Color.White, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
-                            TimerAdjustButton("+15") { viewModel.adjustRestTimer(15) } 
-                        }
-                        Button(onClick = { viewModel.skipRestTimer() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))) { Text(stringResource(R.string.skip_btn), color = Color.White) } 
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TimerAdjustButton("-15") { viewModel.adjustRestTimer(-15) }
+                        Text(
+                            "%02d:%02d".format(restTimerSeconds/60, restTimerSeconds%60),
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                        TimerAdjustButton("+15") { viewModel.adjustRestTimer(15) }
                     }
-                }
-                Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.End) {
-                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text(stringResource(R.string.discard_btn), color = Color.Red) }
+                    Button(
+                        onClick = { viewModel.skipRestTimer() },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))
+                    ) { Text(stringResource(R.string.skip_btn), color = Color.White) }
                 }
             }
         }
@@ -161,7 +167,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             groups
         }
 
-        LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
+        LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
             item {
                 Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
@@ -232,25 +238,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         }
         if (showPlateCalculator) PlateCalculatorDialog({ showPlateCalculator = false }, themeColor)
 
-        if (showDiscardDialog) {
-            AlertDialog(
-                onDismissRequest = { showDiscardDialog = false },
-                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
-                text = { Text(stringResource(R.string.discard_dialog_text), color = TextGray) },
-                confirmButton = {
-                    Button(onClick = { 
-                        viewModel.discardWorkout()
-                        showDiscardDialog = false
-                        onFinishWorkout() 
-                    }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
-                        Text(stringResource(R.string.discard_confirm), color = Color.White)
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
-                }
-            )
-        }
+
 
         exerciseToEditRepRange?.let { n ->
             val def = library.find { it.name == n } ?: com.ateszk0.ostromgep.model.ExerciseDef(n)
