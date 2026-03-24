@@ -1540,5 +1540,26 @@
             "TRICEPS"
         ],
         "equipment": "NONE"
+    },
+    {
+        "name": "Cable Crunch (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "CABLE"
+    },
+    {
+        "name": "Cable Y-Raise (Cable)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "UPPER_BACK"
+        ],
+        "equipment": "CABLE"
     }
 ]
