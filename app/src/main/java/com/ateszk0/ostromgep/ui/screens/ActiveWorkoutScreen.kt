@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,12 +29,14 @@ import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.*
+import com.ateszk0.ostromgep.model.Equipment
 import androidx.compose.ui.res.stringResource
 import com.ateszk0.ostromgep.R
+import com.ateszk0.ostromgep.model.WorkoutSetData
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinishWorkout: () -> Unit) {
+fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinishWorkout: () -> Unit, onMinimize: () -> Unit = {}) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val exercises by viewModel.activeExercises.collectAsState()
@@ -43,29 +46,26 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     val prompts by viewModel.overloadPrompts.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showCreateDialog by remember { mutableStateOf(false) }
     var isSavingWorkout by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
     var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
+    var rpeTarget by remember { mutableStateOf<Pair<Int, WorkoutSetData>?>(null) }
     
     androidx.activity.compose.BackHandler(enabled = true) {
-        showDiscardDialog = true
+        if (showBottomSheet || showCreateDialog || showPlateCalculator || rpeTarget != null) {
+            showBottomSheet = false
+            showCreateDialog = false
+            showPlateCalculator = false
+            rpeTarget = null
+        } else {
+            showDiscardDialog = true
+        }
     }
-
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val totalVolume = exercises.sumOf { it.totalVolume() }
     val completedSetsCount = exercises.sumOf { it.countCompletedSets() }
-
-    var lastTimerValue by remember { mutableIntStateOf(0) }
-    LaunchedEffect(restTimerSeconds) { 
-        if (lastTimerValue > 0 && restTimerSeconds == 0) { 
-            try { 
-                RingtoneManager.getRingtone(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))?.play() 
-            } catch (e: Exception) {} 
-        }
-        lastTimerValue = restTimerSeconds 
-    }
 
     var draggedIndex by remember { mutableStateOf<Int?>(null) }
     var dragOffset by remember { mutableFloatStateOf(0f) }
@@ -107,6 +107,11 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     Scaffold(
         topBar = { 
             TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = onMinimize) {
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Minimize", tint = Color.White)
+                    }
+                },
                 title = { Text(stringResource(R.string.log_workout), color = Color.White) }, 
                 actions = { 
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
@@ -201,7 +206,8 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                                 { viewModel.deleteExercise(exercise.id) },
                                 { exerciseToEditRepRange = exercise.name },
                                 { supersetSourceExercise = exercise },
-                                { viewModel.removeSuperset(exercise.id) }
+                                { viewModel.removeSuperset(exercise.id) },
+                                { set -> rpeTarget = exercise.id to set }
                             )
                         }
                         if (idxInGroup < group.size - 1 && !isSuperset) {
@@ -251,31 +257,59 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             ExerciseEditDialog(
                 def, themeColor,
                 { exerciseToEditRepRange = null },
-                { name, min, max, imgUri, muscles -> 
-                    viewModel.updateExerciseDetails(name, min, max, imgUri, muscles)
+                { name, min, max, imgUri, muscles, equip -> 
+                    viewModel.updateExerciseDetails(name, min, max, imgUri, muscles, equip)
                     exerciseToEditRepRange = null 
                 }
             )
         }
+        
+        rpeTarget?.let { (exerciseId, set) ->
+            RpeSelectionSheet(
+                themeColor = themeColor,
+                currentRpe = set.rpe,
+                onRpeSelected = { newRpe ->
+                    viewModel.updateSet(exerciseId, set.copy(rpe = newRpe))
+                    rpeTarget = null
+                },
+                onDismiss = { rpeTarget = null }
+            )
+        }
 
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState,
-                containerColor = Color.Black,
-                modifier = Modifier.fillMaxHeight(0.95f)
-            ) {
-                AddExerciseContent(
-                    library = library,
-                    recentExercises = emptyList(),
-                    onExerciseSelected = { exDef ->
-                        viewModel.addNewExerciseBlock(exDef.name)
-                        showBottomSheet = false
-                    },
-                    onClose = { showBottomSheet = false },
-                    themeColor = themeColor
-                )
+        androidx.compose.animation.AnimatedVisibility(
+            visible = showBottomSheet,
+            enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+            exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+            modifier = Modifier.fillMaxSize().zIndex(10f)
+        ) {
+            Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+                Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                    AddExerciseContent(
+                        library = library,
+                        recentExercises = emptyList(),
+                        onExerciseSelected = { exDef ->
+                            viewModel.addNewExerciseBlock(exDef.name)
+                            showBottomSheet = false
+                        },
+                        onClose = { showBottomSheet = false },
+                        onCreateCustom = { showCreateDialog = true },
+                        themeColor = themeColor
+                    )
+                }
             }
+        }
+
+        if (showCreateDialog) {
+            com.ateszk0.ostromgep.ui.components.CreateExerciseDialog(
+                themeColor = themeColor,
+                onDismiss = { showCreateDialog = false },
+                onSave = { name, min, max, imgUri, muscles, equip ->
+                    viewModel.updateExerciseDetails(name, min, max, imgUri, muscles, equip)
+                    viewModel.addNewExerciseBlock(name)
+                    showCreateDialog = false
+                    showBottomSheet = false
+                }
+            )
         }
         
         if (supersetSourceExercise != null) {

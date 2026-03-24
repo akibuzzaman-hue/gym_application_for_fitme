@@ -40,11 +40,8 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
     val profUri by viewModel.profilePictureUri.collectAsState()
     var showSettings by remember { mutableStateOf(false) }
     
-    if (showSettings) {
-        com.ateszk0.ostromgep.ui.components.SettingsDialog(viewModel, themeColor) { showSettings = false }
-    }
-    
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item { 
             Row(verticalAlignment = Alignment.CenterVertically) { 
@@ -131,6 +128,11 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             } 
         }
         item { Spacer(modifier = Modifier.height(100.dp)) }
+    }
+
+    if (showSettings) {
+        com.ateszk0.ostromgep.ui.components.SettingsDialog(viewModel, themeColor) { showSettings = false }
+    }
     }
 }
 

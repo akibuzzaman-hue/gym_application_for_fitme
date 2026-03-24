@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ateszk0.ostromgep.model.ExerciseDef
+import com.ateszk0.ostromgep.model.Equipment
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.ExerciseEditDialog
@@ -58,7 +59,7 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
                     verticalAlignment = Alignment.CenterVertically, 
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) { 
-                    Row(verticalAlignment = Alignment.CenterVertically) { 
+                    Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) { 
                         Box(modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) { 
                             if (!exDef.imageUri.isNullOrEmpty()) {
                                 coil.compose.AsyncImage(
@@ -72,11 +73,18 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
                             }
                         }
                         Spacer(modifier = Modifier.width(16.dp))
-                        Column { 
-                            Text(exDef.name, color = Color.White, fontSize = 18.sp)
+                        Column(modifier = Modifier.weight(1f)) { 
+                            Text(
+                                text = exDef.name, 
+                                color = Color.White, 
+                                fontSize = 18.sp,
+                                maxLines = 2,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
                             Text(stringResource(R.string.target_reps_format, exDef.minReps, exDef.maxReps), color = TextGray, fontSize = 12.sp) 
                         } 
                     }
+                    Spacer(modifier = Modifier.width(16.dp))
                     Icon(Icons.Default.Edit, null, tint = TextGray) 
                 } 
             } 
@@ -84,29 +92,21 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
     }
     
     if (showNewExerciseDialog) { 
-        var n by remember { mutableStateOf("") }
-        AlertDialog(
-            onDismissRequest = { showNewExerciseDialog = false }, 
-            title = { Text(stringResource(R.string.custom_exercise_title)) }, 
-            text = { OutlinedTextField(value = n, onValueChange = { n = it }, label = { Text(stringResource(R.string.exercise_name_label)) }) }, 
-            confirmButton = { 
-                Button(onClick = { viewModel.createCustomExercise(n); showNewExerciseDialog = false }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { 
-                    Text(stringResource(R.string.add_btn), color = Color.White) 
-                } 
-            }, 
-            dismissButton = { 
-                TextButton(onClick = { showNewExerciseDialog = false }) { 
-                    Text(stringResource(R.string.cancel_btn), color = themeColor) 
-                } 
+        com.ateszk0.ostromgep.ui.components.CreateExerciseDialog(
+            themeColor = themeColor,
+            onDismiss = { showNewExerciseDialog = false },
+            onSave = { name, min, max, imgUri, muscles, equip ->
+                viewModel.updateExerciseDetails(name, min, max, imgUri, muscles, equip)
+                showNewExerciseDialog = false
             }
-        ) 
+        )
     }
     
     exerciseToEdit?.let { ex -> 
         ExerciseEditDialog(
             ex, themeColor, 
             { exerciseToEdit = null }, 
-            { name, min, max, imgUri, muscles -> viewModel.updateExerciseDetails(name, min, max, imgUri, muscles); exerciseToEdit = null },
+            { name, min, max, imgUri, muscles, equip -> viewModel.updateExerciseDetails(name, min, max, imgUri, muscles, equip); exerciseToEdit = null },
             if (ex.isCustom) { { viewModel.deleteCustomExercise(ex.name); exerciseToEdit = null } } else null
         ) 
     }

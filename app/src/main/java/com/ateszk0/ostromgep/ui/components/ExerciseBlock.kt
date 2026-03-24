@@ -2,6 +2,7 @@ package com.ateszk0.ostromgep.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
@@ -34,6 +35,7 @@ import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutSetData
 import com.ateszk0.ostromgep.ui.theme.*
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +57,8 @@ fun ExerciseBlock(
     onDeleteExercise: () -> Unit, 
     onEditRepRange: () -> Unit,
     onSuperset: () -> Unit,
-    onRemoveSuperset: () -> Unit
+    onRemoveSuperset: () -> Unit,
+    onRpeClick: (WorkoutSetData) -> Unit
 ) {
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -67,7 +70,7 @@ fun ExerciseBlock(
             verticalAlignment = Alignment.CenterVertically, 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                 if (!imageUri.isNullOrEmpty()) {
                     coil.compose.AsyncImage(
                         model = imageUri,
@@ -81,8 +84,16 @@ fun ExerciseBlock(
                     }
                 }
                 Spacer(modifier = Modifier.width(12.dp))
-                Text(text = exercise.name, color = themeColor, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = exercise.name, 
+                    color = themeColor, 
+                    fontSize = 16.sp, 
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
             }
+            Spacer(modifier = Modifier.width(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Row(
                     modifier = Modifier.clickable { showRest = true }.background(SurfaceDark, RoundedCornerShape(4.dp)).padding(horizontal = 8.dp, vertical = 4.dp), 
@@ -98,7 +109,7 @@ fun ExerciseBlock(
                     DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(SurfaceDark)) {
                         DropdownMenuItem(text = { Text("Move Up ↑", color = Color.White) }, onClick = { showMenu = false; onMoveUp() })
                         DropdownMenuItem(text = { Text("Move Down ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
-                        DropdownMenuItem(text = { Text("Rep Range", color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
+                        DropdownMenuItem(text = { Text("Edit", color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
                         DropdownMenuItem(text = { Text(if (exercise.supersetId == null) "Superset" else "Remove Superset", color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
                         DropdownMenuItem(text = { Text("Delete", color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
                     }
@@ -128,11 +139,9 @@ fun ExerciseBlock(
         }
 
         exercise.sets.forEach { set ->
-            var isRevealed by remember { mutableStateOf(false) }
-            var swipeOffset by remember { mutableFloatStateOf(0f) }
+            val coroutineScope = rememberCoroutineScope()
             val maxSwipe = -150f
-            val animatedOffset by animateFloatAsState(targetValue = if (isRevealed) maxSwipe else 0f, label = "swipe")
-            val finalOffset = if (swipeOffset != 0f) swipeOffset else animatedOffset
+            val swipeOffset = remember { androidx.compose.animation.core.Animatable(0f) }
 
             key(set.id) {
                 Box(modifier = Modifier.fillMaxWidth()) {
@@ -149,22 +158,30 @@ fun ExerciseBlock(
                     val rowBg = if (set.isCompleted) CompletedGreen.copy(alpha = 0.2f) else Color.Transparent
                     Row(
                         modifier = Modifier
-                            .offset { IntOffset(finalOffset.roundToInt(), 0) }
+                            .offset { IntOffset(swipeOffset.value.roundToInt(), 0) }
                             .fillMaxWidth()
                             .background(DarkBackground)
                             .background(rowBg)
                             .pointerInput(Unit) {
                                 detectHorizontalDragGestures(
-                                    onDragStart = { swipeOffset = if (isRevealed) maxSwipe else 0f },
                                     onHorizontalDrag = { change, dragAmount ->
                                         change.consume()
-                                        swipeOffset = (swipeOffset + dragAmount).coerceIn(maxSwipe, 0f)
+                                        coroutineScope.launch {
+                                            swipeOffset.snapTo((swipeOffset.value + dragAmount).coerceIn(maxSwipe, 0f))
+                                        }
                                     },
                                     onDragEnd = {
-                                        isRevealed = swipeOffset < maxSwipe / 2
-                                        swipeOffset = 0f
+                                        coroutineScope.launch {
+                                            if (swipeOffset.value < maxSwipe / 2) {
+                                                swipeOffset.animateTo(maxSwipe)
+                                            } else {
+                                                swipeOffset.animateTo(0f)
+                                            }
+                                        }
                                     },
-                                    onDragCancel = { swipeOffset = 0f }
+                                    onDragCancel = {
+                                        coroutineScope.launch { swipeOffset.animateTo(0f) }
+                                    }
                                 )
                             }
                             .padding(horizontal = 16.dp, vertical = 4.dp),
@@ -192,8 +209,22 @@ fun ExerciseBlock(
                         Box(modifier = Modifier.weight(0.2f).padding(horizontal = 4.dp)) { 
                             CustomTextField(set.reps, { onSetUpdate(set.copy(reps = it)) }, set.isCompleted, themeColor) 
                         }
-                        Box(modifier = Modifier.weight(0.15f).padding(horizontal = 4.dp)) { 
-                            CustomTextField(set.rpe, { onSetUpdate(set.copy(rpe = it)) }, set.isCompleted, themeColor) 
+                        Box(
+                            modifier = Modifier
+                                .weight(0.15f)
+                                .padding(horizontal = 4.dp)
+                                .height(36.dp)
+                                .background(if (set.isCompleted) Color.Transparent else SurfaceDark, RoundedCornerShape(4.dp))
+                                .border(1.dp, if (set.isCompleted) Color.Transparent else Color.DarkGray, RoundedCornerShape(4.dp))
+                                .clip(RoundedCornerShape(4.dp))
+                                .clickable { onRpeClick(set) },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (set.rpe.isBlank()) "-" else set.rpe,
+                                color = if (set.isCompleted) TextGray else Color.White,
+                                textAlign = TextAlign.Center
+                            )
                         }
                         Box(
                             modifier = Modifier
@@ -238,7 +269,7 @@ fun ExerciseBlock(
             }, 
             confirmButton = { 
                 Button(
-                    onClick = { onUpdateRestTime(t.toIntOrNull() ?: 90); showRest = false }, 
+                    onClick = { onUpdateRestTime(t.toIntOrNull() ?: 90); showRest = false },
                     colors = ButtonDefaults.buttonColors(containerColor = themeColor)
                 ) { Text("OK", color = Color.White) } 
             }

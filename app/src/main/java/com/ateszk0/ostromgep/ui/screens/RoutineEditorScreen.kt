@@ -23,8 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutSetData
+import com.ateszk0.ostromgep.model.Equipment
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.*
@@ -37,7 +39,16 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
     var routineName by remember { mutableStateOf("My New Routine") }
     var draftExercises by remember { mutableStateOf(emptyList<ExerciseSessionData>()) }
     var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showCreateDialog by remember { mutableStateOf(false) }
+
+    androidx.activity.compose.BackHandler(enabled = true) {
+        if (showBottomSheet || showCreateDialog) {
+            showBottomSheet = false
+            showCreateDialog = false
+        } else {
+            onBack()
+        }
+    }
 
     Scaffold(
         topBar = { 
@@ -188,30 +199,52 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
             }
         }
         
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState,
-                containerColor = Color.Black,
-                modifier = Modifier.fillMaxHeight(0.95f)
-            ) {
-                AddExerciseContent(
-                    library = library,
-                    recentExercises = emptyList(),
-                    onExerciseSelected = { exDef ->
-                        val newSession = ExerciseSessionData(
-                            id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
-                            name = exDef.name,
-                            restTimerDuration = 90,
-                            sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
-                        )
-                        draftExercises = draftExercises + newSession
-                        showBottomSheet = false 
-                    },
-                    onClose = { showBottomSheet = false },
-                    themeColor = themeColor
-                )
+        androidx.compose.animation.AnimatedVisibility(
+            visible = showBottomSheet,
+            enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+            exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+            modifier = Modifier.fillMaxSize().zIndex(10f)
+        ) {
+            Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+                Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                    AddExerciseContent(
+                        library = library,
+                        recentExercises = emptyList(),
+                        onExerciseSelected = { exDef ->
+                            val newSession = ExerciseSessionData(
+                                id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
+                                name = exDef.name,
+                                restTimerDuration = 90,
+                                sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
+                            )
+                            draftExercises = draftExercises + newSession
+                            showBottomSheet = false
+                        },
+                        onClose = { showBottomSheet = false },
+                        onCreateCustom = { showCreateDialog = true },
+                        themeColor = themeColor
+                    )
+                }
             }
+        }
+
+        if (showCreateDialog) {
+            com.ateszk0.ostromgep.ui.components.CreateExerciseDialog(
+                themeColor = themeColor,
+                onDismiss = { showCreateDialog = false },
+                onSave = { name, min, max, imgUri, muscles, equip ->
+                    viewModel.updateExerciseDetails(name, min, max, imgUri, muscles, equip)
+                    val newSession = ExerciseSessionData(
+                        id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
+                        name = name,
+                        restTimerDuration = 90,
+                        sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
+                    )
+                    draftExercises = draftExercises + newSession
+                    showCreateDialog = false
+                    showBottomSheet = false
+                }
+            )
         }
     }
 }

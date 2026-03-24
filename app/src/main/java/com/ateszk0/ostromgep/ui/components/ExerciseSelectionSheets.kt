@@ -10,7 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
+import androidx.compose.ui.zIndex
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -116,6 +118,14 @@ fun AddExerciseContent(
                             text = "All Equipment",
                             isSelected = selectedEquipment == null,
                             themeColor = themeColor,
+                            icon = { 
+                                Box(
+                                    modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(Icons.Default.Search, null, tint = Color.Black, modifier = Modifier.size(24.dp))
+                                }
+                            },
                             onClick = { selectedEquipment = null; showEquipments = false }
                         )
                     }
@@ -124,6 +134,7 @@ fun AddExerciseContent(
                             text = eq.name.lowercase(Locale.ROOT).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }.replace("_", " "),
                             isSelected = selectedEquipment == eq,
                             themeColor = themeColor,
+                            icon = { EquipmentIcon(equipment = eq) },
                             onClick = { selectedEquipment = eq; showEquipments = false }
                         )
                     }
@@ -145,6 +156,14 @@ fun AddExerciseContent(
                             text = "All Muscles",
                             isSelected = selectedMuscle == null,
                             themeColor = themeColor,
+                            icon = { 
+                                Box(
+                                    modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(Icons.Default.Search, null, tint = Color.Black, modifier = Modifier.size(24.dp))
+                                }
+                            },
                             onClick = { selectedMuscle = null; showMuscles = false }
                         )
                     }
@@ -153,6 +172,7 @@ fun AddExerciseContent(
                             text = mg.name.lowercase(Locale.ROOT).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }.replace("_", " "),
                             isSelected = selectedMuscle == mg,
                             themeColor = themeColor,
+                            icon = { MuscleGroupIcon(muscleGroup = mg) },
                             onClick = { selectedMuscle = mg; showMuscles = false }
                         )
                     }
@@ -187,18 +207,20 @@ fun ExerciseListItem(exercise: ExerciseDef, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White),
-            contentAlignment = Alignment.Center
-        ) {
-             if (!exercise.imageUri.isNullOrEmpty()) {
+        if (!exercise.imageUri.isNullOrEmpty()) {
+             Box(
+                 modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White),
+                 contentAlignment = Alignment.Center
+             ) {
                  coil.compose.AsyncImage(
                     model = exercise.imageUri,
                     contentDescription = null,
                     contentScale = androidx.compose.ui.layout.ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
-                )
+                 )
              }
+        } else {
+             MuscleGroupIcon(muscleGroup = exercise.muscleGroups.firstOrNull() ?: MuscleGroup.OTHER)
         }
         Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
@@ -210,7 +232,7 @@ fun ExerciseListItem(exercise: ExerciseDef, onClick: () -> Unit) {
 }
 
 @Composable
-fun SelectionItem(text: String, isSelected: Boolean, themeColor: Color, onClick: () -> Unit) {
+fun SelectionItem(text: String, isSelected: Boolean, themeColor: Color, icon: @Composable () -> Unit = {}, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -220,17 +242,88 @@ fun SelectionItem(text: String, isSelected: Boolean, themeColor: Color, onClick:
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White),
-                contentAlignment = Alignment.Center
-            ) {
-                 // Icon placeholder
-            }
+            icon()
             Spacer(modifier = Modifier.width(16.dp))
             Text(text, color = Color.White, fontSize = 16.sp)
         }
         if (isSelected) {
             Icon(Icons.Default.Check, null, tint = themeColor)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RpeSelectionSheet(
+    themeColor: Color,
+    currentRpe: String,
+    onRpeSelected: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var visible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { visible = true }
+    val rpeOptions = listOf(
+        "10" to "Maximal effort. No more reps.",
+        "9.5" to "No more reps, could do more weight.",
+        "9" to "Could do 1 more rep.",
+        "8.5" to "Could definitively do 1 more rep.",
+        "8" to "Could do 2 more reps.",
+        "7.5" to "Could definitively do 2 more reps.",
+        "7" to "Could do 3 more reps.",
+        "6.5" to "Could definitively do 3 more reps.",
+        "6" to "Could do 4+ more reps."
+    )
+
+    androidx.compose.animation.AnimatedVisibility(
+        visible = visible,
+        enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+        modifier = Modifier.fillMaxSize().zIndex(10f)
+    ) {
+        Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+            Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { 
+                            visible = false
+                            onDismiss() 
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = themeColor)
+                        }
+                        Text("Select RPE", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.width(48.dp))
+                    }
+                    Text("Rate of Perceived Exertion", color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 16.dp, start = 8.dp))
+                    
+                    LazyColumn {
+                    items(rpeOptions) { (rpe, desc) ->
+                        val isSelected = currentRpe == rpe
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    onRpeSelected(rpe)
+                                }
+                                .background(if (isSelected) themeColor.copy(alpha = 0.2f) else Color.Transparent)
+                                .padding(vertical = 12.dp, horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .background(if (isSelected) themeColor else SurfaceDark, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(rpe, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(desc, color = if (isSelected) Color.White else TextGray, fontSize = 16.sp)
+                        }
+                    }
+                }
+            }
+            }
         }
     }
 }

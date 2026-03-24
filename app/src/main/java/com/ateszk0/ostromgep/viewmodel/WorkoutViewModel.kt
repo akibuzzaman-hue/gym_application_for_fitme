@@ -81,7 +81,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 delay(1000)
                 if (_activeExercises.value.isNotEmpty()) {
                     _totalSeconds.value += 1
-                    if (_restTimerSeconds.value > 0) _restTimerSeconds.value -= 1
+                    if (_restTimerSeconds.value > 0) {
+                        _restTimerSeconds.value -= 1
+                        if (_restTimerSeconds.value == 0) {
+                            try {
+                                android.media.RingtoneManager.getRingtone(application, android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_NOTIFICATION))?.play()
+                            } catch (e: Exception) {}
+                        }
+                    }
                     NotificationHelper.updateNotification(application, _activeExercises.value, _restTimerSeconds.value)
                 }
             }
@@ -118,7 +125,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.sets
     private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
 
-    fun updateExerciseDetails(name: String, min: Int, max: Int, imageUri: String?, muscleGroups: List<MuscleGroup>) {
+    fun updateExerciseDetails(name: String, min: Int, max: Int, imageUri: String?, muscleGroups: List<MuscleGroup>, equipment: Equipment) {
         val app = getApplication<Application>()
         val localImgUri = if (imageUri?.startsWith("content://") == true) {
             FileHelper.copyImageToInternalStorage(app, android.net.Uri.parse(imageUri)) ?: imageUri
@@ -127,9 +134,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val current = _exerciseLibrary.value.toMutableList()
         val index = current.indexOfFirst { it.name == name }
         if (index != -1) {
-            current[index] = current[index].copy(minReps = min, maxReps = max, imageUri = localImgUri, muscleGroups = muscleGroups)
+            current[index] = current[index].copy(minReps = min, maxReps = max, imageUri = localImgUri, muscleGroups = muscleGroups, equipment = equipment)
         } else {
-            current.add(ExerciseDef(name, min, max, localImgUri, muscleGroups))
+            current.add(ExerciseDef(name = name, minReps = min, maxReps = max, imageUri = localImgUri, muscleGroups = muscleGroups, equipment = equipment, isCustom = true))
         }
         _exerciseLibrary.value = current
         repository.saveExerciseLibrary(current)

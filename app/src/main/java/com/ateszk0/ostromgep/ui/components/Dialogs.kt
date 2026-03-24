@@ -23,11 +23,14 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.model.OverloadPrompt
 import com.ateszk0.ostromgep.model.ExerciseDef
+import com.ateszk0.ostromgep.model.Equipment
 import com.ateszk0.ostromgep.model.MuscleGroup
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
@@ -105,17 +108,27 @@ fun ProgressiveOverloadDialog(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseEditDialog(
     exercise: ExerciseDef, 
     themeColor: Color, 
     onDismiss: () -> Unit, 
-    onSave: (String, Int, Int, String?, List<MuscleGroup>) -> Unit,
+    onSave: (String, Int, Int, String?, List<MuscleGroup>, Equipment) -> Unit,
     onDelete: (() -> Unit)? = null
 ) {
-    var minI by remember { mutableStateOf(exercise.minReps.toString()) }
-    var maxI by remember { mutableStateOf(exercise.maxReps.toString()) }
-    var musc by remember { mutableStateOf(exercise.muscleGroups ?: emptyList()) }
+    @Suppress("SENSELESS_COMPARISON")
+    val safeMuscles = if (exercise.muscleGroups != null) exercise.muscleGroups.filterNotNull() else emptyList()
+    @Suppress("SENSELESS_COMPARISON")
+    val safeEquipment = if (exercise.equipment != null) exercise.equipment else Equipment.NONE
+    @Suppress("SENSELESS_COMPARISON")
+    val safeMinReps = if (exercise.minReps != null && exercise.minReps > 0) exercise.minReps else 8
+    @Suppress("SENSELESS_COMPARISON")
+    val safeMaxReps = if (exercise.maxReps != null && exercise.maxReps > 0) exercise.maxReps else 12
+    var minI by remember { mutableStateOf(safeMinReps.toString()) }
+    var maxI by remember { mutableStateOf(safeMaxReps.toString()) }
+    var musc by remember { mutableStateOf(safeMuscles) }
+    var equip by remember { mutableStateOf<Equipment>(safeEquipment) }
     
     var imgUri by remember { mutableStateOf(exercise.imageUri) }
     val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
@@ -124,46 +137,209 @@ fun ExerciseEditDialog(
         uri?.let { imgUri = it.toString() }
     }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
-        modifier = Modifier.fillMaxWidth(0.95f),
-        title = { Text(stringResource(R.string.edit_label) + " ${exercise.name}", color = Color.White) }, 
-        text = { 
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) { 
-                item {
-                    Text(stringResource(R.string.rep_range_label), color = TextGray)
-                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
-                        OutlinedTextField(value = minI, onValueChange = { minI = it }, label = { Text(stringResource(R.string.min_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-                        OutlinedTextField(value = maxI, onValueChange = { maxI = it }, label = { Text(stringResource(R.string.max_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)) 
-                    } 
+    var visible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { visible = true }
+
+    androidx.compose.animation.AnimatedVisibility(
+        visible = visible,
+        enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+        modifier = Modifier.zIndex(20f)
+    ) {
+        Surface(modifier = Modifier.fillMaxSize(), color = DarkBackground) {
+            Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { 
+                            visible = false
+                            onDismiss() 
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = themeColor)
+                        }
+                        Text(stringResource(R.string.edit_label) + " ${exercise.name}", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.weight(1f).padding(horizontal = 8.dp), textAlign = TextAlign.Center, maxLines = 1)
+                    Text(
+                        stringResource(R.string.save_btn), 
+                        color = if (musc.isNotEmpty()) themeColor else TextGray, 
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable(enabled = musc.isNotEmpty()) {
+                            onSave(exercise.name, minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12, imgUri, musc, equip)
+                        }
+                    )
                 }
-                item {
-                    Text(stringResource(R.string.image_label), color = TextGray)
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { launcher.launch("image/*") }) {
-                        if (!imgUri.isNullOrEmpty()) {
-                            coil.compose.AsyncImage(
-                                model = imgUri,
-                                contentDescription = null,
-                                contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-                                modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
-                            )
-                        } else {
-                            Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(DarkBackground), contentAlignment = Alignment.Center) {
-                                Text(stringResource(R.string.no_img_label), color = TextGray, fontSize = 10.sp)
+                if (exercise.isCustom && onDelete != null) {
+                    TextButton(onClick = onDelete, modifier = Modifier.padding(horizontal = 8.dp)) { Text(stringResource(R.string.delete_btn), color = Color.Red) }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) { 
+                    item {
+                        Text(stringResource(R.string.rep_range_label), color = TextGray)
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
+                            OutlinedTextField(value = minI, onValueChange = { minI = it }, label = { Text(stringResource(R.string.min_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), textStyle = TextStyle(color = Color.White))
+                            OutlinedTextField(value = maxI, onValueChange = { maxI = it }, label = { Text(stringResource(R.string.max_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), textStyle = TextStyle(color = Color.White)) 
+                        } 
+                    }
+                    item {
+                        Text(stringResource(R.string.image_label), color = TextGray)
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { launcher.launch("image/*") }) {
+                            if (!imgUri.isNullOrEmpty()) {
+                                coil.compose.AsyncImage(
+                                    model = imgUri,
+                                    contentDescription = null,
+                                    contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                                    modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                                )
+                            } else {
+                                Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(DarkBackground), contentAlignment = Alignment.Center) {
+                                    Text(stringResource(R.string.no_img_label), color = TextGray, fontSize = 10.sp)
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(if (imgUri.isNullOrEmpty()) stringResource(R.string.pick_image) else stringResource(R.string.change_image), color = Color.White)
+                        }
+                    }
+                    item {
+                        Text(stringResource(R.string.muscle_groups_label), color = TextGray)
+                    }
+                    if (exercise.isCustom) {
+                        items(MuscleGroup.values().toList()) { mg ->
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable { 
+                                musc = if (musc.contains(mg)) musc - mg else musc + mg 
+                            }) {
+                                Checkbox(checked = musc.contains(mg), onCheckedChange = { 
+                                    musc = if (it) musc + mg else musc - mg 
+                                }, colors = CheckboxDefaults.colors(checkedColor = themeColor))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                MuscleGroupIcon(muscleGroup = mg)
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(mg.name.lowercase(Locale.ROOT).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }.replace("_", " "), color = Color.White)
                             }
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(if (imgUri.isNullOrEmpty()) stringResource(R.string.pick_image) else stringResource(R.string.change_image), color = Color.White)
+                        item {
+                            Text("Equipment", color = TextGray)
+                        }
+                        items(com.ateszk0.ostromgep.model.Equipment.values().toList()) { eq ->
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable { 
+                                equip = eq
+                            }) {
+                                RadioButton(selected = equip == eq, onClick = { equip = eq }, colors = RadioButtonDefaults.colors(selectedColor = themeColor))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                EquipmentIcon(equipment = eq)
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(eq.name.lowercase(Locale.ROOT).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }.replace("_", " "), color = Color.White)
+                            }
+                        }
+                    } else {
+                        item {
+                            val muscleText = safeMuscles.joinToString(", ") { it.name }
+                            Text(if (muscleText.isEmpty()) "None" else muscleText, color = Color.White, modifier = Modifier.padding(start = 16.dp, top = 8.dp))
+                            Text(stringResource(R.string.default_muscle_warning), color = TextGray, fontSize = 12.sp, modifier = Modifier.padding(start = 16.dp, top = 4.dp))
+                        }
                     }
+                } 
+            }
+            }
+        }
+    }
+}
+
+@Composable
+fun CreateExerciseDialog(
+    themeColor: Color, 
+    onDismiss: () -> Unit, 
+    onSave: (String, Int, Int, String?, List<MuscleGroup>, Equipment) -> Unit
+) {
+    var name by remember { mutableStateOf("") }
+    var minI by remember { mutableStateOf("8") }
+    var maxI by remember { mutableStateOf("12") }
+    var musc by remember { mutableStateOf(emptyList<MuscleGroup>()) }
+    var equip by remember { mutableStateOf<Equipment?>(null) }
+    
+    var imgUri by remember { mutableStateOf<String?>(null) }
+    val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri: android.net.Uri? ->
+        uri?.let { imgUri = it.toString() }
+    }
+
+    var visible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { visible = true }
+
+    androidx.compose.animation.AnimatedVisibility(
+        visible = visible,
+        enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+        modifier = Modifier.zIndex(20f)
+    ) {
+        Surface(modifier = Modifier.fillMaxSize(), color = DarkBackground) {
+            Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { 
+                            visible = false
+                            onDismiss() 
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = themeColor)
+                        }
+                        Text(stringResource(R.string.custom_exercise_title), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center, maxLines = 1)
+                    val e = equip
+                    val canSave = name.isNotBlank() && musc.isNotEmpty() && e != null
+                    Text(
+                        stringResource(R.string.save_btn), 
+                        color = if (canSave) themeColor else TextGray,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable(enabled = canSave) {
+                            onSave(name.trim(), minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12, imgUri, musc, e!!)
+                        }
+                    )
                 }
-                item {
-                    Text(stringResource(R.string.muscle_groups_label), color = TextGray)
-                }
-                if (exercise.isCustom) {
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) { 
+                    item {
+                        OutlinedTextField(
+                            value = name, 
+                            onValueChange = { name = it }, 
+                            label = { Text(stringResource(R.string.exercise_name_label)) }, 
+                            modifier = Modifier.fillMaxWidth(),
+                            textStyle = TextStyle(color = Color.White),
+                            singleLine = true
+                        )
+                    }
+                    item {
+                        Text(stringResource(R.string.rep_range_label), color = TextGray)
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { 
+                            OutlinedTextField(value = minI, onValueChange = { minI = it }, label = { Text(stringResource(R.string.min_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), textStyle = TextStyle(color = Color.White))
+                            OutlinedTextField(value = maxI, onValueChange = { maxI = it }, label = { Text(stringResource(R.string.max_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), textStyle = TextStyle(color = Color.White)) 
+                        } 
+                    }
+                    item {
+                        Text(stringResource(R.string.image_label), color = TextGray)
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { launcher.launch("image/*") }) {
+                            if (!imgUri.isNullOrEmpty()) {
+                                coil.compose.AsyncImage(
+                                    model = imgUri,
+                                    contentDescription = null,
+                                    contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                                    modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                                )
+                            } else {
+                                Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(DarkBackground), contentAlignment = Alignment.Center) {
+                                    Text(stringResource(R.string.no_img_label), color = TextGray, fontSize = 10.sp)
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(if (imgUri.isNullOrEmpty()) stringResource(R.string.pick_image) else stringResource(R.string.change_image), color = Color.White)
+                        }
+                    }
+                    item {
+                        Text(stringResource(R.string.muscle_groups_label), color = TextGray)
+                    }
                     items(MuscleGroup.values().toList()) { mg ->
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable { 
                             musc = if (musc.contains(mg)) musc - mg else musc + mg 
@@ -171,28 +347,31 @@ fun ExerciseEditDialog(
                             Checkbox(checked = musc.contains(mg), onCheckedChange = { 
                                 musc = if (it) musc + mg else musc - mg 
                             }, colors = CheckboxDefaults.colors(checkedColor = themeColor))
-                            Text(mg.name, color = Color.White)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            MuscleGroupIcon(muscleGroup = mg)
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(mg.name.lowercase(Locale.ROOT).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }.replace("_", " "), color = Color.White)
                         }
                     }
-                } else {
                     item {
-                        val muscleText = exercise.muscleGroups.joinToString(", ") { it.name }
-                        Text(if (muscleText.isEmpty()) "None" else muscleText, color = Color.White, modifier = Modifier.padding(start = 16.dp, top = 8.dp))
-                        Text(stringResource(R.string.default_muscle_warning), color = TextGray, fontSize = 12.sp, modifier = Modifier.padding(start = 16.dp, top = 4.dp))
+                        Text("Equipment", color = TextGray)
                     }
-                }
-            } 
-        }, 
-        confirmButton = { Button(onClick = { onSave(exercise.name, minI.toIntOrNull() ?: 8, maxI.toIntOrNull() ?: 12, imgUri, musc) }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.save_btn), color = Color.White) } }, 
-        dismissButton = { 
-            Row {
-                if (exercise.isCustom && onDelete != null) {
-                    TextButton(onClick = onDelete) { Text(stringResource(R.string.delete_btn), color = Color.Red) }
-                }
-                TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel_btn), color = themeColor) } 
+                    items(com.ateszk0.ostromgep.model.Equipment.values().toList()) { eq ->
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().clickable { 
+                            equip = eq
+                        }) {
+                            RadioButton(selected = equip == eq, onClick = { equip = eq }, colors = RadioButtonDefaults.colors(selectedColor = themeColor))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            EquipmentIcon(equipment = eq)
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(eq.name.lowercase(Locale.ROOT).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }.replace("_", " "), color = Color.White)
+                        }
+                    }
+                } 
+            }
             }
         }
-    )
+    }
 }
 
 @Composable
@@ -201,6 +380,9 @@ fun SettingsDialog(
     currentThemeColor: Color, 
     onDismiss: () -> Unit
 ) {
+    var visible by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { visible = true }
+
     var selectedTab by remember { mutableStateOf(0) }
     
     val username by viewModel.username.collectAsState()
@@ -214,100 +396,131 @@ fun SettingsDialog(
     ) { uri: android.net.Uri? ->
         uri?.let { viewModel.updateProfilePictureUri(it.toString()) }
     }
-
-    AlertDialog(
-        onDismissRequest = onDismiss, 
-        title = { 
-            Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Text(stringResource(R.string.profile_settings_title), color = if (selectedTab == 0) currentThemeColor else TextGray, fontWeight = if (selectedTab == 0) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 0 })
-                Text(stringResource(R.string.theme_label), color = if (selectedTab == 1) currentThemeColor else TextGray, fontWeight = if (selectedTab == 1) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 1 })
-            }
-        }, 
-        text = {
-            if (selectedTab == 0) {
-                Column {
-                    Text(stringResource(R.string.profile_picture), fontWeight = FontWeight.Bold, color = Color.White)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Box(modifier = Modifier.size(64.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, contentAlignment = Alignment.Center) {
-                        if (profUri.isNullOrEmpty()) {
-                            Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(40.dp)) 
-                        } else {
-                            coil.compose.AsyncImage(model = profUri, contentDescription = null, contentScale = androidx.compose.ui.layout.ContentScale.Crop, modifier = Modifier.fillMaxSize())
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(stringResource(R.string.name_label), fontWeight = FontWeight.Bold, color = Color.White)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = editName, 
-                        onValueChange = { editName = it }, 
-                        textStyle = TextStyle(color = Color.White),
-                        singleLine = true
-                    )
-                }
-            } else {
-                Column { 
-                    Text(stringResource(R.string.theme_label), fontWeight = FontWeight.Bold, color = Color.White)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    listOf("Kék", "Piros", "Sárga", "Zöld").forEach { themeName ->
-                        val themeDisplay = when(themeName) { "Piros" -> stringResource(R.string.theme_red); "Sárga" -> stringResource(R.string.theme_yellow); "Zöld" -> stringResource(R.string.theme_green); else -> stringResource(R.string.theme_blue) }
-                        val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
-                        Row(
-                            modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(vertical = 12.dp), 
-                            verticalAlignment = Alignment.CenterVertically
-                        ) { 
-                            Box(modifier = Modifier.size(24.dp).clip(CircleShape).background(color))
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(themeDisplay, fontSize = 16.sp, color = Color.White) 
-                        } 
-                    } 
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(stringResource(R.string.language_label), fontWeight = FontWeight.Bold, color = Color.White)
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(selected = currentLang == "en", onClick = { 
-                            viewModel.setLanguage("en")
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = LocaleList(Locale("en"))
-                            }
-                        }, colors = RadioButtonDefaults.colors(selectedColor = currentThemeColor, unselectedColor = TextGray))
-                        Text("English", color = Color.White)
-                        Spacer(modifier = Modifier.width(16.dp))
-                        RadioButton(selected = currentLang == "hu", onClick = { 
-                            viewModel.setLanguage("hu")
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = LocaleList(Locale("hu"))
-                            }
-                        }, colors = RadioButtonDefaults.colors(selectedColor = currentThemeColor, unselectedColor = TextGray))
-                        Text("Magyar", color = Color.White)
-                    }
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text("Adatok", fontWeight = FontWeight.Bold, color = Color.White)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    val csvLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
-                        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
-                    ) { uri: android.net.Uri? ->
-                        uri?.let {
-                            val success = viewModel.importCsvHistory(context, it)
-                            android.widget.Toast.makeText(context, if (success) "Sikeres importálás" else "Sikertelen importálás", android.widget.Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    Button(
-                        onClick = { csvLauncher.launch("*/*") },
-                        colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)
-                    ) {
-                        Text("CSV Importálása", color = Color.White)
-                    }
-                } 
-            }
-        },
-        confirmButton = { 
-            Button(onClick = { 
-                if (selectedTab == 0) viewModel.updateUsername(editName)
-                onDismiss() 
-            }, colors = ButtonDefaults.buttonColors(containerColor = currentThemeColor)) { Text(stringResource(R.string.close_btn), color = Color.White) } 
+    
+    val csvLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri: android.net.Uri? ->
+        uri?.let {
+            val success = viewModel.importCsvHistory(context, it)
+            android.widget.Toast.makeText(context, if (success) "Sikeres importálás" else "Sikertelen importálás", android.widget.Toast.LENGTH_SHORT).show()
         }
-    )
+    }
+
+    androidx.compose.animation.AnimatedVisibility(
+        visible = visible,
+        enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+        exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+            Column(modifier = Modifier.fillMaxSize().padding(top = 48.dp, start = 16.dp, end = 16.dp)) {
+                // Header
+                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.close_btn), color = currentThemeColor, modifier = Modifier.clickable { 
+                        if (selectedTab == 0) viewModel.updateUsername(editName)
+                        visible = false
+                        onDismiss() 
+                    }, fontSize = 16.sp)
+                    Text(stringResource(R.string.profile_settings_title), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.width(48.dp)) // To center title
+                }
+                
+                // Tabs
+                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Text(stringResource(R.string.nav_profile), color = if (selectedTab == 0) currentThemeColor else TextGray, fontWeight = if (selectedTab == 0) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 0 }, fontSize = 16.sp)
+                    Text(stringResource(R.string.theme_label), color = if (selectedTab == 1) currentThemeColor else TextGray, fontWeight = if (selectedTab == 1) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 1 }, fontSize = 16.sp)
+                }
+                
+                // Content
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    if (selectedTab == 0) {
+                        item {
+                            // Profile Picture
+                            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                Box(modifier = Modifier.size(100.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, contentAlignment = Alignment.Center) {
+                                    if (profUri.isNullOrEmpty()) {
+                                        Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(60.dp)) 
+                                    } else {
+                                        coil.compose.AsyncImage(model = profUri, contentDescription = null, contentScale = androidx.compose.ui.layout.ContentScale.Crop, modifier = Modifier.fillMaxSize())
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(stringResource(R.string.profile_picture), color = TextGray, fontSize = 14.sp)
+                            }
+                            Spacer(modifier = Modifier.height(32.dp))
+                            // Name
+                            Text(stringResource(R.string.name_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                            OutlinedTextField(
+                                value = editName, 
+                                onValueChange = { editName = it }, 
+                                textStyle = TextStyle(color = Color.White),
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = currentThemeColor, focusedContainerColor = SurfaceDark, unfocusedContainerColor = SurfaceDark)
+                            )
+                        }
+                    } else {
+                        item {
+                            Text(stringResource(R.string.theme_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                            Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                                listOf("Kék", "Piros", "Sárga", "Zöld").forEachIndexed { index, themeName ->
+                                    val themeDisplay = when(themeName) { "Piros" -> stringResource(R.string.theme_red); "Sárga" -> stringResource(R.string.theme_yellow); "Zöld" -> stringResource(R.string.theme_green); else -> stringResource(R.string.theme_blue) }
+                                    val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(16.dp), 
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) { 
+                                        Box(modifier = Modifier.size(24.dp).clip(CircleShape).background(color))
+                                        Spacer(modifier = Modifier.width(16.dp))
+                                        Text(themeDisplay, fontSize = 16.sp, color = Color.White) 
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        if (themeName == "Kék" && currentThemeColor == Color(0xFF0A84FF)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                        if (themeName == "Piros" && currentThemeColor == Color(0xFFFF453A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                        if (themeName == "Sárga" && currentThemeColor == Color(0xFFFFD60A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                        if (themeName == "Zöld" && currentThemeColor == Color(0xFF32D74B)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                    } 
+                                    if (index < 3) Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                                } 
+                            }
+                            
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Text(stringResource(R.string.language_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                            Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                                Row(modifier = Modifier.fillMaxWidth().clickable { 
+                                    viewModel.setLanguage("en")
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                        context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale("en"))
+                                    }
+                                }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Text("English", fontSize = 16.sp, color = Color.White)
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    if (currentLang == "en") Icon(Icons.Default.Check, null, tint = currentThemeColor)
+                                }
+                                Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                                Row(modifier = Modifier.fillMaxWidth().clickable { 
+                                    viewModel.setLanguage("hu")
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                        context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale("hu"))
+                                    }
+                                }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Magyar", fontSize = 16.sp, color = Color.White)
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    if (currentLang == "hu") Icon(Icons.Default.Check, null, tint = currentThemeColor)
+                                }
+                            }
+                            
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Text("Adatok", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                            Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(SurfaceDark).clickable { csvLauncher.launch("*/*") }.padding(16.dp)) {
+                                Text("CSV Importálása", fontSize = 16.sp, color = Color.White)
+                            }
+                            Spacer(modifier = Modifier.height(32.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
