@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
@@ -25,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
@@ -48,6 +51,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var showBottomSheet by remember { mutableStateOf(false) }
     var showCreateDialog by remember { mutableStateOf(false) }
     var isSavingWorkout by remember { mutableStateOf(false) }
+    var isSimpleMode by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
     var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
@@ -112,8 +116,11 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                         Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Minimize", tint = Color.White)
                     }
                 },
-                title = { Text(stringResource(R.string.log_workout), color = Color.White) }, 
+                title = { Text(stringResource(R.string.log_workout), color = Color.White, fontSize = 20.sp, maxLines = 1) }, 
                 actions = { 
+                    IconButton(onClick = { isSimpleMode = !isSimpleMode }) { 
+                        Icon(if (isSimpleMode) Icons.Default.List else Icons.Default.Fullscreen, null, tint = themeColor) 
+                    }
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
                     Button(onClick = { isSavingWorkout = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
                 }, 
@@ -122,7 +129,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             ) 
         },
         bottomBar = {
-            if (restTimerSeconds > 0) {
+            if (!isSimpleMode && restTimerSeconds > 0) {
                 Row(
                     modifier = Modifier.fillMaxWidth().background(themeColor).imePadding().padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -174,8 +181,13 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
             }
 
-            LazyColumn(modifier = Modifier.weight(1f), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
-                items(groupedExercises, key = { grp -> grp.first().id }) { group ->
+            if (isSimpleMode) {
+                SimpleWorkoutView(viewModel, themeColor) { ex, set ->
+                    rpeTarget = ex.id to set
+                }
+            } else {
+                LazyColumn(modifier = Modifier.weight(1f), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
+                    items(groupedExercises, key = { grp -> grp.first().id }) { group ->
                 val isSuperset = group.size > 1 && group.first().supersetId != null
                 Column(
                     modifier = Modifier.fillMaxWidth().run {
@@ -230,6 +242,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
+        }
         }
         }
 
