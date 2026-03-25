@@ -139,11 +139,11 @@ fun ExerciseBlock(
         }
 
         exercise.sets.forEach { set ->
-            val coroutineScope = rememberCoroutineScope()
-            val maxSwipe = -150f
-            val swipeOffset = remember { androidx.compose.animation.core.Animatable(0f) }
-
             key(set.id) {
+                val coroutineScope = rememberCoroutineScope()
+                val maxSwipe = -150f
+                val swipeOffset = remember { androidx.compose.animation.core.Animatable(0f) }
+
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Box(
                         modifier = Modifier

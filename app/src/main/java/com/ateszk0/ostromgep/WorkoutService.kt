@@ -75,14 +75,13 @@ object NotificationHelper {
             .build()
     }
 
-    fun updateNotification(context: Context, activeExercises: List<ExerciseSessionData>, restTimerSeconds: Int) {
+    fun updateNotification(context: Context, targetExercise: ExerciseSessionData?, restTimerSeconds: Int) {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         
-        val lastExercise = activeExercises.lastOrNull()
-        val title = lastExercise?.name ?: "Workout"
+        val title = targetExercise?.name ?: "Workout"
         
-        val completedSets = lastExercise?.sets?.count { it.isCompleted } ?: 0
-        val totalSets = lastExercise?.sets?.size ?: 0
+        val completedSets = targetExercise?.sets?.count { it.isCompleted } ?: 0
+        val totalSets = targetExercise?.sets?.size ?: 0
         
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_menu_today)
@@ -91,13 +90,13 @@ object NotificationHelper {
             .setPriority(NotificationCompat.PRIORITY_LOW)
 
         if (restTimerSeconds > 0) {
-            val totalRest = lastExercise?.restTimerDuration ?: 90
+            val totalRest = maxOf(targetExercise?.restTimerDuration ?: 90, restTimerSeconds)
             val minutes = restTimerSeconds / 60
             val seconds = restTimerSeconds % 60
             val timeString = String.format("%d:%02d", minutes, seconds)
             
             builder.setContentText("Rest $timeString")
-            builder.setProgress(totalRest, totalRest - restTimerSeconds, false)
+            builder.setProgress(totalRest, restTimerSeconds, false)
             
             builder.addAction(android.R.drawable.ic_media_next, "Skip", getPendingIntent(context, "ACTION_SKIP_REST"))
             builder.addAction(android.R.drawable.ic_media_rew, "-15s", getPendingIntent(context, "ACTION_SUB_15S"))

@@ -124,7 +124,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         bottomBar = {
             if (restTimerSeconds > 0) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().background(themeColor).padding(horizontal = 16.dp, vertical = 12.dp),
+                    modifier = Modifier.fillMaxWidth().background(themeColor).imePadding().padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -167,16 +167,15 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             groups
         }
 
-        LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
-            item {
-                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
-                    StatItem(stringResource(R.string.volume_label), "${totalVolume.toInt()} kg")
-                    StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
-                }
+        Column(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
+            Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
+                StatItem(stringResource(R.string.volume_label), "${totalVolume.toInt()} kg")
+                StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
             }
 
-            items(groupedExercises, key = { grp -> grp.first().id }) { group ->
+            LazyColumn(modifier = Modifier.weight(1f), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
+                items(groupedExercises, key = { grp -> grp.first().id }) { group ->
                 val isSuperset = group.size > 1 && group.first().supersetId != null
                 Column(
                     modifier = Modifier.fillMaxWidth().run {
@@ -231,6 +230,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
+        }
         }
 
         if (prompts.isNotEmpty()) {

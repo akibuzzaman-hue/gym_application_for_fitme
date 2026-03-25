@@ -46,6 +46,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _activeTemplateId = MutableStateFlow<Int?>(null)
     val activeTemplateId = _activeTemplateId.asStateFlow()
 
+    private var lastInteractedExerciseId: Int? = null
+
     private val _overloadPrompts = MutableStateFlow<List<OverloadPrompt>>(emptyList())
     val overloadPrompts = _overloadPrompts.asStateFlow()
 
@@ -89,7 +91,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                             } catch (e: Exception) {}
                         }
                     }
-                    NotificationHelper.updateNotification(application, _activeExercises.value, _restTimerSeconds.value)
+                    val targetEx = targetExerciseForNotification()
+                    NotificationHelper.updateNotification(application, targetEx, _restTimerSeconds.value)
                 }
             }
         }
@@ -591,7 +594,31 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    private fun targetExerciseForNotification(): ExerciseSessionData? {
+        val exercises = _activeExercises.value
+        if (exercises.isEmpty()) return null
+
+        // Priority 1: Check the last interacted exercise and its superset group
+        if (lastInteractedExerciseId != null) {
+            val lastEx = exercises.find { it.id == lastInteractedExerciseId }
+            if (lastEx != null) {
+                val supersetId = lastEx.supersetId
+                val group = if (supersetId != null) exercises.filter { it.supersetId == supersetId } else listOf(lastEx)
+                val uncompletedInGroup = group.find { it.sets.any { s -> !s.isCompleted } }
+                if (uncompletedInGroup != null) return uncompletedInGroup
+            }
+        }
+        
+        // Priority 2: Return first exercise in order that has empty sets
+        val firstUncompleted = exercises.find { it.sets.any { s -> !s.isCompleted } }
+        if (firstUncompleted != null) return firstUncompleted
+        
+        // Priority 3: Return last interacted or last in list
+        return exercises.find { it.id == lastInteractedExerciseId } ?: exercises.lastOrNull()
+    }
+
     private fun updateExercise(eId: Int, updater: (ExerciseSessionData) -> ExerciseSessionData) {
+        lastInteractedExerciseId = eId
         _activeExercises.value = _activeExercises.value.map { if (it.id == eId) updater(it) else it }
     }
     
