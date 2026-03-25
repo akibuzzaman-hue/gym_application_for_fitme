@@ -570,17 +570,30 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             val writer = java.io.BufferedWriter(java.io.OutputStreamWriter(outputStream))
             val sdf = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.ENGLISH)
             // Write header
-            writer.write("title,start_time,end_time,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,rpe")
+            writer.write("\"title\",\"start_time\",\"end_time\",\"description\",\"exercise_title\",\"superset_id\",\"exercise_notes\",\"set_index\",\"set_type\",\"weight_kg\",\"reps\",\"distance_km\",\"duration_seconds\",\"rpe\"")
             writer.newLine()
             _workoutHistory.value.sortedByDescending { it.timestamp }.forEach { entry ->
                 val startTime = sdf.format(java.util.Date(entry.timestamp))
                 val endTime = sdf.format(java.util.Date(entry.timestamp + entry.durationSeconds * 1000L))
-                val title = "Workout"
+                
+                val cal = java.util.Calendar.getInstance().apply { timeInMillis = entry.timestamp }
+                val hour = cal.get(java.util.Calendar.HOUR_OF_DAY)
+                val title = when (hour) {
+                    in 5..11 -> "Morning workout \uD83C\uDFCB\uFE0F"
+                    in 12..16 -> "Afternoon workout \uD83C\uDFCB\uFE0F"
+                    in 17..21 -> "Evening workout \uD83C\uDFCB\uFE0F"
+                    else -> "Night workout \uD83C\uDFCB\uFE0F"
+                }
+                
                 entry.exercises.forEachIndexed { exIdx, ex ->
                     ex.sets.forEachIndexed { setIdx, set ->
                         val setType = if (set.isWarmup) "warmup" else "normal"
-                        val supersetId = ex.supersetId ?: ""
-                        writer.write("\"$title\",\"$startTime\",\"$endTime\",\"${ex.name}\",\"$supersetId\",\"${ex.note}\",$setIdx,$setType,${set.kg},${set.reps},${set.rpe}")
+                        val supersetStr = if (ex.supersetId.isNullOrBlank()) "" else "\"${ex.supersetId}\""
+                        val weightStr = set.kg.takeIf { it.isNotBlank() } ?: ""
+                        val repsStr = set.reps.takeIf { it.isNotBlank() } ?: ""
+                        val rpeStr = set.rpe.takeIf { it.isNotBlank() } ?: ""
+                        
+                        writer.write("\"$title\",\"$startTime\",\"$endTime\",\"\",\"${ex.name}\",$supersetStr,\"${ex.note}\",$setIdx,\"$setType\",$weightStr,$repsStr,,,$rpeStr")
                         writer.newLine()
                     }
                 }
