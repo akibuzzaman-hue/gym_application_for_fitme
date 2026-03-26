@@ -58,7 +58,8 @@ fun ExerciseBlock(
     onEditRepRange: () -> Unit,
     onSuperset: () -> Unit,
     onRemoveSuperset: () -> Unit,
-    onRpeClick: (WorkoutSetData) -> Unit
+    onRpeClick: (WorkoutSetData) -> Unit,
+    bodyweightKg: Double? = null
 ) {
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -132,7 +133,11 @@ fun ExerciseBlock(
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) { 
             Text("SET", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center)
             Text("PREVIOUS", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.3f), textAlign = TextAlign.Center)
-            Text("KG", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            if (bodyweightKg != null) {
+                Text("BW+KG", color = WarmupYellow, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            } else {
+                Text("KG", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            }
             Text("REPS", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
             Text("RPE", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
             Text("✔", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center) 

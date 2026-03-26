@@ -45,6 +45,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     val exercises by viewModel.activeExercises.collectAsState()
     val library by viewModel.exerciseLibrary.collectAsState()
     val prompts by viewModel.overloadPrompts.collectAsState()
+    val latestBodyWeight by viewModel.latestBodyWeightKg.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
     var showCreateDialog by remember { mutableStateOf(false) }
@@ -65,7 +66,18 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             onMinimize()
         }
     }
-    val totalVolume = exercises.sumOf { it.totalVolume() }
+    val totalVolume = exercises.sumOf { ex ->
+        if (ex.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) {
+            ex.sets.sumOf { set ->
+                if (set.isCompleted && !set.isWarmup) {
+                    val extraKg = set.kg.toDoubleOrNull() ?: 0.0
+                    (latestBodyWeight + extraKg) * (set.reps.toIntOrNull() ?: 0)
+                } else 0.0
+            }
+        } else {
+            ex.totalVolume()
+        }
+    }
     val completedSetsCount = exercises.sumOf { it.countCompletedSets() }
 
     // O(1) index lookup map to avoid O(n) indexOf per list item during scroll
@@ -150,7 +162,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 ) {
                     group.forEachIndexed { idxInGroup, exercise ->
                         val index = exerciseIndexMap[exercise.id] ?: 0
-                        ExerciseBlock(
+                                ExerciseBlock(
                                 exercise, libraryImageMap[exercise.name], index, exercises.size, themeColor,
                                 { viewModel.moveExerciseUp(index) },
                                 { viewModel.moveExerciseDown(index) },
@@ -165,7 +177,8 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                                 { exerciseToEditRepRange = exercise.name },
                                 { supersetSourceExercise = exercise },
                                 { viewModel.removeSuperset(exercise.id) },
-                                { set -> rpeTarget = exercise.id to set }
+                                { set -> rpeTarget = exercise.id to set },
+                                bodyweightKg = if (exercise.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) latestBodyWeight else null
                             )
                         if (idxInGroup < group.size - 1 && !isSuperset) {
                             Spacer(modifier = Modifier.height(24.dp))

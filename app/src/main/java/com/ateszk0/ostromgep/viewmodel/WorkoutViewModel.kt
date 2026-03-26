@@ -66,9 +66,28 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _profilePictureUri = MutableStateFlow(repository.getProfilePictureUri())
     val profilePictureUri = _profilePictureUri.asStateFlow()
 
+    private val _latestBodyWeightKg = MutableStateFlow(repository.getBodyWeightHistory().maxByOrNull { it.timestamp }?.weightKg ?: 0.0)
+    val latestBodyWeightKg: StateFlow<Double> = _latestBodyWeightKg.asStateFlow()
+
+    companion object {
+        val BODYWEIGHT_EXERCISES = setOf(
+            "Pull Up", "Pull-up", 
+            "Triceps Dip", "Tricep Dip",
+            "Chest Dip", "Dips (Chest)", "Dips",
+            "Push Up", "Push-up"
+        )
+    }
+
     init {
         _exerciseLibrary.value = repository.getExerciseLibrary().sortedBy { it.name }
         
+        viewModelScope.launch {
+            // Update latestBodyWeight whenever bodyWeightHistory changes
+            _bodyWeightHistory.collect { history ->
+                _latestBodyWeightKg.value = history.maxByOrNull { it.timestamp }?.weightKg ?: 0.0
+            }
+        }
+
         viewModelScope.launch {
             WorkoutEventBus.events.collect { action ->
                 when(action) {
@@ -206,7 +225,19 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun dismissOverloadPrompts() { _overloadPrompts.value = emptyList() }
 
     fun finishWorkout(updateOriginalRoutine: Boolean = false) {
-        val vol = _activeExercises.value.sumOf { it.totalVolume() }
+        val bw = _latestBodyWeightKg.value
+        val vol = _activeExercises.value.sumOf { ex ->
+            if (ex.name in BODYWEIGHT_EXERCISES) {
+                ex.sets.sumOf { set ->
+                    if (set.isCompleted && !set.isWarmup) {
+                        val extraKg = set.kg.toDoubleOrNull() ?: 0.0
+                        (bw + extraKg) * (set.reps.toIntOrNull() ?: 0)
+                    } else 0.0
+                }
+            } else {
+                ex.totalVolume()
+            }
+        }
         val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value)
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
@@ -637,6 +668,32 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     
     fun adjustRestTimer(a: Int) { _restTimerSeconds.value = maxOf(0, _restTimerSeconds.value + a) }
     fun skipRestTimer() { _restTimerSeconds.value = 0 }
+
+    fun getVolumeChartData(): List<Pair<String, Float>> {
+        val sdf = java.text.SimpleDateFormat("MM/dd", java.util.Locale.getDefault())
+        // Aggregate volume per calendar day
+        val dailyVolume = mutableMapOf<String, Float>()
+        val dateKeyFormat = java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
+        _workoutHistory.value.forEach { entry ->
+            val dayKey = dateKeyFormat.format(java.util.Date(entry.timestamp))
+            val label = sdf.format(java.util.Date(entry.timestamp))
+            val vol = entry.totalVolume.toFloat()
+            dailyVolume[dayKey] = (dailyVolume[dayKey] ?: 0f) + vol
+            // Store label alongside (use dayKey -> Pair)
+            // We'll handle label separately below
+        }
+        // Sort by date and take last 7 unique days
+        val sortedEntries = _workoutHistory.value
+            .groupBy { dateKeyFormat.format(java.util.Date(it.timestamp)) }
+            .map { (dayKey, entries) ->
+                val label = sdf.format(java.util.Date(entries.first().timestamp))
+                val totalVol = entries.sumOf { it.totalVolume }.toFloat()
+                Triple(dayKey, label, totalVol)
+            }
+            .sortedBy { it.first }
+            .takeLast(7)
+        return sortedEntries.map { it.second to it.third }
+    }
 
     fun getChartData(): List<Float> {
         val volumes = _workoutHistory.value.takeLast(7).map { it.totalVolume.toFloat() }

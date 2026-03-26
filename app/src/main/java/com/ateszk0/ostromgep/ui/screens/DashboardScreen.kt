@@ -35,7 +35,6 @@ import com.ateszk0.ostromgep.R
 @Composable
 fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToExercises: () -> Unit, onNavigateToCalendar: () -> Unit, onNavigateToStatistics: () -> Unit, onNavigateToWorkoutLog: (Long?) -> Unit) {
     val history by viewModel.workoutHistory.collectAsState()
-    val chartData = viewModel.getChartData()
     val username by viewModel.username.collectAsState()
     val profUri by viewModel.profilePictureUri.collectAsState()
     var showSettings by remember { mutableStateOf(false) }
@@ -81,10 +80,48 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
         item { 
             Text(stringResource(R.string.recent_workouts_volume), color = Color.White, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier.fillMaxWidth().height(120.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.Bottom) { 
-                chartData.forEach { heightRatio -> 
-                    Box(modifier = Modifier.width(24.dp).fillMaxHeight(heightRatio).background(themeColor, RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))) 
-                } 
+            val chartData = viewModel.getVolumeChartData()
+            if (chartData.isEmpty()) {
+                Box(modifier = Modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.Center) {
+                    Text("No workouts yet", color = TextGray, fontSize = 14.sp)
+                }
+            } else {
+                val maxVol = chartData.maxOfOrNull { it.second } ?: 1f
+                val barWidth = 28.dp
+                val chartHeight = 120.dp
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    // Y-axis labels
+                    Column(
+                        modifier = Modifier.height(chartHeight),
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Text("${maxVol.toInt()}kg", color = TextGray, fontSize = 10.sp)
+                        Text("${(maxVol / 2).toInt()}kg", color = TextGray, fontSize = 10.sp)
+                        Text("0", color = TextGray, fontSize = 10.sp)
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    // Bars + X axis labels
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        chartData.forEach { (date, vol) ->
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Box(
+                                    modifier = Modifier
+                                        .width(barWidth)
+                                        .height(chartHeight * (vol / maxVol).coerceIn(0.01f, 1f))
+                                        .background(themeColor, androidx.compose.foundation.shape.RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(date, color = TextGray, fontSize = 9.sp)
+                            }
+                        }
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(24.dp)) 
         }
