@@ -175,11 +175,11 @@ fun WorkoutLogScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                         Column {
                             Text(stringResource(R.string.time_label), color = TextGray, fontSize = 12.sp)
-                            Text("${entry.durationSeconds / 60}m ${entry.durationSeconds % 60}s", color = Color.White, fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.time_min_sec_format, entry.durationSeconds / 60, entry.durationSeconds % 60), color = Color.White, fontWeight = FontWeight.Bold)
                         }
                         Column {
                             Text(stringResource(R.string.volume_label), color = TextGray, fontSize = 12.sp)
-                            Text("${entry.totalVolume.toInt()} kg", color = Color.White, fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.weight_kg_format, entry.totalVolume.toInt().toString()), color = Color.White, fontWeight = FontWeight.Bold)
                         }
                         Column {
                             Text(stringResource(R.string.sets_label), color = TextGray, fontSize = 12.sp)
@@ -202,7 +202,7 @@ fun WorkoutLogScreen(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Box(modifier = Modifier.width(4.dp).height(24.dp).background(Color(0xFF9C27B0), RoundedCornerShape(2.dp)))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Superset", color = Color(0xFF9C27B0), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                    Text(stringResource(R.string.superset_label), color = Color(0xFF9C27B0), fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                 }
                             }
                             
@@ -294,11 +294,11 @@ fun WorkoutLogScreen(
                                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
                                     Column {
                                         Text(stringResource(R.string.time_label), color = TextGray, fontSize = 12.sp)
-                                        Text("${entry.durationSeconds / 60}m", color = Color.White, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.time_min_format, entry.durationSeconds / 60), color = Color.White, fontWeight = FontWeight.Bold)
                                     }
                                     Column {
                                         Text(stringResource(R.string.volume_label), color = TextGray, fontSize = 12.sp)
-                                        Text("${entry.totalVolume.toInt()} kg", color = Color.White, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.weight_kg_format, entry.totalVolume.toInt().toString()), color = Color.White, fontWeight = FontWeight.Bold)
                                     }
                                 }
 

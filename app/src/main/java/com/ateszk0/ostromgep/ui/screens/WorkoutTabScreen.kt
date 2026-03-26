@@ -51,7 +51,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         AlertDialog(
             onDismissRequest = { showOverrideConfirm = null },
             title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
-            text = { Text("Are you sure you want to start a new workout? The current progress will be lost.", color = TextGray) },
+            text = { Text(stringResource(R.string.new_workout_confirm_text), color = TextGray) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -60,7 +60,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
-                    Text("Continue", color = Color.White)
+                    Text(stringResource(R.string.continue_btn), color = Color.White)
                 }
             },
             dismissButton = {
@@ -75,7 +75,7 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         AlertDialog(
             onDismissRequest = { templateToDelete = null },
             title = { Text(stringResource(R.string.delete_btn), color = Color.White) },
-            text = { Text("Are you sure you want to delete this routine?", color = TextGray) },
+            text = { Text(stringResource(R.string.delete_routine_confirm_text), color = TextGray) },
             confirmButton = {
                 Button(
                     onClick = {

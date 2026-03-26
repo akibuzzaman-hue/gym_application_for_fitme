@@ -202,4 +202,35 @@
     <string name="workout_detail_title">Edzés részletei</string>
     <string name="export_success">CSV sikeresen exportálva</string>
     <string name="export_failure">Exportálás sikertelen</string>
+
+    <!-- Dialogs & Labels -->
+    <string name="new_workout_confirm_title">Új edzés indítása?</string>
+    <string name="new_workout_confirm_text">Biztosan új edzést indítasz? A jelenlegi mentetlen haladás elveszik.</string>
+    <string name="continue_btn">Folytatás</string>
+    <string name="delete_routine_confirm_title">Rutin törlése?</string>
+    <string name="delete_routine_confirm_text">Biztosan törölni szeretnéd ezt a rutint?</string>
+    <string name="routine_editor_title">Rutin szerkesztő</string>
+    <string name="add_exercise_to_routine">Gyakorlat hozzáadása a rutinhoz</string>
+    <string name="explore_routines_title">Rutinok felfedezése</string>
+    <string name="add_to_my_routines">Hozzáadás a rutinjaimhoz</string>
+    <string name="no_other_exercises">Nincs más gyakorlat az edzésben.</string>
+    <string name="create_superset_title">Superset létrehozása</string>
+    <string name="reps_label_short">ISM.</string>
+    <string name="kg_label_short">KG</string>
+    <string name="set_label_short">SET</string>
+    <string name="target_reps_label">CÉL ISMT.</string>
+    <string name="del_label_short">TÖRL.</string>
+    <string name="superset_label">Superset</string>
+    <string name="add_set_label">Sorozat hozzáadása</string>
+    <string name="time_min_sec_format">%1$dp %2$dmp</string>
+    <string name="time_min_format">%1$dp</string>
+    <string name="weight_kg_format">%1$s kg</string>
+    <string name="previous_label_short">ELŐZŐ</string>
+    <string name="rpe_label_short">RPE</string>
+    <string name="move_up">Mozgatás fel</string>
+    <string name="move_down">Mozgatás le</string>
+    <string name="remove_superset">Superset eltávolítása</string>
+    <string name="add_notes_placeholder">Jegyzetek...</string>
+    <string name="bw_kg_label">TS+KG</string>
+    <string name="warmup_label">Bemelegítés</string>
 </resources>

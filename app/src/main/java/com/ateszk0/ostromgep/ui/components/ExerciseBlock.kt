@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ateszk0.ostromgep.R
 import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutSetData
 import com.ateszk0.ostromgep.ui.theme.*
@@ -108,18 +110,18 @@ fun ExerciseBlock(
                 Box {
                     Icon(Icons.Default.MoreVert, null, tint = TextGray, modifier = Modifier.clickable { showMenu = true }.padding(4.dp))
                     DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(SurfaceDark)) {
-                        DropdownMenuItem(text = { Text("Move Up ↑", color = Color.White) }, onClick = { showMenu = false; onMoveUp() })
-                        DropdownMenuItem(text = { Text("Move Down ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
-                        DropdownMenuItem(text = { Text("Edit", color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
-                        DropdownMenuItem(text = { Text(if (exercise.supersetId == null) "Superset" else "Remove Superset", color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
-                        DropdownMenuItem(text = { Text("Delete", color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.move_up) + " ↑", color = Color.White) }, onClick = { showMenu = false; onMoveUp() })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.move_down) + " ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.edit_label), color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
+                        DropdownMenuItem(text = { Text(if (exercise.supersetId == null) stringResource(R.string.superset_label) else stringResource(R.string.remove_superset), color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
                     }
                 }
             }
         }
         Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
             if (exercise.note.isEmpty()) { 
-                Text("Add notes here...", color = TextGray.copy(alpha = 0.5f), fontSize = 12.sp) 
+                Text(stringResource(R.string.add_notes_placeholder), color = TextGray.copy(alpha = 0.5f), fontSize = 12.sp) 
             }
             BasicTextField(
                 value = exercise.note, 
@@ -131,15 +133,15 @@ fun ExerciseBlock(
         }
         Spacer(modifier = Modifier.height(12.dp))
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) { 
-            Text("SET", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center)
-            Text("PREVIOUS", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.3f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.set_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.previous_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.3f), textAlign = TextAlign.Center)
             if (bodyweightKg != null) {
-                Text("BW+KG", color = WarmupYellow, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+                Text(stringResource(R.string.bw_kg_label), color = WarmupYellow, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
             } else {
-                Text("KG", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+                Text(stringResource(R.string.kg_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
             }
-            Text("REPS", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
-            Text("RPE", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.reps_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.rpe_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
             Text("✔", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center) 
         }
 

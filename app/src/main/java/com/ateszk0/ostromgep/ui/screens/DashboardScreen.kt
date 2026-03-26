@@ -157,11 +157,11 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 8.dp)) { 
                         Column { 
                             Text(stringResource(R.string.time_label), color = TextGray, fontSize = 12.sp)
-                            Text("${workout.durationSeconds/60}m", color = Color.White) 
+                            Text(stringResource(R.string.time_min_format, workout.durationSeconds / 60), color = Color.White) 
                         }
                         Column { 
                             Text(stringResource(R.string.volume_label), color = TextGray, fontSize = 12.sp)
-                            Text("${workout.totalVolume.toInt()} kg", color = Color.White) 
+                            Text(stringResource(R.string.weight_kg_format, workout.totalVolume.toInt().toString()), color = Color.White) 
                         } 
                     }
                     Spacer(modifier = Modifier.height(8.dp))

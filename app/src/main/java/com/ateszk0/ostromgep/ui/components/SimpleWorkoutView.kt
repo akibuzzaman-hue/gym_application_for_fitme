@@ -30,6 +30,8 @@ import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutSetData
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -161,11 +163,11 @@ fun SimpleWorkoutView(
 
         // Headers
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) { 
-            Text("SET", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
-            Text("PREVIOUS", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
-            Text("KG", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
-            Text("REPS", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
-            Text("RPE", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.set_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.previous_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.kg_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.reps_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.rpe_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
         }
         Spacer(modifier = Modifier.height(8.dp))
 

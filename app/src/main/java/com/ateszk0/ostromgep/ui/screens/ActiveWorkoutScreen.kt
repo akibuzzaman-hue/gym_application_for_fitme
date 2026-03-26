@@ -273,7 +273,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             
             AlertDialog(
                 onDismissRequest = { supersetSourceExercise = null },
-                title = { Text("Create Superset", color = Color.White) },
+                title = { Text(stringResource(R.string.create_superset_title), color = Color.White) },
                 text = {
                     LazyColumn(modifier = Modifier.heightIn(max = 300.dp)) {
                         items(otherExercises) { ex ->
@@ -291,7 +291,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                             }
                         }
                         if (otherExercises.isEmpty()) {
-                            item { Text("No other exercises in workout.", color = TextGray) }
+                            item { Text(stringResource(R.string.no_other_exercises), color = TextGray) }
                         }
                     }
                 },
