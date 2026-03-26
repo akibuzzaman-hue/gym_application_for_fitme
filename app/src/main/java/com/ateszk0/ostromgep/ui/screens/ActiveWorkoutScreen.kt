@@ -108,8 +108,8 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         SaveWorkoutScreen(
             viewModel = viewModel,
             themeColor = themeColor,
-            onSave = { updateRoutine ->
-                viewModel.finishWorkout(updateOriginalRoutine = updateRoutine)
+            onSave = { customName, updateRoutine ->
+                viewModel.finishWorkout(customName = customName, updateOriginalRoutine = updateRoutine)
                 onFinishWorkout()
             },
             onDiscard = {

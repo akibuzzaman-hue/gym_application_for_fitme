@@ -101,9 +101,10 @@ fun WorkoutLogScreen(
             TopAppBar(
                 title = {
                     Text(
-                        if (selectedEntry != null) stringResource(R.string.workout_detail_title)
+                        if (selectedEntry != null) selectedEntry?.name ?: stringResource(R.string.workout_detail_title)
                         else stringResource(R.string.workout_log_screen_title),
-                        color = Color.White
+                        color = Color.White,
+                        maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
@@ -279,8 +280,12 @@ fun WorkoutLogScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.Top
                                 ) {
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(stringResource(R.string.workout_log_title), fontWeight = FontWeight.Bold, color = Color.White, fontSize = 20.sp)
+                                    Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
+                                        Text(
+                                            text = entry.name ?: stringResource(R.string.workout_log_title),
+                                            fontWeight = FontWeight.Bold, color = Color.White, fontSize = 20.sp,
+                                            maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                                        )
                                         Text(dateFormatter.format(Date(entry.timestamp)), color = TextGray, fontSize = 12.sp)
                                     }
                                     IconButton(

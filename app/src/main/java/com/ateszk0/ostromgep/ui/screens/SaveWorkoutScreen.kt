@@ -33,7 +33,7 @@ import java.util.*
 fun SaveWorkoutScreen(
     viewModel: WorkoutViewModel,
     themeColor: Color,
-    onSave: (Boolean) -> Unit,
+    onSave: (String?, Boolean) -> Unit,
     onDiscard: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -70,7 +70,7 @@ fun SaveWorkoutScreen(
                                 routineChanges = changes
                                 showChangesSheet = true
                             } else {
-                                onSave(false)
+                                onSave(workoutTitle.takeIf { it.isNotBlank() }, false)
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = themeColor),
@@ -257,7 +257,7 @@ fun SaveWorkoutScreen(
                     Button(
                         onClick = { 
                             showChangesSheet = false
-                            onSave(true)
+                            onSave(workoutTitle.takeIf { it.isNotBlank() }, true)
                         },
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = themeColor)
@@ -270,7 +270,7 @@ fun SaveWorkoutScreen(
                     Button(
                         onClick = { 
                             showChangesSheet = false
-                            onSave(false)
+                            onSave(workoutTitle.takeIf { it.isNotBlank() }, false)
                         },
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = DarkBackground)

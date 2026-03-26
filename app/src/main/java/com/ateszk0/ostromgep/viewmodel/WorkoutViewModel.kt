@@ -224,7 +224,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun dismissOverloadPrompts() { _overloadPrompts.value = emptyList() }
 
-    fun finishWorkout(updateOriginalRoutine: Boolean = false) {
+    fun finishWorkout(customName: String? = null, updateOriginalRoutine: Boolean = false) {
         val bw = _latestBodyWeightKg.value
         val vol = _activeExercises.value.sumOf { ex ->
             if (ex.name in BODYWEIGHT_EXERCISES) {
@@ -238,7 +238,15 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 ex.totalVolume()
             }
         }
-        val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value)
+        var finalName = customName
+        if (finalName.isNullOrBlank()) {
+            val activeId = _activeTemplateId.value
+            if (activeId != null) {
+                val template = _savedTemplates.value.find { it.id == activeId }
+                if (template != null) finalName = template.templateName
+            }
+        }
+        val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value, finalName)
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
 
@@ -543,15 +551,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 val totalVol = finalExercises.sumOf { it.totalVolume() }
                 val startMs = timestamp
                 var endMs = startMs + 3600000 // default 1 hr
+                var csvTitle: String? = null
                 if (rows.isNotEmpty()) {
                     val firstRowTokens = rows[0].split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                    if (firstRowTokens.isNotEmpty()) csvTitle = firstRowTokens[0]
                     if (firstRowTokens.size > 2) {
                         try { endMs = sdf.parse(firstRowTokens[2])?.time ?: endMs } catch (e: Exception) {}
                     }
                 }
                 val durationSec = ((endMs - startMs) / 1000).coerceAtLeast(0).toInt()
                 
-                newEntries.add(WorkoutHistoryEntry(timestamp, totalVol, durationSec, finalExercises))
+                newEntries.add(WorkoutHistoryEntry(timestamp, totalVol, durationSec, finalExercises, csvTitle))
             }
             
             if (newEntries.isNotEmpty()) {
@@ -609,12 +619,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 
                 val cal = java.util.Calendar.getInstance().apply { timeInMillis = entry.timestamp }
                 val hour = cal.get(java.util.Calendar.HOUR_OF_DAY)
-                val title = when (hour) {
+                val defaultTitle = when (hour) {
                     in 5..11 -> "Morning workout \uD83C\uDFCB\uFE0F"
                     in 12..16 -> "Afternoon workout \uD83C\uDFCB\uFE0F"
                     in 17..21 -> "Evening workout \uD83C\uDFCB\uFE0F"
                     else -> "Night workout \uD83C\uDFCB\uFE0F"
                 }
+                val title = entry.name ?: defaultTitle
                 
                 entry.exercises.forEachIndexed { exIdx, ex ->
                     ex.sets.forEachIndexed { setIdx, set ->

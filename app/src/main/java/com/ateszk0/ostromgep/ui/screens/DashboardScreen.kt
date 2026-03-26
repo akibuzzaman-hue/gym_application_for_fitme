@@ -143,7 +143,7 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
             Text(stringResource(R.string.workouts_label), color = TextGray)
             Spacer(modifier = Modifier.height(8.dp)) 
         }
-        items(history.reversed().take(5)) { workout -> 
+        items(history.sortedByDescending { it.timestamp }.take(5)) { workout -> 
             Card(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable { onNavigateToWorkoutLog(workout.timestamp) }, 
                 colors = CardDefaults.cardColors(containerColor = SurfaceDark)
@@ -151,7 +151,12 @@ fun DashboardProfile(viewModel: WorkoutViewModel, themeColor: Color, onNavigateT
                 Column(modifier = Modifier.padding(16.dp)) { 
                     val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text(stringResource(R.string.workout_log_title), fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp)
+                        Text(
+                            text = workout.name ?: stringResource(R.string.workout_log_title),
+                            fontWeight = FontWeight.Bold, color = Color.White, fontSize = 18.sp,
+                            maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f).padding(end = 8.dp)
+                        )
                         Text(sdf.format(java.util.Date(workout.timestamp)), color = TextGray, fontSize = 12.sp)
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 8.dp)) { 
