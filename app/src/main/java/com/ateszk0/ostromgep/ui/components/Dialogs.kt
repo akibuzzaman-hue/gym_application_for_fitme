@@ -39,6 +39,8 @@ import com.ateszk0.ostromgep.R
 import android.os.Build
 import android.os.LocaleList
 import java.util.Locale
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 @Composable
 fun ProgressiveOverloadDialog(
@@ -413,123 +415,119 @@ fun SettingsDialog(
         modifier = Modifier.fillMaxSize()
     ) {
         Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+            val coroutineScope = rememberCoroutineScope()
             Column(modifier = Modifier.fillMaxSize().padding(top = 48.dp, start = 16.dp, end = 16.dp)) {
                 // Header
                 Row(modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.close_btn), color = currentThemeColor, modifier = Modifier.clickable { 
-                        if (selectedTab == 0) viewModel.updateUsername(editName)
-                        visible = false
-                        onDismiss() 
+                        viewModel.updateUsername(editName)
+                        coroutineScope.launch {
+                            visible = false
+                            kotlinx.coroutines.delay(300)
+                            onDismiss() 
+                        }
                     }, fontSize = 16.sp)
                     Text(stringResource(R.string.profile_settings_title), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.width(48.dp)) // To center title
                 }
                 
-                // Tabs
-                Row(modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Text(stringResource(R.string.nav_profile), color = if (selectedTab == 0) currentThemeColor else TextGray, fontWeight = if (selectedTab == 0) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 0 }, fontSize = 16.sp)
-                    Text(stringResource(R.string.theme_label), color = if (selectedTab == 1) currentThemeColor else TextGray, fontWeight = if (selectedTab == 1) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.clickable { selectedTab = 1 }, fontSize = 16.sp)
-                }
-                
                 // Content
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    if (selectedTab == 0) {
-                        item {
-                            // Profile Picture
-                            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Box(modifier = Modifier.size(100.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, contentAlignment = Alignment.Center) {
-                                    if (profUri.isNullOrEmpty()) {
-                                        Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(60.dp)) 
-                                    } else {
-                                        coil.compose.AsyncImage(model = profUri, contentDescription = null, contentScale = androidx.compose.ui.layout.ContentScale.Crop, modifier = Modifier.fillMaxSize())
-                                    }
+                    item {
+                        // Profile Picture
+                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Box(modifier = Modifier.size(100.dp).clip(CircleShape).background(SurfaceDark).clickable { launcher.launch("image/*") }, contentAlignment = Alignment.Center) {
+                                if (profUri.isNullOrEmpty()) {
+                                    Icon(Icons.Default.Person, null, tint = TextGray, modifier = Modifier.size(60.dp)) 
+                                } else {
+                                    coil.compose.AsyncImage(model = profUri, contentDescription = null, contentScale = androidx.compose.ui.layout.ContentScale.Crop, modifier = Modifier.fillMaxSize())
                                 }
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(stringResource(R.string.profile_picture), color = TextGray, fontSize = 14.sp)
                             }
-                            Spacer(modifier = Modifier.height(32.dp))
-                            // Name
-                            Text(stringResource(R.string.name_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
-                            OutlinedTextField(
-                                value = editName, 
-                                onValueChange = { editName = it }, 
-                                textStyle = TextStyle(color = Color.White),
-                                singleLine = true,
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = currentThemeColor, focusedContainerColor = SurfaceDark, unfocusedContainerColor = SurfaceDark)
-                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(stringResource(R.string.profile_picture), color = TextGray, fontSize = 14.sp)
                         }
-                    } else {
-                        item {
-                            Text(stringResource(R.string.theme_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
-                            Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
-                                listOf("Kék", "Piros", "Sárga", "Zöld").forEachIndexed { index, themeName ->
-                                    val themeDisplay = when(themeName) { "Piros" -> stringResource(R.string.theme_red); "Sárga" -> stringResource(R.string.theme_yellow); "Zöld" -> stringResource(R.string.theme_green); else -> stringResource(R.string.theme_blue) }
-                                    val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(16.dp), 
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) { 
-                                        Box(modifier = Modifier.size(24.dp).clip(CircleShape).background(color))
-                                        Spacer(modifier = Modifier.width(16.dp))
-                                        Text(themeDisplay, fontSize = 16.sp, color = Color.White) 
-                                        Spacer(modifier = Modifier.weight(1f))
-                                        if (themeName == "Kék" && currentThemeColor == Color(0xFF0A84FF)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
-                                        if (themeName == "Piros" && currentThemeColor == Color(0xFFFF453A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
-                                        if (themeName == "Sárga" && currentThemeColor == Color(0xFFFFD60A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
-                                        if (themeName == "Zöld" && currentThemeColor == Color(0xFF32D74B)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
-                                    } 
-                                    if (index < 3) Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                        Spacer(modifier = Modifier.height(32.dp))
+                        // Name
+                        Text(stringResource(R.string.name_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                        OutlinedTextField(
+                            value = editName, 
+                            onValueChange = { editName = it }, 
+                            textStyle = TextStyle(color = Color.White),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = currentThemeColor, focusedContainerColor = SurfaceDark, unfocusedContainerColor = SurfaceDark)
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(32.dp))
+                        Text(stringResource(R.string.theme_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                        Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                            listOf("Kék", "Piros", "Sárga", "Zöld").forEachIndexed { index, themeName ->
+                                val themeDisplay = when(themeName) { "Piros" -> stringResource(R.string.theme_red); "Sárga" -> stringResource(R.string.theme_yellow); "Zöld" -> stringResource(R.string.theme_green); else -> stringResource(R.string.theme_blue) }
+                                val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(16.dp), 
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) { 
+                                    Box(modifier = Modifier.size(24.dp).clip(CircleShape).background(color))
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                    Text(themeDisplay, fontSize = 16.sp, color = Color.White) 
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    if (themeName == "Kék" && currentThemeColor == Color(0xFF0A84FF)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                    if (themeName == "Piros" && currentThemeColor == Color(0xFFFF453A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                    if (themeName == "Sárga" && currentThemeColor == Color(0xFFFFD60A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                    if (themeName == "Zöld" && currentThemeColor == Color(0xFF32D74B)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
                                 } 
-                            }
-                            
-                            Spacer(modifier = Modifier.height(24.dp))
-                            Text(stringResource(R.string.language_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
-                            Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
-                                Row(modifier = Modifier.fillMaxWidth().clickable { 
-                                    viewModel.setLanguage("en")
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                        context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale("en"))
-                                    }
-                                }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    Text("English", fontSize = 16.sp, color = Color.White)
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    if (currentLang == "en") Icon(Icons.Default.Check, null, tint = currentThemeColor)
-                                }
-                                Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
-                                Row(modifier = Modifier.fillMaxWidth().clickable { 
-                                    viewModel.setLanguage("hu")
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                        context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale("hu"))
-                                    }
-                                }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Magyar", fontSize = 16.sp, color = Color.White)
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    if (currentLang == "hu") Icon(Icons.Default.Check, null, tint = currentThemeColor)
-                                }
-                            }
-                            
-                            Spacer(modifier = Modifier.height(24.dp))
-                            Text("Adatok", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
-                            val exportLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
-                                contract = androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv")
-                            ) { uri: android.net.Uri? ->
-                                uri?.let {
-                                    val success = viewModel.exportWorkoutsAsCsv(context, it)
-                                    android.widget.Toast.makeText(context, if (success) context.getString(R.string.export_success) else context.getString(R.string.export_failure), android.widget.Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            Column(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
-                                Row(modifier = Modifier.fillMaxWidth().clickable { csvLauncher.launch("*/*") }.padding(16.dp)) {
-                                    Text("CSV Importálása", fontSize = 16.sp, color = Color.White)
-                                }
-                                Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
-                                Row(modifier = Modifier.fillMaxWidth().clickable { exportLauncher.launch("workouts.csv") }.padding(16.dp)) {
-                                    Text(stringResource(R.string.export_workouts_csv), fontSize = 16.sp, color = Color.White)
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(32.dp))
+                                if (index < 3) Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                            } 
                         }
+                        
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Text(stringResource(R.string.language_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                        Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                            Row(modifier = Modifier.fillMaxWidth().clickable { 
+                                viewModel.setLanguage("en")
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale("en"))
+                                }
+                            }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("English", fontSize = 16.sp, color = Color.White)
+                                Spacer(modifier = Modifier.weight(1f))
+                                if (currentLang == "en") Icon(Icons.Default.Check, null, tint = currentThemeColor)
+                            }
+                            Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                            Row(modifier = Modifier.fillMaxWidth().clickable { 
+                                viewModel.setLanguage("hu")
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = android.os.LocaleList(java.util.Locale("hu"))
+                                }
+                            }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("Magyar", fontSize = 16.sp, color = Color.White)
+                                Spacer(modifier = Modifier.weight(1f))
+                                if (currentLang == "hu") Icon(Icons.Default.Check, null, tint = currentThemeColor)
+                            }
+                        }
+                        
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Text("Data", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                        val exportLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+                            contract = androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv")
+                        ) { uri: android.net.Uri? ->
+                            uri?.let {
+                                val success = viewModel.exportWorkoutsAsCsv(context, it)
+                                android.widget.Toast.makeText(context, if (success) context.getString(R.string.export_success) else context.getString(R.string.export_failure), android.widget.Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        Column(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                            Row(modifier = Modifier.fillMaxWidth().clickable { csvLauncher.launch("*/*") }.padding(16.dp)) {
+                                Text("Import CSV", fontSize = 16.sp, color = Color.White)
+                            }
+                            Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                            Row(modifier = Modifier.fillMaxWidth().clickable { exportLauncher.launch("workouts.csv") }.padding(16.dp)) {
+                                Text(stringResource(R.string.export_workouts_csv), fontSize = 16.sp, color = Color.White)
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
             }
