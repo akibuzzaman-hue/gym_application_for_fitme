@@ -46,6 +46,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _activeTemplateId = MutableStateFlow<Int?>(null)
     val activeTemplateId = _activeTemplateId.asStateFlow()
 
+    private var lastInteractedExerciseId: Int? = null
+
     private val _overloadPrompts = MutableStateFlow<List<OverloadPrompt>>(emptyList())
     val overloadPrompts = _overloadPrompts.asStateFlow()
 
@@ -64,9 +66,28 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _profilePictureUri = MutableStateFlow(repository.getProfilePictureUri())
     val profilePictureUri = _profilePictureUri.asStateFlow()
 
+    private val _latestBodyWeightKg = MutableStateFlow(repository.getBodyWeightHistory().maxByOrNull { it.timestamp }?.weightKg ?: 0.0)
+    val latestBodyWeightKg: StateFlow<Double> = _latestBodyWeightKg.asStateFlow()
+
+    companion object {
+        val BODYWEIGHT_EXERCISES = setOf(
+            "Pull Up", "Pull-up", 
+            "Triceps Dip", "Tricep Dip",
+            "Chest Dip", "Dips (Chest)", "Dips",
+            "Push Up", "Push-up"
+        )
+    }
+
     init {
         _exerciseLibrary.value = repository.getExerciseLibrary().sortedBy { it.name }
         
+        viewModelScope.launch {
+            // Update latestBodyWeight whenever bodyWeightHistory changes
+            _bodyWeightHistory.collect { history ->
+                _latestBodyWeightKg.value = history.maxByOrNull { it.timestamp }?.weightKg ?: 0.0
+            }
+        }
+
         viewModelScope.launch {
             WorkoutEventBus.events.collect { action ->
                 when(action) {
@@ -89,7 +110,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                             } catch (e: Exception) {}
                         }
                     }
-                    NotificationHelper.updateNotification(application, _activeExercises.value, _restTimerSeconds.value)
+                    val targetEx = targetExerciseForNotification()
+                    NotificationHelper.updateNotification(application, targetEx, _restTimerSeconds.value)
                 }
             }
         }
@@ -202,9 +224,29 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun dismissOverloadPrompts() { _overloadPrompts.value = emptyList() }
 
-    fun finishWorkout(updateOriginalRoutine: Boolean = false) {
-        val vol = _activeExercises.value.sumOf { it.totalVolume() }
-        val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value)
+    fun finishWorkout(customName: String? = null, updateOriginalRoutine: Boolean = false) {
+        val bw = _latestBodyWeightKg.value
+        val vol = _activeExercises.value.sumOf { ex ->
+            if (ex.name in BODYWEIGHT_EXERCISES) {
+                ex.sets.sumOf { set ->
+                    if (set.isCompleted && !set.isWarmup) {
+                        val extraKg = set.kg.toDoubleOrNull() ?: 0.0
+                        (bw + extraKg) * (set.reps.toIntOrNull() ?: 0)
+                    } else 0.0
+                }
+            } else {
+                ex.totalVolume()
+            }
+        }
+        var finalName = customName
+        if (finalName.isNullOrBlank()) {
+            val activeId = _activeTemplateId.value
+            if (activeId != null) {
+                val template = _savedTemplates.value.find { it.id == activeId }
+                if (template != null) finalName = template.templateName
+            }
+        }
+        val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value, finalName)
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
 
@@ -265,7 +307,18 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun saveNewTemplate(name: String, exercises: List<ExerciseSessionData>) {
         val id = (_savedTemplates.value.maxOfOrNull { it.id } ?: 0) + 1
-        val updated = _savedTemplates.value + WorkoutTemplate(id, name, exercises)
+        // 1. normalize() fixes any nulls that Gson may inject into non-null Kotlin fields
+        //    (e.g. `sets`, `note`, `rpe`) when fields are missing in the JSON.
+        // 2. Renumber IDs so that explore-page templates (which all use IDs 1, 2, 3)
+        //    get unique IDs and don't cause duplicate-key crashes in the Compose LazyColumn.
+        val normalizedExercises = exercises.mapIndexed { exIdx, ex ->
+            val safe = ex.normalize()
+            val renumberedSets = safe.sets.mapIndexed { setIdx, set ->
+                set.copy(id = setIdx + 1)
+            }
+            safe.copy(id = exIdx + 1, sets = renumberedSets)
+        }
+        val updated = _savedTemplates.value + WorkoutTemplate(id, name, normalizedExercises)
         _savedTemplates.value = updated
         repository.saveSavedTemplates(updated)
     }
@@ -498,15 +551,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 val totalVol = finalExercises.sumOf { it.totalVolume() }
                 val startMs = timestamp
                 var endMs = startMs + 3600000 // default 1 hr
+                var csvTitle: String? = null
                 if (rows.isNotEmpty()) {
                     val firstRowTokens = rows[0].split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()).map { it.replace("\"", "") }
+                    if (firstRowTokens.isNotEmpty()) csvTitle = firstRowTokens[0]
                     if (firstRowTokens.size > 2) {
                         try { endMs = sdf.parse(firstRowTokens[2])?.time ?: endMs } catch (e: Exception) {}
                     }
                 }
                 val durationSec = ((endMs - startMs) / 1000).coerceAtLeast(0).toInt()
                 
-                newEntries.add(WorkoutHistoryEntry(timestamp, totalVol, durationSec, finalExercises))
+                newEntries.add(WorkoutHistoryEntry(timestamp, totalVol, durationSec, finalExercises, csvTitle))
             }
             
             if (newEntries.isNotEmpty()) {
@@ -522,13 +577,134 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    
+    fun deleteWorkoutHistory(timestamp: Long) {
+        val updated = _workoutHistory.value.filter { it.timestamp != timestamp }
+        _workoutHistory.value = updated
+        repository.saveWorkoutHistory(updated)
+    }
+
+    fun copyWorkoutAsNewActive(entry: WorkoutHistoryEntry) {
+        _activeTemplateId.value = null
+        val newExercises = entry.exercises.mapIndexed { exIdx, ex ->
+            val renumberedSets = ex.sets.mapIndexed { setIdx, set ->
+                set.copy(
+                    id = setIdx + 1,
+                    isCompleted = false,
+                    rpe = "",
+                    previousText = if (set.kg.isNotBlank()) "${set.kg}kg x ${set.reps}" else "-"
+                )
+            }
+            ex.copy(id = exIdx + 1, sets = renumberedSets)
+        }
+        _activeExercises.value = newExercises
+        _totalSeconds.value = 0
+        _restTimerSeconds.value = 0
+    }
+
+    fun saveHistoryEntryAsRoutine(entry: WorkoutHistoryEntry, name: String) {
+        saveNewTemplate(name, entry.exercises)
+    }
+
+    fun exportWorkoutsAsCsv(context: android.content.Context, uri: android.net.Uri): Boolean {
+        return try {
+            val outputStream = context.contentResolver.openOutputStream(uri) ?: return false
+            val writer = java.io.BufferedWriter(java.io.OutputStreamWriter(outputStream))
+            val sdf = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.ENGLISH)
+            // Write header
+            writer.write("\"title\",\"start_time\",\"end_time\",\"description\",\"exercise_title\",\"superset_id\",\"exercise_notes\",\"set_index\",\"set_type\",\"weight_kg\",\"reps\",\"distance_km\",\"duration_seconds\",\"rpe\"")
+            writer.newLine()
+            _workoutHistory.value.sortedByDescending { it.timestamp }.forEach { entry ->
+                val startTime = sdf.format(java.util.Date(entry.timestamp))
+                val endTime = sdf.format(java.util.Date(entry.timestamp + entry.durationSeconds * 1000L))
+                
+                val cal = java.util.Calendar.getInstance().apply { timeInMillis = entry.timestamp }
+                val hour = cal.get(java.util.Calendar.HOUR_OF_DAY)
+                val defaultTitle = when (hour) {
+                    in 5..11 -> "Morning workout \uD83C\uDFCB\uFE0F"
+                    in 12..16 -> "Afternoon workout \uD83C\uDFCB\uFE0F"
+                    in 17..21 -> "Evening workout \uD83C\uDFCB\uFE0F"
+                    else -> "Night workout \uD83C\uDFCB\uFE0F"
+                }
+                val title = entry.name ?: defaultTitle
+                
+                entry.exercises.forEachIndexed { exIdx, ex ->
+                    ex.sets.forEachIndexed { setIdx, set ->
+                        val setType = if (set.isWarmup) "warmup" else "normal"
+                        val supersetStr = if (ex.supersetId.isNullOrBlank()) "" else "\"${ex.supersetId}\""
+                        val weightStr = set.kg.takeIf { it.isNotBlank() } ?: ""
+                        val repsStr = set.reps.takeIf { it.isNotBlank() } ?: ""
+                        val rpeStr = set.rpe.takeIf { it.isNotBlank() } ?: ""
+                        
+                        writer.write("\"$title\",\"$startTime\",\"$endTime\",\"\",\"${ex.name}\",$supersetStr,\"${ex.note}\",$setIdx,\"$setType\",$weightStr,$repsStr,,,$rpeStr")
+                        writer.newLine()
+                    }
+                }
+            }
+            writer.flush()
+            writer.close()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    private fun targetExerciseForNotification(): ExerciseSessionData? {
+        val exercises = _activeExercises.value
+        if (exercises.isEmpty()) return null
+
+        // Priority 1: Check the last interacted exercise and its superset group
+        if (lastInteractedExerciseId != null) {
+            val lastEx = exercises.find { it.id == lastInteractedExerciseId }
+            if (lastEx != null) {
+                val supersetId = lastEx.supersetId
+                val group = if (supersetId != null) exercises.filter { it.supersetId == supersetId } else listOf(lastEx)
+                val uncompletedInGroup = group.find { it.sets.any { s -> !s.isCompleted } }
+                if (uncompletedInGroup != null) return uncompletedInGroup
+            }
+        }
+        
+        // Priority 2: Return first exercise in order that has empty sets
+        val firstUncompleted = exercises.find { it.sets.any { s -> !s.isCompleted } }
+        if (firstUncompleted != null) return firstUncompleted
+        
+        // Priority 3: Return last interacted or last in list
+        return exercises.find { it.id == lastInteractedExerciseId } ?: exercises.lastOrNull()
+    }
+
     private fun updateExercise(eId: Int, updater: (ExerciseSessionData) -> ExerciseSessionData) {
+        lastInteractedExerciseId = eId
         _activeExercises.value = _activeExercises.value.map { if (it.id == eId) updater(it) else it }
     }
     
     fun adjustRestTimer(a: Int) { _restTimerSeconds.value = maxOf(0, _restTimerSeconds.value + a) }
     fun skipRestTimer() { _restTimerSeconds.value = 0 }
+
+    fun getVolumeChartData(): List<Pair<String, Float>> {
+        val sdf = java.text.SimpleDateFormat("MM/dd", java.util.Locale.getDefault())
+        // Aggregate volume per calendar day
+        val dailyVolume = mutableMapOf<String, Float>()
+        val dateKeyFormat = java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
+        _workoutHistory.value.forEach { entry ->
+            val dayKey = dateKeyFormat.format(java.util.Date(entry.timestamp))
+            val label = sdf.format(java.util.Date(entry.timestamp))
+            val vol = entry.totalVolume.toFloat()
+            dailyVolume[dayKey] = (dailyVolume[dayKey] ?: 0f) + vol
+            // Store label alongside (use dayKey -> Pair)
+            // We'll handle label separately below
+        }
+        // Sort by date and take last 7 unique days
+        val sortedEntries = _workoutHistory.value
+            .groupBy { dateKeyFormat.format(java.util.Date(it.timestamp)) }
+            .map { (dayKey, entries) ->
+                val label = sdf.format(java.util.Date(entries.first().timestamp))
+                val totalVol = entries.sumOf { it.totalVolume }.toFloat()
+                Triple(dayKey, label, totalVol)
+            }
+            .sortedBy { it.first }
+            .takeLast(7)
+        return sortedEntries.map { it.second to it.third }
+    }
 
     fun getChartData(): List<Float> {
         val volumes = _workoutHistory.value.takeLast(7).map { it.totalVolume.toFloat() }

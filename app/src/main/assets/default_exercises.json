@@ -1444,8 +1444,8 @@
         "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycling_Stationary/0.jpg",
         "muscleGroups": [
             "CARDIO",
-            "BACK",
-            "LEGS"
+            "UPPER_BACK",
+            "QUADRICEPS"
         ],
         "equipment": "MACHINE"
     },
@@ -1540,5 +1540,26 @@
             "TRICEPS"
         ],
         "equipment": "NONE"
+    },
+    {
+        "name": "Cable Crunch (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "MACHINE"
+    },
+    {
+        "name": "Cable Y-Raise (Cable)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "UPPER_BACK"
+        ],
+        "equipment": "MACHINE"
     }
 ]

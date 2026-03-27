@@ -115,11 +115,13 @@ data class WorkoutHistoryEntry(
     val timestamp: Long,
     val totalVolume: Double,
     val durationSeconds: Int,
-    val exercises: List<ExerciseSessionData>
+    val exercises: List<ExerciseSessionData>,
+    val name: String? = null
 ) {
     fun normalize(): WorkoutHistoryEntry {
         @Suppress("SENSELESS_COMPARISON")
         return copy(
+            name = if (name != null) name else null,
             exercises = if (exercises != null) exercises.map { it.normalize() } else emptyList()
         )
     }

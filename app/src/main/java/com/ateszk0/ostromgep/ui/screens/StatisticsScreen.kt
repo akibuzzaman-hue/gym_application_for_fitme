@@ -208,13 +208,18 @@ fun StatisticsScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () 
                         items(calculatedStats.entries.toList()) { entry ->
                             val keyText = when(entry.key) {
                                 "Total Workouts" -> stringResource(R.string.stat_total_workouts)
-                                "Total Volume" -> stringResource(R.string.stat_total_volume)
-                                "Total Duration" -> stringResource(R.string.stat_total_duration)
+                                "Total Volume" -> stringResource(R.string.volume_label)
+                                "Total Duration" -> stringResource(R.string.duration_label)
                                 else -> entry.key
+                            }
+                            val valueText = when(entry.key) {
+                                "Total Volume" -> stringResource(R.string.weight_kg_format, entry.value.toString())
+                                "Total Duration" -> stringResource(R.string.time_min_format, entry.value.toString().toIntOrNull() ?: 0)
+                                else -> entry.value.toString()
                             }
                             Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                                 Text(keyText, color = Color.White)
-                                Text(entry.value, color = TextGray)
+                                Text(valueText, color = TextGray)
                             }
                         }
                     }
@@ -306,7 +311,7 @@ private fun calculateMainExercises(history: List<com.ateszk0.ostromgep.model.Wor
     return map.entries.sortedByDescending { it.value }.associate { it.key to "${it.value} sets total" }
 }
 
-private fun calculateMonthlyReport(history: List<com.ateszk0.ostromgep.model.WorkoutHistoryEntry>): Map<String, String> {
+private fun calculateMonthlyReport(history: List<com.ateszk0.ostromgep.model.WorkoutHistoryEntry>): Map<String, Any> {
     val now = System.currentTimeMillis()
     val hardCutoff = now - (30L * 24 * 60 * 60 * 1000)
     val monthly = history.filter { it.timestamp >= hardCutoff }
@@ -317,7 +322,7 @@ private fun calculateMonthlyReport(history: List<com.ateszk0.ostromgep.model.Wor
     
     return mapOf(
         "Total Workouts" to totalWorkouts.toString(),
-        "Total Volume" to "${totalVolume.toInt()} kg",
-        "Total Duration" to "$totalDurationMin mins"
+        "Total Volume" to totalVolume.toInt(),
+        "Total Duration" to totalDurationMin.toInt()
     )
 }

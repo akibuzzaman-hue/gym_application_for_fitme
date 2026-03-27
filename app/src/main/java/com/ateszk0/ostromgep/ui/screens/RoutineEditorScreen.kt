@@ -21,6 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -36,7 +38,7 @@ import com.ateszk0.ostromgep.ui.components.*
 fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -> Unit) {
     val library by viewModel.exerciseLibrary.collectAsState()
     
-    var routineName by remember { mutableStateOf("My New Routine") }
+    var routineName by remember { mutableStateOf("") }
     var draftExercises by remember { mutableStateOf(emptyList<ExerciseSessionData>()) }
     var showBottomSheet by remember { mutableStateOf(false) }
     var showCreateDialog by remember { mutableStateOf(false) }
@@ -53,7 +55,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
     Scaffold(
         topBar = { 
             TopAppBar(
-                title = { Text("Routine Editor", color = Color.White) }, 
+                title = { Text(stringResource(R.string.routine_editor_title), color = Color.White) }, 
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.Close, null, tint = Color.White) }
                 },
@@ -69,7 +71,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                     ) { 
                         Icon(Icons.Default.Save, null, tint = Color.White)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Save", color = Color.White) 
+                        Text(stringResource(R.string.save_btn), color = Color.White) 
                     } 
                 }, 
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
@@ -81,10 +83,11 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                 OutlinedTextField(
                     value = routineName,
                     onValueChange = { routineName = it },
-                    label = { Text("Routine Name", color = TextGray) },
+                    label = { Text(stringResource(R.string.routine_name_label), color = TextGray) },
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     textStyle = androidx.compose.ui.text.TextStyle(color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold),
                     singleLine = true,
+                    placeholder = { Text(stringResource(R.string.default_workout_name), color = TextGray) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = themeColor,
                         unfocusedBorderColor = SurfaceDark
@@ -122,9 +125,9 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            Text("SET", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                            Text("TARGET REPS", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(2f), textAlign = TextAlign.Center)
-                            Text("DEL", color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                            Text(stringResource(R.string.set_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                            Text(stringResource(R.string.target_reps_label), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(2f), textAlign = TextAlign.Center)
+                            Text(stringResource(R.string.del_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
                         }
                         
                         exercise.sets.forEachIndexed { sIndex, set ->
@@ -161,7 +164,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                         }
                         
                         Text(
-                            "+ Add Set", 
+                            "+ " + stringResource(R.string.add_set_label), 
                             color = themeColor, 
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -193,7 +196,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                 ) {
                     Icon(Icons.Default.Add, null, tint = themeColor)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add Exercise to Routine", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.add_exercise_to_routine), color = Color.White, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }

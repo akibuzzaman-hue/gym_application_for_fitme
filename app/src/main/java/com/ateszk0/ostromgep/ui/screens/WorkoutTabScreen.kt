@@ -45,12 +45,13 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
     
     val activeExercises by viewModel.activeExercises.collectAsState()
     var showOverrideConfirm by remember { mutableStateOf<(() -> Unit)?>(null) }
+    var templateToDelete by remember { mutableStateOf<Int?>(null) }
 
     if (showOverrideConfirm != null) {
         AlertDialog(
             onDismissRequest = { showOverrideConfirm = null },
             title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
-            text = { Text("Are you sure you want to start a new workout? The current progress will be lost.", color = TextGray) },
+            text = { Text(stringResource(R.string.new_workout_confirm_text), color = TextGray) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -59,11 +60,35 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
-                    Text("Continue", color = Color.White)
+                    Text(stringResource(R.string.continue_btn), color = Color.White)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showOverrideConfirm = null }) {
+                    Text(stringResource(R.string.cancel_btn), color = themeColor)
+                }
+            }
+        )
+    }
+
+    if (templateToDelete != null) {
+        AlertDialog(
+            onDismissRequest = { templateToDelete = null },
+            title = { Text(stringResource(R.string.delete_btn), color = Color.White) },
+            text = { Text(stringResource(R.string.delete_routine_confirm_text), color = TextGray) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.deleteTemplate(templateToDelete!!)
+                        templateToDelete = null
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) {
+                    Text(stringResource(R.string.delete_btn), color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { templateToDelete = null }) {
                     Text(stringResource(R.string.cancel_btn), color = themeColor)
                 }
             }
@@ -155,11 +180,19 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                 ) { 
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) { 
-                            Text(template.templateName, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text(
+                                template.templateName, 
+                                fontSize = 16.sp, 
+                                fontWeight = FontWeight.Bold, 
+                                color = Color.White,
+                                modifier = Modifier.weight(1f),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                             Box { 
                                 androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.MoreVert, null, tint = TextGray, modifier = Modifier.clickable { showMenu = true }.padding(4.dp))
                                 DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(SurfaceDark)) { 
-                                    DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; viewModel.deleteTemplate(template.id) }) 
+                                    DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; templateToDelete = template.id }) 
                                 } 
                             } 
                         }

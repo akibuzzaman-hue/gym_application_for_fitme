@@ -1,0 +1,176 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:parseDebugLocalResources
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugRFile
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:111:56 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:111:71 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:111:73 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:112:56 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:112:71 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:112:73 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:113:56 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:113:71 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:113:73 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:114:89 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:114:104 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:114:106 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:114:134 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:114:149 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:114:151 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:115:56 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:115:71 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:115:73 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:122:22 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:122:37 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:122:39 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:134:18 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:134:33 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:134:35 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:135:18 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:135:33 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:135:35 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:137:22 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:137:37 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:137:39 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:139:22 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:139:37 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:139:39 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:141:18 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:141:33 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:141:35 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:142:18 Unresolved reference 'stringResource'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:142:33 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/components/ExerciseBlock.kt:142:35 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:57:47 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:57:49 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:73:45 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:73:47 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:85:51 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:85:53 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:89:57 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:89:59 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:127:49 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:127:51 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:128:49 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:128:51 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:129:49 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:129:51 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:166:51 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:166:53 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:198:41 None of the following candidates is applicable:
+class R : Any
+class R : Any
+class R : Any
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/RoutineEditorScreen.kt:198:43 Unresolved reference 'string'.
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/StatisticsScreen.kt:309:13 Functions which invoke @Composable functions must be marked with the @Composable annotation
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/StatisticsScreen.kt:320:27 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/ostromgep%20app/app/src/main/java/com/ateszk0/ostromgep/ui/screens/StatisticsScreen.kt:321:29 @Composable invocations can only happen from the context of a @Composable function
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 8s
+29 actionable tasks: 12 executed, 17 up-to-date

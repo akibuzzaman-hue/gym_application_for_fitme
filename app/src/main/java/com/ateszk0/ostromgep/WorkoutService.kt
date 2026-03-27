@@ -50,6 +50,9 @@ object NotificationHelper {
     const val CHANNEL_ID = "workout_channel"
     const val NOTIFICATION_ID = 1
 
+    private var lastRestTime = 0
+    private var currentMaxRest = 0
+
     fun createChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(CHANNEL_ID, "Workout", NotificationManager.IMPORTANCE_LOW)
@@ -75,14 +78,13 @@ object NotificationHelper {
             .build()
     }
 
-    fun updateNotification(context: Context, activeExercises: List<ExerciseSessionData>, restTimerSeconds: Int) {
+    fun updateNotification(context: Context, targetExercise: ExerciseSessionData?, restTimerSeconds: Int) {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         
-        val lastExercise = activeExercises.lastOrNull()
-        val title = lastExercise?.name ?: "Workout"
+        val title = targetExercise?.name ?: "Workout"
         
-        val completedSets = lastExercise?.sets?.count { it.isCompleted } ?: 0
-        val totalSets = lastExercise?.sets?.size ?: 0
+        val completedSets = targetExercise?.sets?.count { it.isCompleted } ?: 0
+        val totalSets = targetExercise?.sets?.size ?: 0
         
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_menu_today)
@@ -91,18 +93,28 @@ object NotificationHelper {
             .setPriority(NotificationCompat.PRIORITY_LOW)
 
         if (restTimerSeconds > 0) {
-            val totalRest = lastExercise?.restTimerDuration ?: 90
+            if (lastRestTime == 0) {
+                currentMaxRest = maxOf(targetExercise?.restTimerDuration ?: 90, restTimerSeconds)
+            } else if (restTimerSeconds > lastRestTime) {
+                currentMaxRest += (restTimerSeconds - lastRestTime)
+            }
+            lastRestTime = restTimerSeconds
+
+            val totalRest = currentMaxRest
             val minutes = restTimerSeconds / 60
             val seconds = restTimerSeconds % 60
             val timeString = String.format("%d:%02d", minutes, seconds)
             
             builder.setContentText("Rest $timeString")
-            builder.setProgress(totalRest, totalRest - restTimerSeconds, false)
+            builder.setProgress(totalRest, restTimerSeconds, false)
             
             builder.addAction(android.R.drawable.ic_media_next, "Skip", getPendingIntent(context, "ACTION_SKIP_REST"))
             builder.addAction(android.R.drawable.ic_media_rew, "-15s", getPendingIntent(context, "ACTION_SUB_15S"))
             builder.addAction(android.R.drawable.ic_media_ff, "+15s", getPendingIntent(context, "ACTION_ADD_15S"))
         } else {
+            lastRestTime = 0
+            currentMaxRest = 0
+
             builder.setContentText("Next: Set ${completedSets + 1} of $totalSets")
             builder.setProgress(0, 0, false)
         }

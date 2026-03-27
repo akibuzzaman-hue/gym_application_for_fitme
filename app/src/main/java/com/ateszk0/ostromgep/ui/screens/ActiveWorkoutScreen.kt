@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
@@ -25,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
@@ -40,16 +43,15 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val exercises by viewModel.activeExercises.collectAsState()
-    val totalSeconds by viewModel.totalSeconds.collectAsState()
-    val restTimerSeconds by viewModel.restTimerSeconds.collectAsState()
     val library by viewModel.exerciseLibrary.collectAsState()
     val prompts by viewModel.overloadPrompts.collectAsState()
+    val latestBodyWeight by viewModel.latestBodyWeightKg.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
     var showCreateDialog by remember { mutableStateOf(false) }
     var isSavingWorkout by remember { mutableStateOf(false) }
+    var isSimpleMode by remember { mutableStateOf(false) }
     var showPlateCalculator by remember { mutableStateOf(false) }
-    var showDiscardDialog by remember { mutableStateOf(false) }
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
     var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
     var rpeTarget by remember { mutableStateOf<Pair<Int, WorkoutSetData>?>(null) }
@@ -61,14 +63,27 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             showPlateCalculator = false
             rpeTarget = null
         } else {
-            showDiscardDialog = true
+            onMinimize()
         }
     }
-    val totalVolume = exercises.sumOf { it.totalVolume() }
+    val totalVolume = exercises.sumOf { ex ->
+        if (ex.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) {
+            ex.sets.sumOf { set ->
+                if (set.isCompleted && !set.isWarmup) {
+                    val extraKg = set.kg.toDoubleOrNull() ?: 0.0
+                    (latestBodyWeight + extraKg) * (set.reps.toIntOrNull() ?: 0)
+                } else 0.0
+            }
+        } else {
+            ex.totalVolume()
+        }
+    }
     val completedSetsCount = exercises.sumOf { it.countCompletedSets() }
 
-    var draggedIndex by remember { mutableStateOf<Int?>(null) }
-    var dragOffset by remember { mutableFloatStateOf(0f) }
+    // O(1) index lookup map to avoid O(n) indexOf per list item during scroll
+    val exerciseIndexMap = remember(exercises) { exercises.mapIndexed { i, ex -> ex.id to i }.toMap() }
+    // O(1) image lookup map to avoid O(n) library.find per list item during scroll
+    val libraryImageMap = remember(library) { library.associate { it.name to it.imageUri } }
 
     val groupedExercises = remember(exercises) {
         val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
@@ -93,8 +108,8 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         SaveWorkoutScreen(
             viewModel = viewModel,
             themeColor = themeColor,
-            onSave = { updateRoutine ->
-                viewModel.finishWorkout(updateOriginalRoutine = updateRoutine)
+            onSave = { customName, updateRoutine ->
+                viewModel.finishWorkout(customName = customName, updateOriginalRoutine = updateRoutine)
                 onFinishWorkout()
             },
             onDiscard = {
@@ -104,6 +119,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             onBack = { isSavingWorkout = false }
         )
     } else {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         topBar = { 
             TopAppBar(
@@ -112,65 +128,32 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                         Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Minimize", tint = Color.White)
                     }
                 },
-                title = { Text(stringResource(R.string.log_workout), color = Color.White) }, 
+                title = { Text(stringResource(R.string.log_workout), color = Color.White, fontSize = 20.sp, maxLines = 1) }, 
                 actions = { 
+                    IconButton(onClick = { isSimpleMode = !isSimpleMode }) { 
+                        Icon(if (isSimpleMode) Icons.Default.List else Icons.Default.Fullscreen, null, tint = themeColor) 
+                    }
                     IconButton(onClick = { showPlateCalculator = true }) { Icon(Icons.Default.Calculate, null, tint = themeColor) }
                     Button(onClick = { isSavingWorkout = true }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text(stringResource(R.string.finish_btn), color = Color.White) } 
                 }, 
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground),
+                scrollBehavior = scrollBehavior
             ) 
         },
         bottomBar = {
-            Column {
-                if (restTimerSeconds > 0) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().background(themeColor).padding(16.dp), 
-                        verticalAlignment = Alignment.CenterVertically, 
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) { 
-                        Row { 
-                            TimerAdjustButton("-15") { viewModel.adjustRestTimer(-15) }
-                            Text("%02d:%02d".format(restTimerSeconds/60, restTimerSeconds%60), color = Color.White, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
-                            TimerAdjustButton("+15") { viewModel.adjustRestTimer(15) } 
-                        }
-                        Button(onClick = { viewModel.skipRestTimer() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))) { Text(stringResource(R.string.skip_btn), color = Color.White) } 
-                    }
-                }
-                Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), horizontalArrangement = Arrangement.End) {
-                    Button(onClick = { showDiscardDialog = true }, colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark)) { Text(stringResource(R.string.discard_btn), color = Color.Red) }
-                }
-            }
+            RestTimerBottomBar(viewModel, themeColor, isSimpleMode)
         }
     ) { innerPadding ->
-        val groupedExercises = remember(exercises) {
-            val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
-            var currentGroup = mutableListOf<com.ateszk0.ostromgep.model.ExerciseSessionData>()
-            for (ex in exercises) {
-                if (currentGroup.isEmpty()) {
-                    currentGroup.add(ex)
-                } else {
-                    if (ex.supersetId != null && ex.supersetId == currentGroup.last().supersetId) {
-                        currentGroup.add(ex)
-                    } else {
-                        groups.add(currentGroup)
-                        currentGroup = mutableListOf(ex)
-                    }
-                }
-            }
-            if (currentGroup.isNotEmpty()) groups.add(currentGroup)
-            groups
-        }
+        Column(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
+            WorkoutStatsHeader(viewModel, totalVolume, completedSetsCount)
 
-        LazyColumn(modifier = Modifier.fillMaxSize().background(DarkBackground).padding(innerPadding)) {
-            item {
-                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
-                    StatItem(stringResource(R.string.volume_label), "${totalVolume.toInt()} kg")
-                    StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
+            if (isSimpleMode) {
+                SimpleWorkoutView(viewModel, themeColor) { ex, set ->
+                    rpeTarget = ex.id to set
                 }
-            }
-
-            items(groupedExercises, key = { grp -> grp.first().id }) { group ->
+            } else {
+                LazyColumn(modifier = Modifier.weight(1f), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
+                    items(groupedExercises, key = { grp -> grp.first().id }) { group ->
                 val isSuperset = group.size > 1 && group.first().supersetId != null
                 Column(
                     modifier = Modifier.fillMaxWidth().run {
@@ -178,22 +161,9 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     }
                 ) {
                     group.forEachIndexed { idxInGroup, exercise ->
-                        val index = exercises.indexOf(exercise)
-                        val isDragged = draggedIndex == index
-                        val zIndex = if (isDragged) 1f else 0f
-                        val scale = if (isDragged) 1.02f else 1f
-                        val alpha = if (isDragged) 0.8f else 1f
-                        val translationY = if (isDragged) dragOffset else 0f
-                        val elevation = if (isDragged) 8.dp else 0.dp
-                        Box(
-                            modifier = Modifier.fillMaxWidth().zIndex(zIndex).graphicsLayer { this.translationY = translationY; this.scaleX = scale; this.scaleY = scale; this.alpha = alpha }
-                            .shadow(elevation, RoundedCornerShape(8.dp))
-                            .background(if (isDragged) SurfaceDark.copy(0.5f) else Color.Transparent)
-                            .animateItemPlacement()
-                        ) {
-                            val def = library.find { it.name == exercise.name }
-                            ExerciseBlock(
-                                exercise, def?.imageUri, index, exercises.size, themeColor,
+                        val index = exerciseIndexMap[exercise.id] ?: 0
+                                ExerciseBlock(
+                                exercise, libraryImageMap[exercise.name], index, exercises.size, themeColor,
                                 { viewModel.moveExerciseUp(index) },
                                 { viewModel.moveExerciseDown(index) },
                                 { s -> viewModel.updateSet(exercise.id, s) },
@@ -207,9 +177,9 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                                 { exerciseToEditRepRange = exercise.name },
                                 { supersetSourceExercise = exercise },
                                 { viewModel.removeSuperset(exercise.id) },
-                                { set -> rpeTarget = exercise.id to set }
+                                { set -> rpeTarget = exercise.id to set },
+                                bodyweightKg = if (exercise.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) latestBodyWeight else null
                             )
-                        }
                         if (idxInGroup < group.size - 1 && !isSuperset) {
                             Spacer(modifier = Modifier.height(24.dp))
                         }
@@ -226,31 +196,15 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
+        }
+        }
 
         if (prompts.isNotEmpty()) {
             ProgressiveOverloadDialog(prompts, themeColor, { p -> viewModel.applyOverloadPrompts(p) }, { viewModel.dismissOverloadPrompts() })
         }
         if (showPlateCalculator) PlateCalculatorDialog({ showPlateCalculator = false }, themeColor)
 
-        if (showDiscardDialog) {
-            AlertDialog(
-                onDismissRequest = { showDiscardDialog = false },
-                title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
-                text = { Text(stringResource(R.string.discard_dialog_text), color = TextGray) },
-                confirmButton = {
-                    Button(onClick = { 
-                        viewModel.discardWorkout()
-                        showDiscardDialog = false
-                        onFinishWorkout() 
-                    }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
-                        Text(stringResource(R.string.discard_confirm), color = Color.White)
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
-                }
-            )
-        }
+
 
         exerciseToEditRepRange?.let { n ->
             val def = library.find { it.name == n } ?: com.ateszk0.ostromgep.model.ExerciseDef(n)
@@ -319,7 +273,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
             
             AlertDialog(
                 onDismissRequest = { supersetSourceExercise = null },
-                title = { Text("Create Superset", color = Color.White) },
+                title = { Text(stringResource(R.string.create_superset_title), color = Color.White) },
                 text = {
                     LazyColumn(modifier = Modifier.heightIn(max = 300.dp)) {
                         items(otherExercises) { ex ->
@@ -337,7 +291,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                             }
                         }
                         if (otherExercises.isEmpty()) {
-                            item { Text("No other exercises in workout.", color = TextGray) }
+                            item { Text(stringResource(R.string.no_other_exercises), color = TextGray) }
                         }
                     }
                 },
@@ -357,4 +311,44 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     }
     }
 
+}
+
+@Composable
+fun WorkoutStatsHeader(viewModel: WorkoutViewModel, totalVolume: Double, completedSetsCount: Int) {
+    val totalSeconds by viewModel.totalSeconds.collectAsState()
+    Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+        StatItem(stringResource(R.string.duration_label), "%02d:%02d".format(totalSeconds/60, totalSeconds%60))
+        StatItem(stringResource(R.string.volume_label), "${totalVolume.toInt()} kg")
+        StatItem(stringResource(R.string.sets_label), "$completedSetsCount")
+    }
+}
+
+@Composable
+fun RestTimerBottomBar(viewModel: WorkoutViewModel, themeColor: Color, isSimpleMode: Boolean) {
+    if (isSimpleMode) return
+    val restTimerSeconds by viewModel.restTimerSeconds.collectAsState()
+    if (restTimerSeconds > 0) {
+        Row(
+            modifier = Modifier.fillMaxWidth().background(themeColor).imePadding().padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TimerAdjustButton("-15") { viewModel.adjustRestTimer(-15) }
+                Text(
+                    "%02d:%02d".format(restTimerSeconds/60, restTimerSeconds%60),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                TimerAdjustButton("+15") { viewModel.adjustRestTimer(15) }
+            }
+            Button(
+                onClick = { viewModel.skipRestTimer() },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(0.2f))
+            ) { Text(stringResource(R.string.skip_btn), color = Color.White) }
+        }
+    }
 }

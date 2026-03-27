@@ -52,7 +52,7 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
             AlertDialog(
                 onDismissRequest = { showOverrideConfirm = null },
                 title = { Text(stringResource(R.string.discard_dialog_title), color = Color.White) },
-                text = { Text("Are you sure you want to start a new workout? The current progress will be lost.", color = TextGray) },
+                text = { Text(stringResource(R.string.new_workout_confirm_text), color = TextGray) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -61,7 +61,7 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                     ) {
-                        Text("Continue", color = Color.White)
+                        Text(stringResource(R.string.continue_btn), color = Color.White)
                     }
                 },
                 dismissButton = {
