@@ -69,6 +69,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _latestBodyWeightKg = MutableStateFlow(repository.getBodyWeightHistory().maxByOrNull { it.timestamp }?.weightKg ?: 0.0)
     val latestBodyWeightKg: StateFlow<Double> = _latestBodyWeightKg.asStateFlow()
 
+    // UI state for workout session (ViewModel-level so it survives config changes)
+    private val _isWorkoutActive = MutableStateFlow(false)
+    val isWorkoutActive: StateFlow<Boolean> = _isWorkoutActive.asStateFlow()
+
+    private val _isWorkoutMinimized = MutableStateFlow(false)
+    val isWorkoutMinimized: StateFlow<Boolean> = _isWorkoutMinimized.asStateFlow()
+
     companion object {
         val BODYWEIGHT_EXERCISES = setOf(
             "Pull Up", "Pull-up", 
@@ -86,6 +93,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             _bodyWeightHistory.collect { history ->
                 _latestBodyWeightKg.value = history.maxByOrNull { it.timestamp }?.weightKg ?: 0.0
             }
+        }
+
+        // Restore active workout from persistent storage (survives process death)
+        val savedState = repository.getActiveWorkoutState()
+        if (savedState != null) {
+            _activeExercises.value = savedState.exercises
+            _activeTemplateId.value = savedState.templateId
+            _totalSeconds.value = savedState.totalSeconds
+            _restTimerSeconds.value = 0 // Don't restore rest timer
+            _isWorkoutActive.value = true
         }
 
         viewModelScope.launch {
@@ -112,12 +129,38 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                     }
                     val targetEx = targetExerciseForNotification()
                     NotificationHelper.updateNotification(application, targetEx, _restTimerSeconds.value)
+                    // Persist every 5 seconds to avoid excessive I/O
+                    if (_totalSeconds.value % 5 == 0) {
+                        persistActiveWorkout()
+                    }
                 }
             }
         }
     }
 
     fun setTheme(theme: String) { _appTheme.value = theme; repository.saveTheme(theme) }
+
+    fun setWorkoutActive(active: Boolean) {
+        _isWorkoutActive.value = active
+        if (!active) {
+            _isWorkoutMinimized.value = false
+        }
+    }
+
+    fun setWorkoutMinimized(minimized: Boolean) {
+        _isWorkoutMinimized.value = minimized
+    }
+
+    private fun persistActiveWorkout() {
+        repository.saveActiveWorkoutState(
+            com.ateszk0.ostromgep.data.WorkoutRepository.ActiveWorkoutState(
+                exercises = _activeExercises.value,
+                templateId = _activeTemplateId.value,
+                totalSeconds = _totalSeconds.value,
+                restTimerSeconds = _restTimerSeconds.value
+            )
+        )
+    }
 
     fun updateUsername(name: String) {
         _username.value = name
@@ -169,6 +212,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = emptyList()
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = true
+        persistActiveWorkout()
     }
 
     fun startWorkoutFromTemplate(template: WorkoutTemplate) {
@@ -189,6 +234,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = newSession
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = true
+        persistActiveWorkout()
 
         val prompts = mutableListOf<OverloadPrompt>()
         newSession.forEach { ex ->
@@ -260,6 +307,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         
         _activeExercises.value = emptyList()
         _activeTemplateId.value = null
+        repository.clearActiveWorkoutState()
+        _isWorkoutActive.value = false
+        _isWorkoutMinimized.value = false
     }
 
     fun discardWorkout() {
@@ -267,6 +317,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeTemplateId.value = null
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = false
+        _isWorkoutMinimized.value = false
+        repository.clearActiveWorkoutState()
     }
 
     fun getRoutineChanges(): RoutineChanges? {
@@ -599,6 +652,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = newExercises
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = true
+        persistActiveWorkout()
     }
 
     fun saveHistoryEntryAsRoutine(entry: WorkoutHistoryEntry, name: String) {

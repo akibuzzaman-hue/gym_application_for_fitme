@@ -2,6 +2,7 @@ package com.ateszk0.ostromgep.data
 
 import android.content.Context
 import com.ateszk0.ostromgep.model.ExerciseDef
+import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutHistoryEntry
 import com.ateszk0.ostromgep.model.WorkoutTemplate
 import com.ateszk0.ostromgep.model.RoutineFolder
@@ -150,5 +151,44 @@ class WorkoutRepository(private val context: Context) {
 
     fun saveProfilePictureUri(uri: String) {
         prefs.edit().putString("profile_pic_uri", uri).apply()
+    }
+
+    // Active workout state persistence
+    data class ActiveWorkoutState(
+        val exercises: List<ExerciseSessionData>,
+        val templateId: Int?,
+        val totalSeconds: Int,
+        val restTimerSeconds: Int
+    )
+
+    fun saveActiveWorkoutState(state: ActiveWorkoutState) {
+        prefs.edit()
+            .putString("active_workout_exercises", gson.toJson(state.exercises))
+            .putString("active_workout_template_id", state.templateId?.toString())
+            .putInt("active_workout_total_seconds", state.totalSeconds)
+            .putInt("active_workout_rest_seconds", state.restTimerSeconds)
+            .apply()
+    }
+
+    fun getActiveWorkoutState(): ActiveWorkoutState? {
+        val json = prefs.getString("active_workout_exercises", null) ?: return null
+        return try {
+            val exercises: List<ExerciseSessionData> = gson.fromJson(json, object : TypeToken<List<ExerciseSessionData>>() {}.type)
+            if (exercises.isEmpty()) return null
+            val templateIdStr = prefs.getString("active_workout_template_id", null)
+            val templateId = templateIdStr?.toIntOrNull()
+            val totalSeconds = prefs.getInt("active_workout_total_seconds", 0)
+            val restTimerSeconds = prefs.getInt("active_workout_rest_seconds", 0)
+            ActiveWorkoutState(exercises.map { it.normalize() }, templateId, totalSeconds, restTimerSeconds)
+        } catch (e: Exception) { null }
+    }
+
+    fun clearActiveWorkoutState() {
+        prefs.edit()
+            .remove("active_workout_exercises")
+            .remove("active_workout_template_id")
+            .remove("active_workout_total_seconds")
+            .remove("active_workout_rest_seconds")
+            .apply()
     }
 }
