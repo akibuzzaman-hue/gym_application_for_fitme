@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
+    enum class GeneratorStatus { IDLE, LOADING, SUCCESS, ERROR_KEY, ERROR_GENERIC }
+
     private val repository = WorkoutRepository(application)
 
     private val _totalSeconds = MutableStateFlow(0)
@@ -75,6 +77,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private val _isWorkoutMinimized = MutableStateFlow(false)
     val isWorkoutMinimized: StateFlow<Boolean> = _isWorkoutMinimized.asStateFlow()
+
+    // --- AI Generator State ---
+    private val _geminiApiKey = MutableStateFlow(repository.getGeminiApiKey())
+    val geminiApiKey: StateFlow<String?> = _geminiApiKey.asStateFlow()
+
+    private val _generatorStatus = MutableStateFlow(GeneratorStatus.IDLE)
+    val generatorStatus: StateFlow<GeneratorStatus> = _generatorStatus.asStateFlow()
 
     companion object {
         val BODYWEIGHT_EXERCISES = setOf(
@@ -139,6 +148,39 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setTheme(theme: String) { _appTheme.value = theme; repository.saveTheme(theme) }
+
+    private val _generatorErrorMessage = MutableStateFlow<String?>(null)
+    val generatorErrorMessage: StateFlow<String?> = _generatorErrorMessage.asStateFlow()
+
+    fun saveGeminiApiKey(key: String) {
+        repository.saveGeminiApiKey(key)
+        _geminiApiKey.value = key
+        _generatorStatus.value = GeneratorStatus.IDLE
+    }
+
+    fun generateWorkoutPlan(trainingDays: Int, customPrompt: String) {
+        val key = _geminiApiKey.value ?: return
+        viewModelScope.launch {
+            _generatorStatus.value = GeneratorStatus.LOADING
+            try {
+                val routines = WorkoutGenerator(getApplication()).generateRoutines(key, trainingDays, customPrompt)
+                routines.forEach { saveNewTemplate(it.templateName, it.exercises) }
+                _generatorStatus.value = GeneratorStatus.SUCCESS
+            } catch (e: InvalidApiKeyException) {
+                _generatorErrorMessage.value = "Invalid API Key."
+                _generatorStatus.value = GeneratorStatus.ERROR_KEY
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _generatorErrorMessage.value = e.message ?: "Unknown error"
+                _generatorStatus.value = GeneratorStatus.ERROR_GENERIC
+            }
+        }
+    }
+
+    fun resetGeneratorStatus() { 
+        _generatorStatus.value = GeneratorStatus.IDLE 
+        _generatorErrorMessage.value = null
+    }
 
     fun setWorkoutActive(active: Boolean) {
         _isWorkoutActive.value = active

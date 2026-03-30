@@ -9,9 +9,23 @@ import com.ateszk0.ostromgep.model.RoutineFolder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 
 class WorkoutRepository(private val context: Context) {
     private val prefs = context.getSharedPreferences("ostromgep_prefs", Context.MODE_PRIVATE)
+    private val encryptedPrefs by lazy {
+        val masterKey = MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+        EncryptedSharedPreferences.create(
+            context,
+            "secret_gemini_prefs",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
     private val gson = Gson()
 
     fun getTheme(): String {
@@ -151,6 +165,18 @@ class WorkoutRepository(private val context: Context) {
 
     fun saveProfilePictureUri(uri: String) {
         prefs.edit().putString("profile_pic_uri", uri).apply()
+    }
+
+    fun getGeminiApiKey(): String? {
+        return try {
+            encryptedPrefs.getString("gemini_api_key", null)
+        } catch (e: Exception) { null }
+    }
+
+    fun saveGeminiApiKey(key: String) {
+        try {
+            encryptedPrefs.edit().putString("gemini_api_key", key).apply()
+        } catch (e: Exception) { e.printStackTrace() }
     }
 
     // Active workout state persistence

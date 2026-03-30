@@ -179,4 +179,26 @@ A **Profile** fülön követheted a hosszú távú haladásodat:
 
   
 
+## 7. AI Workout Generator (AI Edzésterv Generáló – Gemini 2.0 Flash)
+
+  
+
+Az **Explore Routines** (Rutinok felfedezése) képernyő tetején található az **AI Workout Generator** kártya, amellyel teljesen egyedi, személyre szabott edzésterveket készíthetsz a legmodernebb mesterséges intelligencia segítségével.
+
+  
+
+-  **API Key (🔑)**: A generátor használatához szükséged lesz egy saját **Gemini API kulcsra** (Google AI Studio-ból beszerezhető). Kattints a kulcs ikonra a kártya jobb felső sarkában, illeszd be a kulcsot, és mentsd el. Az alkalmazás biztonságosan, titkosítva (**EncryptedSharedPreferences**) tárolja ezt az eszközödön.
+
+-  **Training days per week (Heti edzésnapok)**: A csúszka segítségével állítsd be, hány napot tervezel edzeni egy héten (1-7 nap). Az MI automatikusan javasol egy optimális felosztást (pl. PPL, Upper/Lower, Full Body, Arnold Split) a napok száma alapján.
+
+-  **Additional preferences (Egyéni preferenciák)**: Ez egy opcionális mező, ahol speciális kéréseket adhatsz meg az MI-nek. Például: *„Vállsérülésem van, fókuszáljunk inkább a lábra és a hátra”*, vagy *„Szeretnék több izolációs gyakorlatot a karokra”*.
+
+-  **Generate Workout Plan (Edzésterv generálása)**: A gomb megnyomása után az MI összeállítja a tervedet a gyári gyakorlattár (**default_exercises.json**) elemeiből, és minden napra külön-külön automatikusan elmenti a rutinokat a **My Routines** (Saját rutinok) listádba.
+
+  
+
+---
+
+  
+
 *Jó edzést és sikeres fejlődést az Ostromgéppel!*
