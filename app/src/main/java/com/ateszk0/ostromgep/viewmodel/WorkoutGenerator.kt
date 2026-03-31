@@ -1,6 +1,7 @@
 package com.ateszk0.ostromgep.viewmodel
 
 import android.content.Context
+import com.ateszk0.ostromgep.model.Equipment
 import com.ateszk0.ostromgep.model.ExerciseDef
 import com.ateszk0.ostromgep.model.WorkoutTemplate
 import com.google.ai.client.generativeai.GenerativeModel
@@ -16,20 +17,25 @@ class InvalidApiKeyException : Exception("Invalid Gemini API Key")
 
 class WorkoutGenerator(private val context: Context) {
 
-    private fun getExerciseNames(): String {
+    private fun getExerciseNames(availableEquipments: List<Equipment>?): String {
         return try {
             val inputStream = context.assets.open("default_exercises.json")
             val reader = InputStreamReader(inputStream)
             val type = object : TypeToken<List<ExerciseDef>>() {}.type
             val exercises: List<ExerciseDef> = Gson().fromJson(reader, type)
             reader.close()
-            exercises.joinToString("\n") { it.name }
+            val filtered = if (availableEquipments != null) {
+                exercises.filter { it.equipment in availableEquipments || it.equipment == Equipment.NONE }
+            } else {
+                exercises
+            }
+            filtered.joinToString("\n") { it.name }
         } catch (e: Exception) {
             "Bench Press\nSquat\nDeadlift" // Fallback
         }
     }
 
-    suspend fun generateRoutines(apiKey: String, trainingDays: Int, customPrompt: String): List<WorkoutTemplate> = withContext(Dispatchers.IO) {
+    suspend fun generateRoutines(apiKey: String, trainingDays: Int, customPrompt: String, availableEquipments: List<Equipment>? = null): List<WorkoutTemplate> = withContext(Dispatchers.IO) {
         if (apiKey.isBlank()) throw InvalidApiKeyException()
 
         val splitRecommendation = when (trainingDays) {
@@ -42,7 +48,7 @@ class WorkoutGenerator(private val context: Context) {
             else -> "Full Body"
         }
 
-        val availableExercises = getExerciseNames()
+        val availableExercises = getExerciseNames(availableEquipments)
 
         val systemPrompt = """
             You are an expert fitness coach and personal trainer app component. 
@@ -72,6 +78,7 @@ class WorkoutGenerator(private val context: Context) {
             
             ADDITIONAL PREFERENCES / CUSTOM PROMPT FROM THE USER:
             "${if (customPrompt.isNotBlank()) customPrompt else "None."}"
+            ${if (availableEquipments != null) "\nThe user specified they only have the following equipment: ${availableEquipments.joinToString(", ")}. Only use exercises from the Available Exercises that can be done with this equipment." else ""}
             
             JSON Schema Reference:
             [

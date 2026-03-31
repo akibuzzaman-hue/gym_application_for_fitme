@@ -158,12 +158,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _generatorStatus.value = GeneratorStatus.IDLE
     }
 
-    fun generateWorkoutPlan(trainingDays: Int, customPrompt: String) {
+    fun generateWorkoutPlan(trainingDays: Int, customPrompt: String, availableEquipments: Set<Equipment> = Equipment.entries.toSet()) {
         val key = _geminiApiKey.value ?: return
         viewModelScope.launch {
             _generatorStatus.value = GeneratorStatus.LOADING
             try {
-                val routines = WorkoutGenerator(getApplication()).generateRoutines(key, trainingDays, customPrompt)
+                val routines = WorkoutGenerator(getApplication()).generateRoutines(key, trainingDays, customPrompt, availableEquipments.toList())
                 routines.forEach { saveNewTemplate(it.templateName, it.exercises) }
                 _generatorStatus.value = GeneratorStatus.SUCCESS
             } catch (e: InvalidApiKeyException) {

@@ -24,7 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import com.ateszk0.ostromgep.R
+import com.ateszk0.ostromgep.model.Equipment
 import com.ateszk0.ostromgep.model.WorkoutTemplate
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
@@ -38,16 +41,19 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    
+
     var preAssembledRoutines by remember { mutableStateOf<List<WorkoutTemplate>>(emptyList()) }
-    
+
     val geminiApiKey by viewModel.geminiApiKey.collectAsState()
     val generatorStatus by viewModel.generatorStatus.collectAsState()
-    
+
     var showApiKeyDialog by remember { mutableStateOf(false) }
     var tempApiKey by remember { mutableStateOf("") }
     var trainingDays by remember { mutableFloatStateOf(3f) }
     var customPrompt by remember { mutableStateOf("") }
+    var availableEquipments by remember { mutableStateOf(Equipment.values().toSet()) }
+    var showEquipmentDialog by remember { mutableStateOf(false) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val generatorErrorMessage by viewModel.generatorErrorMessage.collectAsState()
 
     LaunchedEffect(generatorStatus) {
@@ -56,18 +62,21 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
                 snackbarHostState.showSnackbar("Routines added to your list!")
                 viewModel.resetGeneratorStatus()
             }
+
             WorkoutViewModel.GeneratorStatus.ERROR_KEY -> {
                 snackbarHostState.showSnackbar("Invalid API key. Please check your key.")
                 viewModel.resetGeneratorStatus()
             }
+
             WorkoutViewModel.GeneratorStatus.ERROR_GENERIC -> {
                 snackbarHostState.showSnackbar("Generation failed: ${generatorErrorMessage ?: "Unknown error"}")
                 viewModel.resetGeneratorStatus()
             }
+
             else -> {}
         }
     }
-    
+
     LaunchedEffect(Unit) {
         try {
             val inputStream = context.assets.open("pre_assembled_routines.json")
@@ -82,11 +91,20 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
 
     Scaffold(
         topBar = {
-            Row(modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth().background(DarkBackground).padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = onBack) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
                 }
-                Text("Explore Routines", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 16.dp))
+                Text(
+                    "Explore Routines",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -109,156 +127,323 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
                     )
                 },
                 confirmButton = {
-                    Button(onClick = { 
-                        viewModel.saveGeminiApiKey(tempApiKey)
-                        showApiKeyDialog = false 
-                    }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) { Text("Save") }
+                    Button(
+                        onClick = {
+                            viewModel.saveGeminiApiKey(tempApiKey)
+                            showApiKeyDialog = false
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = themeColor)
+                    ) { Text("Save") }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showApiKeyDialog = false }) { Text("Cancel", color = themeColor) }
+                    TextButton(onClick = { showApiKeyDialog = false }) {
+                        Text(
+                            "Cancel",
+                            color = themeColor
+                        )
+                    }
                 }
             )
         }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                    colors = CardDefaults.cardColors(containerColor = SurfaceDark),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.AutoAwesome, null, tint = themeColor)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Generate your own routine", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                            }
-                            IconButton(onClick = { 
-                                tempApiKey = geminiApiKey ?: ""
-                                showApiKeyDialog = true 
-                            }) {
-                                val keyTint = when {
-                                    generatorStatus == WorkoutViewModel.GeneratorStatus.ERROR_KEY -> Color.Red
-                                    !geminiApiKey.isNullOrBlank() -> Color(0xFF32D74B)
-                                    else -> TextGray
-                                }
-                                Icon(Icons.Default.VpnKey, contentDescription = "API Key", tint = keyTint)
-                            }
-                        }
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        Text("Training days per week: ${trainingDays.toInt()}", color = Color.White, fontSize = 14.sp)
-                        Slider(
-                            value = trainingDays,
-                            onValueChange = { trainingDays = it },
-                            valueRange = 1f..7f,
-                            steps = 5,
-                            colors = SliderDefaults.colors(thumbColor = themeColor, activeTrackColor = themeColor)
-                        )
-                        
-                        val recommendedSplit = when (trainingDays.toInt()) {
-                            1, 2 -> "Full Body"
-                            3 -> "Full Body or PPL"
-                            4 -> "Upper / Lower"
-                            5, 6 -> "PPL (Push-Pull-Legs)"
-                            7 -> "Arnold Split or PPL"
-                            else -> "Full Body"
-                        }
-                        Text("Recommended split: $recommendedSplit", color = TextGray, fontSize = 14.sp)
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        OutlinedTextField(
-                            value = customPrompt,
-                            onValueChange = { customPrompt = it },
-                            label = { Text("Additional preferences (optional)") },
-                            placeholder = { Text("e.g. Focus on chest...") },
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = themeColor,
-                                unfocusedBorderColor = TextGray,
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White,
-                                unfocusedLabelColor = TextGray,
-                                focusedLabelColor = themeColor
-                            ),
-                            maxLines = 3
-                        )
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        if (generatorStatus == WorkoutViewModel.GeneratorStatus.LOADING) {
-                            LinearProgressIndicator(modifier = Modifier.fillMaxWidth(), color = themeColor)
-                        } else {
-                            Button(
-                                onClick = { 
-                                    if (geminiApiKey.isNullOrBlank()) {
-                                        coroutineScope.launch { snackbarHostState.showSnackbar("Please add a Gemini API key first (🔑)") }
-                                    } else {
-                                        viewModel.generateWorkoutPlan(trainingDays.toInt(), customPrompt)
+        if (showEquipmentDialog) {
+            AlertDialog(
+                onDismissRequest = { showEquipmentDialog = false },
+                title = { Text("Select Equipment", color = Color.White) },
+                text = {
+                    LazyColumn {
+                        items(Equipment.values().toList()) { eq ->
+                            val isSelected = availableEquipments.contains(eq)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        availableEquipments =
+                                            if (isSelected) availableEquipments - eq else availableEquipments + eq
                                     }
-                                },
-                                modifier = Modifier.fillMaxWidth().height(48.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = themeColor),
-                                shape = RoundedCornerShape(8.dp)
+                                    .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("Generate Workout Plan", color = Color.White, fontWeight = FontWeight.Bold)
+                                Checkbox(
+                                    checked = isSelected,
+                                    onCheckedChange = null,
+                                    colors = CheckboxDefaults.colors(checkedColor = themeColor)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    eq.name.lowercase().replace("_", " ")
+                                        .replaceFirstChar { it.uppercase() }, color = Color.White
+                                )
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showEquipmentDialog = false }) {
+                        Text(
+                            "Done",
+                            color = themeColor
+                        )
+                    }
+                },
+                containerColor = SurfaceDark
+            )
+        }
+
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            TabRow(
+                selectedTabIndex = selectedTabIndex,
+                containerColor = DarkBackground,
+                contentColor = Color.White,
+                indicator = { tabPositions ->
+                    TabRowDefaults.SecondaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                        color = themeColor
+                    )
+                }
+            ) {
+                val titles = listOf("AI Generator", "Templates")
+                titles.forEachIndexed { index, title ->
+                    Tab(
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = index },
+                        text = {
+                            Text(
+                                title,
+                                fontWeight = if (selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal
+                            )
+                        },
+                        selectedContentColor = themeColor,
+                        unselectedContentColor = TextGray
+                    )
+                }
+            }
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).padding(top = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                if (selectedTabIndex == 0) {
+                    item {
+                        Card(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                            colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(Icons.Default.AutoAwesome, null, tint = themeColor)
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            "Generate your own routine",
+                                            color = Color.White,
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                    IconButton(onClick = {
+                                        tempApiKey = geminiApiKey ?: ""
+                                        showApiKeyDialog = true
+                                    }) {
+                                        val keyTint = when {
+                                            generatorStatus == WorkoutViewModel.GeneratorStatus.ERROR_KEY -> Color.Red
+                                            !geminiApiKey.isNullOrBlank() -> Color(0xFF32D74B)
+                                            else -> TextGray
+                                        }
+                                        Icon(
+                                            Icons.Default.VpnKey,
+                                            contentDescription = "API Key",
+                                            tint = keyTint
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                Text(
+                                    "Training days per week: ${trainingDays.toInt()}",
+                                    color = Color.White,
+                                    fontSize = 14.sp
+                                )
+                                Slider(
+                                    value = trainingDays,
+                                    onValueChange = { trainingDays = it },
+                                    valueRange = 1f..7f,
+                                    steps = 5,
+                                    colors = SliderDefaults.colors(
+                                        thumbColor = themeColor,
+                                        activeTrackColor = themeColor
+                                    )
+                                )
+
+                                val recommendedSplit = when (trainingDays.toInt()) {
+                                    1, 2 -> "Full Body"
+                                    3 -> "Full Body or PPL"
+                                    4 -> "Upper / Lower"
+                                    5, 6 -> "PPL (Push-Pull-Legs)"
+                                    7 -> "Arnold Split or PPL"
+                                    else -> "Full Body"
+                                }
+                                Text(
+                                    "Recommended split: $recommendedSplit",
+                                    color = TextGray,
+                                    fontSize = 14.sp
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                val totalEq = Equipment.values().size
+                                OutlinedButton(
+                                    onClick = { showEquipmentDialog = true },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                                    border = androidx.compose.foundation.BorderStroke(
+                                        1.dp,
+                                        TextGray
+                                    ),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Text(
+                                        text = if (availableEquipments.size == totalEq) "Equipment: All Available"
+                                        else "Equipment: ${availableEquipments.size} Selected",
+                                        color = Color.White
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                OutlinedTextField(
+                                    value = customPrompt,
+                                    onValueChange = { customPrompt = it },
+                                    label = { Text("Additional preferences (optional)") },
+                                    placeholder = { Text("e.g. Focus on chest...") },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = themeColor,
+                                        unfocusedBorderColor = TextGray,
+                                        focusedTextColor = Color.White,
+                                        unfocusedTextColor = Color.White,
+                                        unfocusedLabelColor = TextGray,
+                                        focusedLabelColor = themeColor
+                                    ),
+                                    maxLines = 3
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                if (generatorStatus == WorkoutViewModel.GeneratorStatus.LOADING) {
+                                    LinearProgressIndicator(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        color = themeColor
+                                    )
+                                } else {
+                                    Button(
+                                        onClick = {
+                                            if (geminiApiKey.isNullOrBlank()) {
+                                                coroutineScope.launch {
+                                                    snackbarHostState.showSnackbar(
+                                                        "Please add a Gemini API key first (🔑)"
+                                                    )
+                                                }
+                                            } else {
+                                                viewModel.generateWorkoutPlan(
+                                                    trainingDays.toInt(),
+                                                    customPrompt,
+                                                    availableEquipments
+                                                )
+                                            }
+                                        },
+                                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                                        colors = ButtonDefaults.buttonColors(containerColor = themeColor),
+                                        shape = RoundedCornerShape(8.dp)
+                                    ) {
+                                        Text(
+                                            "Generate Workout Plan",
+                                            color = Color.White,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            items(preAssembledRoutines) { template ->
-                var expanded by remember { mutableStateOf(false) }
-                
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = SurfaceDark),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded },
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(template.templateName, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            Icon(if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, null, tint = TextGray)
-                        }
-                        
-                        if (expanded) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            template.exercises.forEach { ex ->
-                                Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    Text(ex.name, color = Color.White, fontSize = 14.sp)
-                                    Text("${ex.sets.size} sets", color = TextGray, fontSize = 14.sp)
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(
-                                onClick = { 
-                                    viewModel.saveNewTemplate(template.templateName, template.exercises) 
-                                    coroutineScope.launch {
-                                        snackbarHostState.showSnackbar("Routine added to your list!")
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth().height(48.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = themeColor),
-                                shape = RoundedCornerShape(8.dp)
+                if (selectedTabIndex == 1) {
+                        items(preAssembledRoutines) { template ->
+                            var expanded by remember { mutableStateOf(false) }
+
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                                shape = RoundedCornerShape(12.dp)
                             ) {
-                                Icon(Icons.Default.Add, null, tint = Color.White)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Add to My Routines", color = Color.White, fontWeight = FontWeight.Bold)
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                            .clickable { expanded = !expanded },
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            template.templateName,
+                                            color = Color.White,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Icon(
+                                            if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                            null,
+                                            tint = TextGray
+                                        )
+                                    }
+
+                                    if (expanded) {
+                                        Spacer(modifier = Modifier.height(16.dp))
+                                        template.exercises.forEach { ex ->
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth()
+                                                    .padding(vertical = 4.dp),
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Text(ex.name, color = Color.White, fontSize = 14.sp)
+                                                Text(
+                                                    "${ex.sets.size} sets",
+                                                    color = TextGray,
+                                                    fontSize = 14.sp
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(16.dp))
+                                        Button(
+                                            onClick = {
+                                                viewModel.saveNewTemplate(
+                                                    template.templateName,
+                                                    template.exercises
+                                                )
+                                                coroutineScope.launch {
+                                                    snackbarHostState.showSnackbar("Routine added to your list!")
+                                                }
+                                            },
+                                            modifier = Modifier.fillMaxWidth().height(48.dp),
+                                            colors = ButtonDefaults.buttonColors(containerColor = themeColor),
+                                            shape = RoundedCornerShape(8.dp)
+                                        ) {
+                                            Icon(Icons.Default.Add, null, tint = Color.White)
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                "Add to My Routines",
+                                                color = Color.White,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -266,4 +451,3 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
             }
         }
     }
-}
