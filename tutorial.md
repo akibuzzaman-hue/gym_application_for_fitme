@@ -85,7 +85,7 @@ A képernyő tetején folyamatosan látod a legfontosabb adatokat: **Duration (I
 
 ### Exercise Block (Gyakorlat blokk) interakciók
 
--  **Thumbnail Image (Miniatűr kép)**: Kattints a gyakorlat melletti kis képre a nagyításhoz.
+-  **Thumbnail Image (Miniatűr kép)**: Kattints a gyakorlat melletti kis képre. Ha elérhető hozzá videó, elindul a lejátszás, egyébként a kép nagyítva jelenik meg.
 
 -  **Notes (Jegyzet)**: A gyakorlat neve alatt közvetlenül írhatsz jegyzeteket.
 
@@ -129,7 +129,7 @@ A **Profile** fülön éred el az **Exercises** (Gyakorlatok) könyvtárat, ahol
 
 - A saját (Custom) gyakorlatoknál minden adatot (név, kép, izmok) szerkeszthetsz.
 
-- Az alapértelmezett gyakorlatoknál biztonsági okokból csak az ismétlési tartományt és a képet módosíthatod.
+- Az alapértelmezett gyakorlatoknál biztonsági okokból csak az ismétlési tartományt módosíthatod, a képük fix.
 
   
 
@@ -172,6 +172,7 @@ A **Profile** fülön követheted a hosszú távú haladásodat:
 -  **Calendar Button (Naptár gomb)**: Naptár nézetben böngészheted a múltat. A ponttal jelölt napokon volt edzésed.
 
 -  **Recent Workouts List**: A képernyő alján az utolsó 5 edzésed kártyáját látod. Kattints bármelyikre a részletekért, vagy hogy **Copy workout** (Edzés másolása) vagy **Save as routine** (Mentés rutinként) funkciókkal újrahasználd őket.
+- **Settings (Beállítások)**: A profilod jobb felső sarkában található fogaskerék ikonnal érheted el. Itt módosíthatod a nevedet, profilképedet, az alkalmazás nyelvét, valamint a téma színét (**Piros, Sárga, Zöld, Kék, Lila**).
 
   
 

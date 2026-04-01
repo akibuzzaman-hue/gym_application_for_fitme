@@ -91,6 +91,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     val exerciseIndexMap = remember(exercises) { exercises.mapIndexed { i, ex -> ex.id to i }.toMap() }
     // O(1) image lookup map to avoid O(n) library.find per list item during scroll
     val libraryImageMap = remember(library) { library.associate { it.name to it.imageUri } }
+    val libraryVideoMap = remember(library) { library.associate { it.name to it.videoUrl } }
 
     val groupedExercises = remember(exercises) {
         val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
@@ -189,7 +190,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     group.forEachIndexed { idxInGroup, exercise ->
                         val index = exerciseIndexMap[exercise.id] ?: 0
                                 ExerciseBlock(
-                                exercise, libraryImageMap[exercise.name], index, exercises.size, themeColor,
+                                exercise, libraryImageMap[exercise.name], libraryVideoMap[exercise.name], index, exercises.size, themeColor,
                                 { moveWithFreecam { viewModel.moveExerciseUp(index) } },
                                 { moveWithFreecam { viewModel.moveExerciseDown(index) } },
                                 { s -> viewModel.updateSet(exercise.id, s) },

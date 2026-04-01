@@ -153,6 +153,7 @@ data class ExerciseDef(
     val minReps: Int = 8,
     val maxReps: Int = 12,
     val imageUri: String? = null,
+    val videoUrl: String? = null,
     val muscleGroups: List<MuscleGroup> = emptyList(),
     val equipment: Equipment = Equipment.NONE,
     val type: ExerciseType = ExerciseType.REPS_WEIGHT,

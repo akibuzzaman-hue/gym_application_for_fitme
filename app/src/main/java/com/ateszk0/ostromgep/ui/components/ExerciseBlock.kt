@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 fun ExerciseBlock(
     exercise: ExerciseSessionData, 
     imageUri: String?,
+    videoUrl: String?,
     index: Int, 
     total: Int, 
     themeColor: Color,
@@ -69,6 +70,7 @@ fun ExerciseBlock(
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf<String?>(null) }
+    var showVideoDialog by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -78,14 +80,31 @@ fun ExerciseBlock(
         ) {
             Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                 if (!imageUri.isNullOrEmpty()) {
-                    coil.compose.AsyncImage(
-                        model = imageUri,
-                        contentDescription = null,
-                        contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).clickable { showImageDialog = imageUri }
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable {
+                                if (!videoUrl.isNullOrEmpty()) showVideoDialog = videoUrl
+                                else showImageDialog = imageUri
+                            }
+                    ) {
+                        coil.compose.AsyncImage(
+                            model = imageUri,
+                            contentDescription = null,
+                            contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 } else {
-                    Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(SurfaceDark), contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(SurfaceDark)
+                            .clickable { if (!videoUrl.isNullOrEmpty()) showVideoDialog = videoUrl },
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(Icons.Default.FitnessCenter, null, tint = TextGray, modifier = Modifier.size(24.dp))
                     }
                 }
@@ -295,6 +314,14 @@ fun ExerciseBlock(
                     contentDescription = null,
                     modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
                 )
+            }
+        }
+    }
+    
+    if (showVideoDialog != null) {
+        androidx.compose.ui.window.Dialog(onDismissRequest = { showVideoDialog = null }) {
+            Box(modifier = Modifier.fillMaxWidth().aspectRatio(1f).clip(RoundedCornerShape(16.dp))) {
+                VideoPlayer(videoUrl = showVideoDialog!!)
             }
         }
     }

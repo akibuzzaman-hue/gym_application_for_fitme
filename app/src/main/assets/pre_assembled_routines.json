@@ -1,2275 +1,2275 @@
 [
-  {
-    "id": -1,
-    "templateName": "Push Day - PPL",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Bench Press (Barbell)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "70",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "70",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "70",
-            "reps": "8",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    {
+        "id": -1,
+        "templateName": "Push Day - PPL",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Bench Press (Barbell)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "70",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "70",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "70",
+                        "reps": "8",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Shoulder Press",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "45",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "45",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "45",
+                        "reps": "10",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Incline Bench Press (Barbell)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "60",
+                        "reps": "10",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "60",
+                        "reps": "10",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "60",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Lateral Raise (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "12",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "12",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "12",
+                        "reps": "15",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Triceps Pushdown",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "25",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "25",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "25",
+                        "reps": "15",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Triceps Extension (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "18",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "18",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "18",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 2,
-        "name": "Shoulder Press",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "45",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "45",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "45",
-            "reps": "10",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -2,
+        "templateName": "Pull Day - PPL",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Pull Up",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Bent Over Row (Barbell)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "70",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "70",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "70",
+                        "reps": "10",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Seated Cable Row",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "60",
+                        "reps": "10",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "60",
+                        "reps": "10",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "60",
+                        "reps": "10",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Face Pull",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "35",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "35",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "35",
+                        "reps": "15",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Hammer Curl (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "16",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "16",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "16",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Bicep Curl (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "14",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "14",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "14",
+                        "reps": "12",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 3,
-        "name": "Incline Bench Press (Barbell)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "60",
-            "reps": "10",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "60",
-            "reps": "10",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "60",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -3,
+        "templateName": "Leg Day - PPL",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Squat (Barbell)",
+                "restTimerDuration": 150,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "100",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "100",
+                        "reps": "8",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "100",
+                        "reps": "10",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Romanian Deadlift (Barbell)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "90",
+                        "reps": "10",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "90",
+                        "reps": "10",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "90",
+                        "reps": "10",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Leg Press (Machine)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "160",
+                        "reps": "12",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "160",
+                        "reps": "12",
+                        "rpe": "8",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "160",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Seated Leg Curl",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "50",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "50",
+                        "reps": "12",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "50",
+                        "reps": "15",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Standing Calf Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "60",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "60",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "60",
+                        "reps": "20",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Hanging Leg Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "9",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "20",
+                        "rpe": "10",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 4,
-        "name": "Lateral Raise (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "12",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "12",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "12",
-            "reps": "15",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -4,
+        "templateName": "Full Body A (Horizontal Strength)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Hack Squat (Machine)",
+                "restTimerDuration": 180,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Bench Press (Barbell)",
+                "restTimerDuration": 180,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Bent Over Row (Barbell)",
+                "restTimerDuration": 150,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Lateral Raise (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Barbell Curl",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Cable Crunch (Cable)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 5,
-        "name": "Triceps Pushdown",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "25",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "25",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "25",
-            "reps": "15",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -5,
+        "templateName": "Full Body B (Vertical Strength)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Pull Up",
+                "restTimerDuration": 150,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Stiff Leg Deadlift (Barbell)",
+                "restTimerDuration": 180,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Shoulder Press (Dumbbell)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Shrug (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Dips",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Seated Calf Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 4,
+                        "setLabel": "4",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 6,
-        "name": "Triceps Extension (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "18",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "18",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "18",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -6,
+        "templateName": "Full Body C (Cable & Machine)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Leg Press (Machine)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Incline Dumbbell Press",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Lat Pulldown (Cable)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Cable Y-Raise (Cable)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Hammer Curl (Dumbbell)",
+                "restTimerDuration": 0,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Triceps Extension (Cable)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "name": "Hanging Leg Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  {
-    "id": -2,
-    "templateName": "Pull Day - PPL",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Pull Up",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -7,
+        "templateName": "Upper A (Strength)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Bench Press (Barbell)",
+                "restTimerDuration": 180,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Bent Over Row (Barbell)",
+                "restTimerDuration": 150,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Shoulder Press (Dumbbell)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Pull Up",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Barbell Curl",
+                "restTimerDuration": 0,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Skull Crusher (Barbell)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 2,
-        "name": "Barbell Row (Bent Over)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "70",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "70",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "70",
-            "reps": "10",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -8,
+        "templateName": "Upper B (Hypertrophy/Cable)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Incline Dumbbell Press",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Lat Pulldown (Cable)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Lateral Raise (Cable)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Cable Face Pull",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Triceps Pushdown",
+                "restTimerDuration": 0,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "Hammer Curl (Dumbbell)",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 3,
-        "name": "Seated Cable Row",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "60",
-            "reps": "10",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "60",
-            "reps": "10",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "60",
-            "reps": "10",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -9,
+        "templateName": "Lower A (Strength)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Hack Squat (Machine)",
+                "restTimerDuration": 180,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "8",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Stiff Leg Deadlift (Barbell)",
+                "restTimerDuration": 180,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Leg Press (Machine)",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Seated Calf Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 4,
+                        "setLabel": "4",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Cable Crunch",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 4,
-        "name": "Face Pull",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "35",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "35",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "35",
-            "reps": "15",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
+    },
+    {
+        "id": -10,
+        "templateName": "Lower B (Hypertrophy/Cable)",
+        "exercises": [
+            {
+                "id": 1,
+                "name": "Bulgarian Split Squat",
+                "restTimerDuration": 120,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "10",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Seated Leg Curl (Machine)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "12",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Leg Extension (Machine)",
+                "restTimerDuration": 90,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Dumbbell Calf Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 4,
+                        "setLabel": "4",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Hanging Leg Raise",
+                "restTimerDuration": 60,
+                "sets": [
+                    {
+                        "id": 1,
+                        "setLabel": "1",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 2,
+                        "setLabel": "2",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    },
+                    {
+                        "id": 3,
+                        "setLabel": "3",
+                        "kg": "0",
+                        "reps": "15",
+                        "rpe": "",
+                        "isWarmup": false,
+                        "isCompleted": false,
+                        "previousText": "-"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 5,
-        "name": "Hammer Curl (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "16",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "16",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "16",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Bicep Curl (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "14",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "14",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "14",
-            "reps": "12",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -3,
-    "templateName": "Leg Day - PPL",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Barbell Squat",
-        "restTimerDuration": 150,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "100",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "100",
-            "reps": "8",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "100",
-            "reps": "10",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Romanian Deadlift (Barbell)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "90",
-            "reps": "10",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "90",
-            "reps": "10",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "90",
-            "reps": "10",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Leg Press (Machine)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "160",
-            "reps": "12",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "160",
-            "reps": "12",
-            "rpe": "8",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "160",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Seated Leg Curl",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "50",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "50",
-            "reps": "12",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "50",
-            "reps": "15",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Standing Calf Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "60",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "60",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "60",
-            "reps": "20",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Hanging Leg Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "9",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "20",
-            "rpe": "10",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -4,
-    "templateName": "Full Body A (Horizontal Strength)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Hack Squat (Machine)",
-        "restTimerDuration": 180,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Bench Press (Barbell)",
-        "restTimerDuration": 180,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Barbell Row (Bent Over)",
-        "restTimerDuration": 150,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Lateral Raise (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Barbell Curl",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Cable Crunch (Cable)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -5,
-    "templateName": "Full Body B (Vertical Strength)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Pull Up",
-        "restTimerDuration": 150,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Stiff Leg Deadlift (Barbell)",
-        "restTimerDuration": 180,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Shoulder Press (Dumbbell)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Shrug (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Dips",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Seated Calf Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 4,
-            "setLabel": "4",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -6,
-    "templateName": "Full Body C (Cable & Machine)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Leg Press (Machine)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Incline Dumbbell Press",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Lat Pulldown (Cable)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Cable Y-Raise (Cable)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Hammer Curl (Dumbbell)",
-        "restTimerDuration": 0,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Triceps Extension (Cable)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 7,
-        "name": "Hanging Leg Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -7,
-    "templateName": "Upper A (Strength)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Bench Press (Barbell)",
-        "restTimerDuration": 180,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Barbell Row (Bent Over)",
-        "restTimerDuration": 150,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Shoulder Press (Dumbbell)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Pull Up",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Barbell Curl",
-        "restTimerDuration": 0,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Skull Crusher (Barbell)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -8,
-    "templateName": "Upper B (Hypertrophy/Cable)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Incline Dumbbell Press",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Lat Pulldown (Cable)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Lateral Raise (Cable)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Cable Face Pull",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Triceps Pushdown",
-        "restTimerDuration": 0,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "name": "Hammer Curl (Dumbbell)",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -9,
-    "templateName": "Lower A (Strength)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Hack Squat (Machine)",
-        "restTimerDuration": 180,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "8",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Stiff Leg Deadlift (Barbell)",
-        "restTimerDuration": 180,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Leg Press (Machine)",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Seated Calf Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 4,
-            "setLabel": "4",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Cable Crunch",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": -10,
-    "templateName": "Lower B (Hypertrophy/Cable)",
-    "exercises": [
-      {
-        "id": 1,
-        "name": "Bulgarian Split Squat",
-        "restTimerDuration": 120,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "10",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Seated Leg Curl (Machine)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "12",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Leg Extension (Machine)",
-        "restTimerDuration": 90,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Dumbbell Calf Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 4,
-            "setLabel": "4",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      },
-      {
-        "id": 5,
-        "name": "Hanging Leg Raise",
-        "restTimerDuration": 60,
-        "sets": [
-          {
-            "id": 1,
-            "setLabel": "1",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 2,
-            "setLabel": "2",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          },
-          {
-            "id": 3,
-            "setLabel": "3",
-            "kg": "0",
-            "reps": "15",
-            "rpe": "",
-            "isWarmup": false,
-            "isCompleted": false,
-            "previousText": "-"
-          }
-        ]
-      }
-    ]
-  }
+    }
 ]

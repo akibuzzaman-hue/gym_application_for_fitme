@@ -6,11 +6,17 @@ import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutHistoryEntry
 import com.ateszk0.ostromgep.model.WorkoutTemplate
 import com.ateszk0.ostromgep.model.RoutineFolder
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
-import java.io.InputStreamReader
+import com.ateszk0.ostromgep.model.MuscleGroup
+import com.ateszk0.ostromgep.model.Equipment
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import java.io.InputStreamReader
+import java.lang.reflect.Type
 
 class WorkoutRepository(private val context: Context) {
     private val prefs = context.getSharedPreferences("ostromgep_prefs", Context.MODE_PRIVATE)
@@ -26,10 +32,21 @@ class WorkoutRepository(private val context: Context) {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
-    private val gson = Gson()
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(MuscleGroup::class.java, object : JsonDeserializer<MuscleGroup> {
+            override fun deserialize(json: JsonElement, type: Type, ctx: JsonDeserializationContext): MuscleGroup {
+                return try { MuscleGroup.valueOf(json.asString) } catch (e: Exception) { MuscleGroup.OTHER }
+            }
+        })
+        .registerTypeAdapter(Equipment::class.java, object : JsonDeserializer<Equipment> {
+            override fun deserialize(json: JsonElement, type: Type, ctx: JsonDeserializationContext): Equipment {
+                return try { Equipment.valueOf(json.asString) } catch (e: Exception) { Equipment.OTHER }
+            }
+        })
+        .create()
 
     fun getTheme(): String {
-        return prefs.getString("theme", "Kék") ?: "Kék"
+        return prefs.getString("theme", "Piros") ?: "Piros"
     }
 
     fun saveTheme(theme: String) {

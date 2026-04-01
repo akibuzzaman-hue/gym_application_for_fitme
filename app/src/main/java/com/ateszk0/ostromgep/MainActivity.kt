@@ -93,6 +93,7 @@ class MainActivity : ComponentActivity() {
                 "Piros" -> Color(0xFFFF453A)
                 "Sárga" -> Color(0xFFFFD60A)
                 "Zöld" -> Color(0xFF32D74B)
+                "Lila" -> Color(0xFFAF52DE)
                 else -> Color(0xFF0A84FF) 
             }
 

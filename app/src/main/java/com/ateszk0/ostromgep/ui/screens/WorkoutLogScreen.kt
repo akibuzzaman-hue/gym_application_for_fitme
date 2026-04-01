@@ -214,6 +214,7 @@ fun WorkoutLogScreen(
                                         ExerciseBlock(
                                             exercise = ex,
                                             imageUri = def?.imageUri,
+                                            videoUrl = def?.videoUrl,
                                             index = displayIndex++,
                                             total = entry.exercises.size,
                                             themeColor = themeColor,
