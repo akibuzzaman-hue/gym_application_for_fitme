@@ -183,23 +183,25 @@ fun ExerciseEditDialog(
                             OutlinedTextField(value = maxI, onValueChange = { maxI = it }, label = { Text(stringResource(R.string.max_label)) }, modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), textStyle = TextStyle(color = Color.White)) 
                         } 
                     }
-                    item {
-                        Text(stringResource(R.string.image_label), color = TextGray)
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { launcher.launch("image/*") }) {
-                            if (!imgUri.isNullOrEmpty()) {
-                                coil.compose.AsyncImage(
-                                    model = imgUri,
-                                    contentDescription = null,
-                                    contentScale = androidx.compose.ui.layout.ContentScale.Crop,
-                                    modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
-                                )
-                            } else {
-                                Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(DarkBackground), contentAlignment = Alignment.Center) {
-                                    Text(stringResource(R.string.no_img_label), color = TextGray, fontSize = 10.sp)
+                    if (exercise.isCustom) {
+                        item {
+                            Text(stringResource(R.string.image_label), color = TextGray)
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { launcher.launch("image/*") }) {
+                                if (!imgUri.isNullOrEmpty()) {
+                                    coil.compose.AsyncImage(
+                                        model = imgUri,
+                                        contentDescription = null,
+                                        contentScale = androidx.compose.ui.layout.ContentScale.Crop,
+                                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                                    )
+                                } else {
+                                    Box(modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp)).background(DarkBackground), contentAlignment = Alignment.Center) {
+                                        Text(stringResource(R.string.no_img_label), color = TextGray, fontSize = 10.sp)
+                                    }
                                 }
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(if (imgUri.isNullOrEmpty()) stringResource(R.string.pick_image) else stringResource(R.string.change_image), color = Color.White)
                             }
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(if (imgUri.isNullOrEmpty()) stringResource(R.string.pick_image) else stringResource(R.string.change_image), color = Color.White)
                         }
                     }
                     item {
@@ -462,9 +464,9 @@ fun SettingsDialog(
                         Spacer(modifier = Modifier.height(32.dp))
                         Text(stringResource(R.string.theme_label), fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
                         Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
-                            listOf("Kék", "Piros", "Sárga", "Zöld").forEachIndexed { index, themeName ->
-                                val themeDisplay = when(themeName) { "Piros" -> stringResource(R.string.theme_red); "Sárga" -> stringResource(R.string.theme_yellow); "Zöld" -> stringResource(R.string.theme_green); else -> stringResource(R.string.theme_blue) }
-                                val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); else -> Color(0xFF0A84FF) }
+                            listOf("Piros", "Sárga", "Zöld", "Kék", "Lila").forEachIndexed { index, themeName ->
+                                val themeDisplay = when(themeName) { "Piros" -> stringResource(R.string.theme_red); "Sárga" -> stringResource(R.string.theme_yellow); "Zöld" -> stringResource(R.string.theme_green); "Lila" -> stringResource(R.string.theme_purple); else -> stringResource(R.string.theme_blue) }
+                                val color = when(themeName) { "Piros" -> Color(0xFFFF453A); "Sárga" -> Color(0xFFFFD60A); "Zöld" -> Color(0xFF32D74B); "Lila" -> Color(0xFFAF52DE); else -> Color(0xFF0A84FF) }
                                 Row(
                                     modifier = Modifier.fillMaxWidth().clickable { viewModel.setTheme(themeName) }.padding(16.dp), 
                                     verticalAlignment = Alignment.CenterVertically
@@ -473,12 +475,13 @@ fun SettingsDialog(
                                     Spacer(modifier = Modifier.width(16.dp))
                                     Text(themeDisplay, fontSize = 16.sp, color = Color.White) 
                                     Spacer(modifier = Modifier.weight(1f))
-                                    if (themeName == "Kék" && currentThemeColor == Color(0xFF0A84FF)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
                                     if (themeName == "Piros" && currentThemeColor == Color(0xFFFF453A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
                                     if (themeName == "Sárga" && currentThemeColor == Color(0xFFFFD60A)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
                                     if (themeName == "Zöld" && currentThemeColor == Color(0xFF32D74B)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                    if (themeName == "Kék" && currentThemeColor == Color(0xFF0A84FF)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
+                                    if (themeName == "Lila" && currentThemeColor == Color(0xFFAF52DE)) { Icon(Icons.Default.Check, null, tint = currentThemeColor) }
                                 } 
-                                if (index < 3) Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                                if (index < 4) Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
                             } 
                         }
                         

@@ -61,19 +61,25 @@ object NotificationHelper {
         }
     }
 
+    private fun getContentIntent(context: Context): PendingIntent {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            action = "ACTION_OPEN_WORKOUT"
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    }
+
     private fun getPendingIntent(context: Context, action: String): PendingIntent {
         val intent = Intent(context, WorkoutActionReceiver::class.java).apply { this.action = action }
         return PendingIntent.getBroadcast(context, action.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     fun buildInitialNotification(context: Context): Notification {
-        val stopIntent = Intent(context, WorkoutService::class.java).apply { action = "STOP_SERVICE" }
-        val stopPendingIntent = PendingIntent.getService(context, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        
         return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(androidx.core.R.drawable.notification_bg) // placeholder
-            .setContentTitle("Workout Active")
-            .setContentText("Tap to open")
+            .setSmallIcon(android.R.drawable.ic_menu_today)
+            .setContentTitle(context.getString(R.string.notif_workout_active))
+            .setContentText(context.getString(R.string.notif_tap_to_open))
+            .setContentIntent(getContentIntent(context))
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
     }
@@ -81,7 +87,7 @@ object NotificationHelper {
     fun updateNotification(context: Context, targetExercise: ExerciseSessionData?, restTimerSeconds: Int) {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         
-        val title = targetExercise?.name ?: "Workout"
+        val title = targetExercise?.name ?: context.getString(R.string.notif_workout_active)
         
         val completedSets = targetExercise?.sets?.count { it.isCompleted } ?: 0
         val totalSets = targetExercise?.sets?.size ?: 0
@@ -89,6 +95,7 @@ object NotificationHelper {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_menu_today)
             .setContentTitle(title)
+            .setContentIntent(getContentIntent(context))
             .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
 
@@ -105,17 +112,17 @@ object NotificationHelper {
             val seconds = restTimerSeconds % 60
             val timeString = String.format("%d:%02d", minutes, seconds)
             
-            builder.setContentText("Rest $timeString")
+            builder.setContentText(context.getString(R.string.notif_rest, timeString))
             builder.setProgress(totalRest, restTimerSeconds, false)
             
-            builder.addAction(android.R.drawable.ic_media_next, "Skip", getPendingIntent(context, "ACTION_SKIP_REST"))
-            builder.addAction(android.R.drawable.ic_media_rew, "-15s", getPendingIntent(context, "ACTION_SUB_15S"))
-            builder.addAction(android.R.drawable.ic_media_ff, "+15s", getPendingIntent(context, "ACTION_ADD_15S"))
+            builder.addAction(android.R.drawable.ic_media_next, context.getString(R.string.notif_skip), getPendingIntent(context, "ACTION_SKIP_REST"))
+            builder.addAction(android.R.drawable.ic_media_rew, context.getString(R.string.notif_sub15), getPendingIntent(context, "ACTION_SUB_15S"))
+            builder.addAction(android.R.drawable.ic_media_ff, context.getString(R.string.notif_add15), getPendingIntent(context, "ACTION_ADD_15S"))
         } else {
             lastRestTime = 0
             currentMaxRest = 0
 
-            builder.setContentText("Next: Set ${completedSets + 1} of $totalSets")
+            builder.setContentText(context.getString(R.string.notif_next_set, completedSets + 1, totalSets))
             builder.setProgress(0, 0, false)
         }
 

@@ -71,6 +71,7 @@
     <string name="theme_red">Piros</string>
     <string name="theme_yellow">Sárga</string>
     <string name="theme_green">Zöld</string>
+    <string name="theme_purple">Lila</string>
     <string name="pick_image">Kép kiválasztása</string>
     <string name="change_image">Kép módosítása</string>
     
@@ -233,4 +234,13 @@
     <string name="add_notes_placeholder">Jegyzetek...</string>
     <string name="bw_kg_label">TS+KG</string>
     <string name="warmup_label">Bemelegítés</string>
+
+    <!-- Notification -->
+    <string name="notif_workout_active">Edzés folyamatban</string>
+    <string name="notif_tap_to_open">Koppints a megnyitáshoz</string>
+    <string name="notif_rest">Pihenő %1$s</string>
+    <string name="notif_next_set">Következő: %1$d/%2$d szett</string>
+    <string name="notif_skip">Ugrás</string>
+    <string name="notif_sub15">-15mp</string>
+    <string name="notif_add15">+15mp</string>
 </resources>

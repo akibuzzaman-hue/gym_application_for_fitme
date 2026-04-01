@@ -26,6 +26,7 @@ import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.ui.components.ExerciseEditDialog
 import androidx.compose.ui.res.stringResource
+import com.ateszk0.ostromgep.utils.calculateSearchScore
 import com.ateszk0.ostromgep.R
 
 @Composable
@@ -52,7 +53,13 @@ fun ExercisesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: () -
         )
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn { 
-            val filtered = library.filter { it.name.contains(search, ignoreCase = true) }.sortedBy { it.name }
+            val filtered = library.filter { 
+                if (search.isBlank()) true 
+                else it.calculateSearchScore(search) > 0 
+            }.sortedWith(
+                compareByDescending<ExerciseDef> { if (search.isBlank()) 0 else it.calculateSearchScore(search) }
+                    .thenBy { it.name }
+            )
             items(filtered) { exDef -> 
                 Row(
                     modifier = Modifier.fillMaxWidth().clickable { exerciseToEdit = exDef }.padding(vertical = 12.dp), 

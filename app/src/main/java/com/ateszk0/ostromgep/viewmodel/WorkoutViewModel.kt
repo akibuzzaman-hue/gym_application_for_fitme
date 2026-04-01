@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
+    enum class GeneratorStatus { IDLE, LOADING, SUCCESS, ERROR_KEY, ERROR_GENERIC }
+
     private val repository = WorkoutRepository(application)
 
     private val _totalSeconds = MutableStateFlow(0)
@@ -69,6 +71,20 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _latestBodyWeightKg = MutableStateFlow(repository.getBodyWeightHistory().maxByOrNull { it.timestamp }?.weightKg ?: 0.0)
     val latestBodyWeightKg: StateFlow<Double> = _latestBodyWeightKg.asStateFlow()
 
+    // UI state for workout session (ViewModel-level so it survives config changes)
+    private val _isWorkoutActive = MutableStateFlow(false)
+    val isWorkoutActive: StateFlow<Boolean> = _isWorkoutActive.asStateFlow()
+
+    private val _isWorkoutMinimized = MutableStateFlow(false)
+    val isWorkoutMinimized: StateFlow<Boolean> = _isWorkoutMinimized.asStateFlow()
+
+    // --- AI Generator State ---
+    private val _geminiApiKey = MutableStateFlow(repository.getGeminiApiKey())
+    val geminiApiKey: StateFlow<String?> = _geminiApiKey.asStateFlow()
+
+    private val _generatorStatus = MutableStateFlow(GeneratorStatus.IDLE)
+    val generatorStatus: StateFlow<GeneratorStatus> = _generatorStatus.asStateFlow()
+
     companion object {
         val BODYWEIGHT_EXERCISES = setOf(
             "Pull Up", "Pull-up", 
@@ -86,6 +102,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             _bodyWeightHistory.collect { history ->
                 _latestBodyWeightKg.value = history.maxByOrNull { it.timestamp }?.weightKg ?: 0.0
             }
+        }
+
+        // Restore active workout from persistent storage (survives process death)
+        val savedState = repository.getActiveWorkoutState()
+        if (savedState != null) {
+            _activeExercises.value = savedState.exercises
+            _activeTemplateId.value = savedState.templateId
+            _totalSeconds.value = savedState.totalSeconds
+            _restTimerSeconds.value = 0 // Don't restore rest timer
+            _isWorkoutActive.value = true
         }
 
         viewModelScope.launch {
@@ -112,12 +138,71 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                     }
                     val targetEx = targetExerciseForNotification()
                     NotificationHelper.updateNotification(application, targetEx, _restTimerSeconds.value)
+                    // Persist every 5 seconds to avoid excessive I/O
+                    if (_totalSeconds.value % 5 == 0) {
+                        persistActiveWorkout()
+                    }
                 }
             }
         }
     }
 
     fun setTheme(theme: String) { _appTheme.value = theme; repository.saveTheme(theme) }
+
+    private val _generatorErrorMessage = MutableStateFlow<String?>(null)
+    val generatorErrorMessage: StateFlow<String?> = _generatorErrorMessage.asStateFlow()
+
+    fun saveGeminiApiKey(key: String) {
+        repository.saveGeminiApiKey(key)
+        _geminiApiKey.value = key
+        _generatorStatus.value = GeneratorStatus.IDLE
+    }
+
+    fun generateWorkoutPlan(trainingDays: Int, customPrompt: String, availableEquipments: Set<Equipment> = Equipment.entries.toSet()) {
+        val key = _geminiApiKey.value ?: return
+        viewModelScope.launch {
+            _generatorStatus.value = GeneratorStatus.LOADING
+            try {
+                val routines = WorkoutGenerator(getApplication()).generateRoutines(key, trainingDays, customPrompt, availableEquipments.toList())
+                routines.forEach { saveNewTemplate(it.templateName, it.exercises) }
+                _generatorStatus.value = GeneratorStatus.SUCCESS
+            } catch (e: InvalidApiKeyException) {
+                _generatorErrorMessage.value = "Invalid API Key."
+                _generatorStatus.value = GeneratorStatus.ERROR_KEY
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _generatorErrorMessage.value = e.message ?: "Unknown error"
+                _generatorStatus.value = GeneratorStatus.ERROR_GENERIC
+            }
+        }
+    }
+
+    fun resetGeneratorStatus() { 
+        _generatorStatus.value = GeneratorStatus.IDLE 
+        _generatorErrorMessage.value = null
+    }
+
+    fun setWorkoutActive(active: Boolean) {
+        _isWorkoutActive.value = active
+        if (!active) {
+            _isWorkoutMinimized.value = false
+        }
+    }
+
+    fun setWorkoutMinimized(minimized: Boolean) {
+        _isWorkoutMinimized.value = minimized
+    }
+
+    private fun persistActiveWorkout() {
+        repository.saveActiveWorkoutState(
+            com.ateszk0.ostromgep.data.WorkoutRepository.ActiveWorkoutState(
+                exercises = _activeExercises.value,
+                templateId = _activeTemplateId.value,
+                totalSeconds = _totalSeconds.value,
+                restTimerSeconds = _restTimerSeconds.value
+            )
+        )
+    }
 
     fun updateUsername(name: String) {
         _username.value = name
@@ -144,8 +229,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         repository.saveSavedTemplates(newTemplates)
     }
 
-    private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.sets
-    private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
+    private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.flatMap { it.exercises }.find { it.name == exerciseName }?.sets
+    private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
 
     fun updateExerciseDetails(name: String, min: Int, max: Int, imageUri: String?, muscleGroups: List<MuscleGroup>, equipment: Equipment) {
         val app = getApplication<Application>()
@@ -169,6 +254,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = emptyList()
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = true
+        persistActiveWorkout()
     }
 
     fun startWorkoutFromTemplate(template: WorkoutTemplate) {
@@ -189,6 +276,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = newSession
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = true
+        persistActiveWorkout()
 
         val prompts = mutableListOf<OverloadPrompt>()
         newSession.forEach { ex ->
@@ -246,7 +335,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 if (template != null) finalName = template.templateName
             }
         }
-        val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value, finalName)
+        val newHistory = (_workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value, finalName))
+            .sortedByDescending { it.timestamp }
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
 
@@ -260,6 +350,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         
         _activeExercises.value = emptyList()
         _activeTemplateId.value = null
+        repository.clearActiveWorkoutState()
+        _isWorkoutActive.value = false
+        _isWorkoutMinimized.value = false
     }
 
     fun discardWorkout() {
@@ -267,6 +360,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeTemplateId.value = null
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = false
+        _isWorkoutMinimized.value = false
+        repository.clearActiveWorkoutState()
     }
 
     fun getRoutineChanges(): RoutineChanges? {
@@ -385,6 +481,25 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteExercise(exerciseId: Int) { 
         _activeExercises.value = _activeExercises.value.filter { it.id != exerciseId } 
+    }
+
+    fun replaceExercise(exerciseId: Int, newName: String) {
+        val prevSets = getLastPerformedSets(newName)
+        _activeExercises.value = _activeExercises.value.map { ex ->
+            if (ex.id != exerciseId) return@map ex
+            val sets = ex.sets.mapIndexed { i, s ->
+                val p = prevSets?.getOrNull(i)
+                s.copy(
+                    isCompleted = false,
+                    kg = p?.kg ?: "",
+                    reps = p?.reps ?: s.reps,
+                    rpe = "",
+                    previousText = if (p != null && p.kg.isNotBlank()) "${p.kg}kg x ${p.reps}" else "-"
+                )
+            }
+            ex.copy(name = newName, sets = sets, restTimerDuration = getLastRestTimer(newName))
+        }
+        persistActiveWorkout()
     }
     
     fun pairSuperset(sourceId: Int, targetIds: List<Int>) {
@@ -599,6 +714,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _activeExercises.value = newExercises
         _totalSeconds.value = 0
         _restTimerSeconds.value = 0
+        _isWorkoutActive.value = true
+        persistActiveWorkout()
     }
 
     fun saveHistoryEntryAsRoutine(entry: WorkoutHistoryEntry, name: String) {

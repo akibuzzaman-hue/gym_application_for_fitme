@@ -71,6 +71,7 @@
     <string name="theme_red">Red</string>
     <string name="theme_yellow">Yellow</string>
     <string name="theme_green">Green</string>
+    <string name="theme_purple">Purple</string>
     <string name="pick_image">Pick Image</string>
     <string name="change_image">Change Image</string>
     
@@ -233,4 +234,13 @@
     <string name="add_notes_placeholder">Add notes here...</string>
     <string name="bw_kg_label">BW+KG</string>
     <string name="warmup_label">Warmup</string>
+
+    <!-- Notification -->
+    <string name="notif_workout_active">Workout Active</string>
+    <string name="notif_tap_to_open">Tap to open</string>
+    <string name="notif_rest">Rest %1$s</string>
+    <string name="notif_next_set">Next: Set %1$d of %2$d</string>
+    <string name="notif_skip">Skip</string>
+    <string name="notif_sub15">-15s</string>
+    <string name="notif_add15">+15s</string>
 </resources>

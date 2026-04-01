@@ -2,9 +2,11 @@ package com.ateszk0.ostromgep
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,6 +60,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Vertical lock — always portrait
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -72,11 +77,23 @@ class MainActivity : ComponentActivity() {
 
             val workoutViewModel: WorkoutViewModel = viewModel()
             val currentThemeName by workoutViewModel.appTheme.collectAsState()
+            val isWorkoutActive by workoutViewModel.isWorkoutActive.collectAsState()
+
+            // Keep screen on during workout
+            val window = (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.window
+            LaunchedEffect(isWorkoutActive) {
+                if (isWorkoutActive) {
+                    window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                } else {
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                }
+            }
             
             val themeColor = when(currentThemeName) { 
                 "Piros" -> Color(0xFFFF453A)
                 "Sárga" -> Color(0xFFFFD60A)
                 "Zöld" -> Color(0xFF32D74B)
+                "Lila" -> Color(0xFFAF52DE)
                 else -> Color(0xFF0A84FF) 
             }
 
@@ -98,6 +115,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
 }
 
 enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statistics, RoutineEditor, ExploreRoutines, WorkoutLog }
@@ -106,11 +128,23 @@ enum class AppScreen { Home, Workout, Profile, ExercisesList, Calendar, Statisti
 @Composable
 fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
     var currentScreen by remember { mutableStateOf(AppScreen.Home) }
-    var isWorkoutActive by remember { mutableStateOf(false) }
-    var isWorkoutMinimized by remember { mutableStateOf(false) }
     var showDiscardDialog by remember { mutableStateOf(false) }
     var workoutLogTimestampToShow by remember { mutableStateOf<Long?>(null) }
     val context = androidx.compose.ui.platform.LocalContext.current
+
+    // Collect workout state from ViewModel (survives config changes and process death)
+    val isWorkoutActive by viewModel.isWorkoutActive.collectAsState()
+    val isWorkoutMinimized by viewModel.isWorkoutMinimized.collectAsState()
+
+    // Handle notification tap: open workout screen
+    val activity = context as? android.app.Activity
+    LaunchedEffect(Unit) {
+        val openWorkout = activity?.intent?.action == "ACTION_OPEN_WORKOUT"
+        if (openWorkout && isWorkoutActive) {
+            viewModel.setWorkoutMinimized(false)
+            activity?.intent?.action = null // consume
+        }
+    }
     
     // Prevent exiting app from the bottom nav
     androidx.activity.compose.BackHandler(enabled = !isWorkoutActive && currentScreen in listOf(AppScreen.Home, AppScreen.Workout, AppScreen.Profile)) {
@@ -143,8 +177,8 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
             ActiveWorkoutScreen(
                 viewModel = viewModel, 
                 themeColor = themeColor, 
-                onFinishWorkout = { isWorkoutActive = false; isWorkoutMinimized = false },
-                onMinimize = { isWorkoutMinimized = true }
+                onFinishWorkout = { viewModel.setWorkoutActive(false) },
+                onMinimize = { viewModel.setWorkoutMinimized(true) }
             )
         } else {
             Scaffold(
@@ -168,7 +202,7 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                                 .padding(horizontal = 12.dp, vertical = 4.dp)
                                 .clip(RoundedCornerShape(16.dp))
                                 .background(SurfaceDark)
-                                .clickable { isWorkoutMinimized = false }
+                                .clickable { viewModel.setWorkoutMinimized(false) }
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -251,8 +285,6 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                         confirmButton = {
                             Button(onClick = { 
                                 viewModel.discardWorkout()
-                                isWorkoutActive = false
-                                isWorkoutMinimized = false
                                 showDiscardDialog = false
                             }, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
                                 Text(stringResource(R.string.discard_confirm), color = Color.White)
@@ -276,9 +308,9 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                     when (targetScreen) {
                         AppScreen.Home -> HomeScreen(viewModel, themeColor, onNavigateToWorkout = { 
                             currentScreen = AppScreen.Workout
-                            isWorkoutActive = true 
+                            viewModel.setWorkoutActive(true)
                         })
-                        AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { isWorkoutActive = true }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor }, onNavigateToExplore = { currentScreen = AppScreen.ExploreRoutines })
+                        AppScreen.Workout -> WorkoutTab(viewModel, themeColor, onStart = { viewModel.setWorkoutActive(true) }, onNavigateToRoutineEditor = { currentScreen = AppScreen.RoutineEditor }, onNavigateToExplore = { currentScreen = AppScreen.ExploreRoutines })
                         AppScreen.RoutineEditor -> RoutineEditorScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
                         AppScreen.ExploreRoutines -> ExploreRoutinesScreen(viewModel, themeColor, onBack = { currentScreen = AppScreen.Workout })
                         AppScreen.Profile -> DashboardProfile(
@@ -301,7 +333,7 @@ fun OstromgepApp(viewModel: WorkoutViewModel, themeColor: Color) {
                             onBack = { currentScreen = AppScreen.Profile },
                             onNavigateToActiveWorkout = {
                                 currentScreen = AppScreen.Workout
-                                isWorkoutActive = true
+                                viewModel.setWorkoutActive(true)
                             },
                             initialEntryTimestamp = workoutLogTimestampToShow
                         )

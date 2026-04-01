@@ -46,22 +46,56 @@ fun SimpleWorkoutView(
     val haptic = LocalHapticFeedback.current
 
     var manualIndex by remember { mutableStateOf<Int?>(null) }
-    
-    // Auto find index: The first uncompleted exercise. If all completed, use the last one in the list.
-    val targetIndex = manualIndex ?: exercises.indexOfFirst { ex ->
-        ex.sets.any { !it.isCompleted }
-    }.takeIf { it >= 0 } ?: (exercises.size - 1).coerceAtLeast(0)
+
+    /**
+     * Smart target index calculation with superset awareness:
+     * 1. If manually overridden, use that index.
+     * 2. Otherwise, find the first exercise with an uncompleted set.
+     *    BUT if that exercise is part of a superset and a superset partner also has
+     *    uncompleted sets and comes AFTER in the list, prefer within-superset ordering:
+     *    within a superset, always pick the partner whose FIRST uncompleted set is next
+     *    in round-robin fashion (same number of completed sets as possible).
+     * 3. Fallback: last exercise in list.
+     */
+    val targetIndex = manualIndex ?: run {
+        // Find the first exercise with uncompleted sets
+        val firstUncompletedIdx = exercises.indexOfFirst { ex -> ex.sets.any { !it.isCompleted } }
+        if (firstUncompletedIdx < 0) {
+            (exercises.size - 1).coerceAtLeast(0)
+        } else {
+            val firstUncompleted = exercises[firstUncompletedIdx]
+            val supersetId = firstUncompleted.supersetId
+            if (supersetId != null) {
+                // Find all members of this superset in order
+                val supersetMembers = exercises.filter { it.supersetId == supersetId }
+                // Round-robin: pick the member with the fewest completed sets that still has uncompleted sets
+                val candidate = supersetMembers
+                    .filter { ex -> ex.sets.any { !it.isCompleted } }
+                    .minByOrNull { ex -> ex.sets.count { it.isCompleted } }
+                if (candidate != null) {
+                    exercises.indexOf(candidate)
+                } else {
+                    firstUncompletedIdx
+                }
+            } else {
+                firstUncompletedIdx
+            }
+        }
+    }
 
     val exercise = exercises.getOrNull(targetIndex) ?: return
 
     val currentSet = exercise.sets.firstOrNull { !it.isCompleted } ?: exercise.sets.last()
+
+    // Superset badge info
+    val isInSuperset = exercise.supersetId != null
+    val supersetPartners = if (isInSuperset) exercises.filter { it.supersetId == exercise.supersetId && it.id != exercise.id } else emptyList()
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        // Centered Image / Timer with Arrows
         Row(
             modifier = Modifier.fillMaxWidth().weight(1.5f),
             verticalAlignment = Alignment.CenterVertically,
@@ -151,6 +185,29 @@ fun SimpleWorkoutView(
 
         Spacer(modifier = Modifier.weight(0.2f))
         
+        // Superset indicator badge — below image, above exercise name
+        if (isInSuperset) {
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(themeColor.copy(alpha = 0.15f))
+                    .border(1.dp, themeColor.copy(alpha = 0.5f), RoundedCornerShape(20.dp))
+                    .padding(horizontal = 12.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.superset_label) + ": " + supersetPartners.joinToString(" & ") { it.name },
+                    color = themeColor,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+        }
+
         Text(
             text = exercise.name,
             color = themeColor,
@@ -234,7 +291,7 @@ fun SimpleWorkoutView(
                 .clickable(enabled = !isTimerRunning) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     viewModel.toggleSetComplete(exercise.id, currentSet)
-                    manualIndex = null // Allow auto advance
+                    manualIndex = null // Allow auto-advance with superset awareness
                 },
             contentAlignment = Alignment.Center
         ) {

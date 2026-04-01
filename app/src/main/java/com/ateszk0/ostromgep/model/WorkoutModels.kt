@@ -132,6 +132,13 @@ data class BodyWeightEntry(
     val weightKg: Double
 )
 
+enum class ExerciseType {
+    REPS_WEIGHT,
+    REPS_ONLY,
+    TIME,
+    DISTANCE_TIME
+}
+
 enum class Equipment {
     NONE, BARBELL, DUMBBELL, KETTLEBELL, MACHINE, PLATE, RESISTANCE_BAND, SUSPENSION_BAND, OTHER
 }
@@ -146,8 +153,10 @@ data class ExerciseDef(
     val minReps: Int = 8,
     val maxReps: Int = 12,
     val imageUri: String? = null,
+    val videoUrl: String? = null,
     val muscleGroups: List<MuscleGroup> = emptyList(),
     val equipment: Equipment = Equipment.NONE,
+    val type: ExerciseType = ExerciseType.REPS_WEIGHT,
     val isCustom: Boolean = false
 ) {
     fun normalize(): ExerciseDef {
@@ -158,6 +167,7 @@ data class ExerciseDef(
             maxReps = if (maxReps != null && maxReps > 0) maxReps else 12,
             muscleGroups = if (muscleGroups != null) muscleGroups.filterNotNull() else emptyList(),
             equipment = if (equipment != null) equipment else Equipment.NONE,
+            type = if (type != null) type else ExerciseType.REPS_WEIGHT,
             isCustom = if (isCustom != null) isCustom else false
         )
     }
