@@ -36,6 +36,7 @@ import com.ateszk0.ostromgep.R
 import com.ateszk0.ostromgep.model.ExerciseSessionData
 import com.ateszk0.ostromgep.model.WorkoutSetData
 import com.ateszk0.ostromgep.ui.theme.*
+import androidx.compose.ui.platform.LocalFocusManager
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 
@@ -61,8 +62,10 @@ fun ExerciseBlock(
     onSuperset: () -> Unit,
     onRemoveSuperset: () -> Unit,
     onRpeClick: (WorkoutSetData) -> Unit,
+    onReplaceExercise: () -> Unit = {},
     bodyweightKg: Double? = null
 ) {
+    val focusManager = LocalFocusManager.current
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf<String?>(null) }
@@ -113,6 +116,7 @@ fun ExerciseBlock(
                         DropdownMenuItem(text = { Text(stringResource(R.string.move_up) + " ↑", color = Color.White) }, onClick = { showMenu = false; onMoveUp() })
                         DropdownMenuItem(text = { Text(stringResource(R.string.move_down) + " ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
                         DropdownMenuItem(text = { Text(stringResource(R.string.edit_label), color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
+                        DropdownMenuItem(text = { Text("Replace Exercise", color = Color.White) }, onClick = { showMenu = false; onReplaceExercise() })
                         DropdownMenuItem(text = { Text(if (exercise.supersetId == null) stringResource(R.string.superset_label) else stringResource(R.string.remove_superset), color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
                         DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
                     }
@@ -224,7 +228,7 @@ fun ExerciseBlock(
                                 .background(if (set.isCompleted) Color.Transparent else SurfaceDark, RoundedCornerShape(4.dp))
                                 .border(1.dp, if (set.isCompleted) Color.Transparent else Color.DarkGray, RoundedCornerShape(4.dp))
                                 .clip(RoundedCornerShape(4.dp))
-                                .clickable { onRpeClick(set) },
+                                .clickable { focusManager.clearFocus(); onRpeClick(set) },
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -239,7 +243,7 @@ fun ExerciseBlock(
                                 .aspectRatio(1f)
                                 .clip(RoundedCornerShape(4.dp))
                                 .background(if (set.isCompleted) CompletedGreen else InputBackground)
-                                .clickable { onSetCompleteToggle(set) }, 
+                                .clickable { focusManager.clearFocus(); onSetCompleteToggle(set) }, 
                             contentAlignment = Alignment.Center
                         ) { 
                             if (set.isCompleted) Icon(Icons.Default.Check, null, tint = Color.White, modifier = Modifier.size(16.dp)) 

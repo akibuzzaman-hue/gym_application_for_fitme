@@ -14,11 +14,17 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.material3.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -378,73 +384,90 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
                         items(preAssembledRoutines) { template ->
                             var expanded by remember { mutableStateOf(false) }
 
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = SurfaceDark),
-                                shape = RoundedCornerShape(12.dp)
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth()
-                                            .clickable { expanded = !expanded },
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
+                                    Card(
+                                        modifier = Modifier.fillMaxWidth().animateContentSize(),
+                                        colors = CardDefaults.cardColors(containerColor = SurfaceDark),
+                                        shape = RoundedCornerShape(12.dp)
                                     ) {
-                                        Text(
-                                            template.templateName,
-                                            color = Color.White,
-                                            fontSize = 18.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                        Icon(
-                                            if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                            null,
-                                            tint = TextGray
-                                        )
-                                    }
-
-                                    if (expanded) {
-                                        Spacer(modifier = Modifier.height(16.dp))
-                                        template.exercises.forEach { ex ->
+                                        Column(modifier = Modifier.padding(16.dp)) {
+                                            val arrowAngle by animateFloatAsState(
+                                                targetValue = if (expanded) 180f else 0f,
+                                                label = "arrow_rotation"
+                                            )
                                             Row(
                                                 modifier = Modifier.fillMaxWidth()
-                                                    .padding(vertical = 4.dp),
-                                                horizontalArrangement = Arrangement.SpaceBetween
+                                                    .clickable { expanded = !expanded },
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                Text(ex.name, color = Color.White, fontSize = 14.sp)
                                                 Text(
-                                                    "${ex.sets.size} sets",
-                                                    color = TextGray,
-                                                    fontSize = 14.sp
+                                                    template.templateName,
+                                                    color = Color.White,
+                                                    fontSize = 18.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = Modifier.weight(1f),
+                                                    maxLines = 1,
+                                                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Icon(
+                                                    Icons.Default.KeyboardArrowDown,
+                                                    null,
+                                                    tint = TextGray,
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                        .graphicsLayer(rotationZ = arrowAngle)
                                                 )
                                             }
-                                        }
-                                        Spacer(modifier = Modifier.height(16.dp))
-                                        Button(
-                                            onClick = {
-                                                viewModel.saveNewTemplate(
-                                                    template.templateName,
-                                                    template.exercises
-                                                )
-                                                coroutineScope.launch {
-                                                    snackbarHostState.showSnackbar("Routine added to your list!")
+
+                                            AnimatedVisibility(
+                                                visible = expanded,
+                                                enter = expandVertically(),
+                                                exit = shrinkVertically()
+                                            ) {
+                                                Column {
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                    template.exercises.forEach { ex ->
+                                                        Row(
+                                                            modifier = Modifier.fillMaxWidth()
+                                                                .padding(vertical = 4.dp),
+                                                            horizontalArrangement = Arrangement.SpaceBetween
+                                                        ) {
+                                                            Text(ex.name, color = Color.White, fontSize = 14.sp)
+                                                            Text(
+                                                                "${ex.sets.size} sets",
+                                                                color = TextGray,
+                                                                fontSize = 14.sp
+                                                            )
+                                                        }
+                                                    }
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                    Button(
+                                                        onClick = {
+                                                            viewModel.saveNewTemplate(
+                                                                template.templateName,
+                                                                template.exercises
+                                                            )
+                                                            coroutineScope.launch {
+                                                                snackbarHostState.showSnackbar("Routine added to your list!")
+                                                            }
+                                                        },
+                                                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                                                        colors = ButtonDefaults.buttonColors(containerColor = themeColor),
+                                                        shape = RoundedCornerShape(8.dp)
+                                                    ) {
+                                                        Icon(Icons.Default.Add, null, tint = Color.White)
+                                                        Spacer(modifier = Modifier.width(8.dp))
+                                                        Text(
+                                                            "Add to My Routines",
+                                                            color = Color.White,
+                                                            fontWeight = FontWeight.Bold
+                                                        )
+                                                    }
                                                 }
-                                            },
-                                            modifier = Modifier.fillMaxWidth().height(48.dp),
-                                            colors = ButtonDefaults.buttonColors(containerColor = themeColor),
-                                            shape = RoundedCornerShape(8.dp)
-                                        ) {
-                                            Icon(Icons.Default.Add, null, tint = Color.White)
-                                            Spacer(modifier = Modifier.width(8.dp))
-                                            Text(
-                                                "Add to My Routines",
-                                                color = Color.White,
-                                                fontWeight = FontWeight.Bold
-                                            )
+                                            }
                                         }
                                     }
-                                }
-                            }
                         }
                     }
                 }

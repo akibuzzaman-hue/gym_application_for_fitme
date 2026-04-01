@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,6 +16,9 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,6 +40,7 @@ import com.ateszk0.ostromgep.model.Equipment
 import androidx.compose.ui.res.stringResource
 import com.ateszk0.ostromgep.R
 import com.ateszk0.ostromgep.model.WorkoutSetData
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -55,13 +60,15 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     var exerciseToEditRepRange by remember { mutableStateOf<String?>(null) }
     var supersetSourceExercise by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
     var rpeTarget by remember { mutableStateOf<Pair<Int, WorkoutSetData>?>(null) }
+    var exerciseToReplace by remember { mutableStateOf<com.ateszk0.ostromgep.model.ExerciseSessionData?>(null) }
     
     androidx.activity.compose.BackHandler(enabled = true) {
-        if (showBottomSheet || showCreateDialog || showPlateCalculator || rpeTarget != null) {
+        if (showBottomSheet || showCreateDialog || showPlateCalculator || rpeTarget != null || exerciseToReplace != null) {
             showBottomSheet = false
             showCreateDialog = false
             showPlateCalculator = false
             rpeTarget = null
+            exerciseToReplace = null
         } else {
             onMinimize()
         }
@@ -152,20 +159,39 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                     rpeTarget = ex.id to set
                 }
             } else {
-                LazyColumn(modifier = Modifier.weight(1f), state = androidx.compose.foundation.lazy.rememberLazyListState()) {
+                val listState = rememberLazyListState()
+                val coroutineScope = rememberCoroutineScope()
+
+                fun moveWithFreecam(action: () -> Unit) {
+                    val firstIdx = listState.firstVisibleItemIndex
+                    val firstOffset = listState.firstVisibleItemScrollOffset
+                    action()
+                    listState.requestScrollToItem(firstIdx, firstOffset)
+                }
+
+                LazyColumn(modifier = Modifier.weight(1f), state = listState) {
                     items(groupedExercises, key = { grp -> grp.first().id }) { group ->
                 val isSuperset = group.size > 1 && group.first().supersetId != null
                 Column(
-                    modifier = Modifier.fillMaxWidth().run {
-                        if (isSuperset) this.border(2.dp, Color(0xFF9C27B0), RoundedCornerShape(8.dp)).padding(2.dp) else this
-                    }
+                    modifier = Modifier.fillMaxWidth()
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                            placementSpec = spring(
+                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                stiffness = Spring.StiffnessMedium
+                            )
+                        )
+                        .run {
+                            if (isSuperset) this.border(2.dp, Color(0xFF9C27B0), RoundedCornerShape(8.dp)).padding(2.dp) else this
+                        }
                 ) {
                     group.forEachIndexed { idxInGroup, exercise ->
                         val index = exerciseIndexMap[exercise.id] ?: 0
                                 ExerciseBlock(
                                 exercise, libraryImageMap[exercise.name], index, exercises.size, themeColor,
-                                { viewModel.moveExerciseUp(index) },
-                                { viewModel.moveExerciseDown(index) },
+                                { moveWithFreecam { viewModel.moveExerciseUp(index) } },
+                                { moveWithFreecam { viewModel.moveExerciseDown(index) } },
                                 { s -> viewModel.updateSet(exercise.id, s) },
                                 { s -> haptic.performHapticFeedback(HapticFeedbackType.LongPress); viewModel.toggleSetComplete(exercise.id, s) },
                                 { viewModel.addSet(exercise.id) },
@@ -178,6 +204,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                                 { supersetSourceExercise = exercise },
                                 { viewModel.removeSuperset(exercise.id) },
                                 { set -> rpeTarget = exercise.id to set },
+                                onReplaceExercise = { exerciseToReplace = exercise },
                                 bodyweightKg = if (exercise.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) latestBodyWeight else null
                             )
                         if (idxInGroup < group.size - 1 && !isSuperset) {
@@ -249,6 +276,31 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                         onCreateCustom = { showCreateDialog = true },
                         themeColor = themeColor
                     )
+                }
+            }
+        }
+
+        exerciseToReplace?.let { exToReplace ->
+            androidx.compose.animation.AnimatedVisibility(
+                visible = true,
+                enter = androidx.compose.animation.slideInHorizontally(initialOffsetX = { it }),
+                exit = androidx.compose.animation.slideOutHorizontally(targetOffsetX = { it }),
+                modifier = Modifier.fillMaxSize().zIndex(10f)
+            ) {
+                Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+                    Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+                        AddExerciseContent(
+                            library = library,
+                            recentExercises = emptyList(),
+                            onExerciseSelected = { exDef ->
+                                viewModel.replaceExercise(exToReplace.id, exDef.name)
+                                exerciseToReplace = null
+                            },
+                            onClose = { exerciseToReplace = null },
+                            onCreateCustom = {},
+                            themeColor = themeColor
+                        )
+                    }
                 }
             }
         }

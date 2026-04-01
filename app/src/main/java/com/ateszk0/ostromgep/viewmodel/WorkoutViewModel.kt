@@ -229,8 +229,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         repository.saveSavedTemplates(newTemplates)
     }
 
-    private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.sets
-    private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.reversed().flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
+    private fun getLastPerformedSets(exerciseName: String) = _workoutHistory.value.flatMap { it.exercises }.find { it.name == exerciseName }?.sets
+    private fun getLastRestTimer(exerciseName: String) = _workoutHistory.value.flatMap { it.exercises }.find { it.name == exerciseName }?.restTimerDuration ?: 90
 
     fun updateExerciseDetails(name: String, min: Int, max: Int, imageUri: String?, muscleGroups: List<MuscleGroup>, equipment: Equipment) {
         val app = getApplication<Application>()
@@ -335,7 +335,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 if (template != null) finalName = template.templateName
             }
         }
-        val newHistory = _workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value, finalName)
+        val newHistory = (_workoutHistory.value + WorkoutHistoryEntry(System.currentTimeMillis(), vol, _totalSeconds.value, _activeExercises.value, finalName))
+            .sortedByDescending { it.timestamp }
         _workoutHistory.value = newHistory
         repository.saveWorkoutHistory(newHistory)
 
@@ -480,6 +481,25 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteExercise(exerciseId: Int) { 
         _activeExercises.value = _activeExercises.value.filter { it.id != exerciseId } 
+    }
+
+    fun replaceExercise(exerciseId: Int, newName: String) {
+        val prevSets = getLastPerformedSets(newName)
+        _activeExercises.value = _activeExercises.value.map { ex ->
+            if (ex.id != exerciseId) return@map ex
+            val sets = ex.sets.mapIndexed { i, s ->
+                val p = prevSets?.getOrNull(i)
+                s.copy(
+                    isCompleted = false,
+                    kg = p?.kg ?: "",
+                    reps = p?.reps ?: s.reps,
+                    rpe = "",
+                    previousText = if (p != null && p.kg.isNotBlank()) "${p.kg}kg x ${p.reps}" else "-"
+                )
+            }
+            ex.copy(name = newName, sets = sets, restTimerDuration = getLastRestTimer(newName))
+        }
+        persistActiveWorkout()
     }
     
     fun pairSuperset(sourceId: Int, targetIds: List<Int>) {

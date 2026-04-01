@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.ateszk0.ostromgep.model.Equipment
 import com.ateszk0.ostromgep.model.ExerciseDef
 import com.ateszk0.ostromgep.model.MuscleGroup
+import com.ateszk0.ostromgep.utils.calculateSearchScore
 import com.ateszk0.ostromgep.ui.theme.DarkBackground
 import com.ateszk0.ostromgep.ui.theme.SurfaceDark
 import com.ateszk0.ostromgep.ui.theme.TextGray
@@ -48,10 +49,13 @@ fun AddExerciseContent(
     var showMuscles by remember { mutableStateOf(false) }
 
     val filteredLibrary = library.filter { exercise ->
-        (search.isBlank() || exercise.name.contains(search, ignoreCase = true)) &&
         (selectedEquipment == null || exercise.equipment == selectedEquipment) &&
-        (selectedMuscle == null || exercise.muscleGroups.contains(selectedMuscle))
-    }.sortedBy { it.name }
+        (selectedMuscle == null || exercise.muscleGroups.contains(selectedMuscle)) &&
+        (search.isBlank() || exercise.calculateSearchScore(search) > 0)
+    }.sortedWith(
+        compareByDescending<ExerciseDef> { if (search.isBlank()) 0 else it.calculateSearchScore(search) }
+            .thenBy { it.name }
+    )
 
     Column(modifier = Modifier.fillMaxHeight(0.95f).background(Color.Black)) {
         Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {

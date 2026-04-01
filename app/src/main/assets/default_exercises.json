@@ -1,465 +1,25 @@
 [
     {
-        "name": "Standing Calf Raise",
-        "minReps": 12,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
-        "muscleGroups": [
-            "CALVES"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Face Pull",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS",
-            "TRAPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Triceps Pushdown",
+        "name": "Ab Wheel Rollout",
         "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Single Triceps Pushdown",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_One_Arm_Tricep_Extension/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Shrug (Dumbbell)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shrug/0.jpg",
-        "muscleGroups": [
-            "TRAPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Triceps Extension (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Triceps_Extension/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Preacher Curl",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Preacher_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Seated Leg Curl",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
-        "muscleGroups": [
-            "HAMSTRINGS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Lat Pulldown",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "BICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Single Arm Lat Pulldown",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Arm_Lat_Pulldown/0.jpg",
-        "muscleGroups": [
-            "LATS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Shoulder Press",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Biceps Curl (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Incline_Dumbbell_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Hammer Curl (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Hammer_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Hammer Curl (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Hammer_Curls_-_Rope_Attachment/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Single Arm Triceps Extension (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_One_Arm_Tricep_Extension/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Single Arm Triceps Extension (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Seated Cable Row",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Running",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Running_Treadmill/0.jpg",
-        "muscleGroups": [
-            "CARDIO"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Back Extension",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hyperextensions_Back_Extensions/0.jpg",
-        "muscleGroups": [
-            "LOWER_BACK"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Single Arm Lateral Raise (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Seated_Lateral_Raise/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Lateral Raise (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Chest Press (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bench_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Hip Thrust (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
-        "muscleGroups": [
-            "GLUTES"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Hip Thrust (Barbell)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
-        "muscleGroups": [
-            "GLUTES"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Bulgarian Split Squat",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Split_Squats/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Incline Chest Press (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Incline_Chest_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Lateral Raise (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Crunch (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ab_Crunch_Machine/0.jpg",
+        "maxReps": 20,
+        "imageUri": "",
         "muscleGroups": [
             "ABDOMINALS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "OTHER",
+        "type": "REPS_ONLY"
     },
     {
-        "name": "Lying Leg Curl (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Curls/0.jpg",
-        "muscleGroups": [
-            "HAMSTRINGS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Hip Adduction (Machine)",
+        "name": "Arnold Press",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
-        "muscleGroups": [
-            "ADDUCTORS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Hip Abduction (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/0.jpg",
-        "muscleGroups": [
-            "ABDUCTORS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Overhead Curl (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Cable_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Chest Fly (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butterfly/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Chest Fly (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Shoulder Press (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Shoulder_Press/0.jpg",
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg",
         "muscleGroups": [
             "SHOULDERS"
         ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Rear Delt Reverse Fly (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rear_Delt_Fly/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Single Arm Rear Delt Reverse Fly (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rear_Delt_Fly/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Rear Delt Reverse Fly (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Reverse_Machine_Flyes/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Pendulum Squat (Machine)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Single Leg Extensions",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Triceps Dip",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg",
-        "muscleGroups": [
-            "TRICEPS",
-            "CHEST"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Seated Cable Row V Grip (Cable)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Seated Cable Row Wide Grip (Cable)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Inverted Row",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inverted_Row/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Triceps Extension (Suspension)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Body_Tricep_Press/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "SUSPENSION_BAND"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Back Extension (Machine)",
@@ -469,7 +29,77 @@
         "muscleGroups": [
             "LOWER_BACK"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Back Extension (Other)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hyperextensions_Back_Extensions/0.jpg",
+        "muscleGroups": [
+            "LOWER_BACK"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Back Squat (Barbell)",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Barbell Curl",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Barbell Row (Bent Over)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg",
+        "muscleGroups": [
+            "UPPER_BACK",
+            "LATS",
+            "BICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Barbell Shrug",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shrug/0.jpg",
+        "muscleGroups": [
+            "TRAPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Bear Crawl",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "OTHER"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
     },
     {
         "name": "Behind the Back Curl (Cable)",
@@ -479,7 +109,8 @@
         "muscleGroups": [
             "BICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Bench Press (Barbell)",
@@ -491,7 +122,21 @@
             "TRICEPS",
             "SHOULDERS"
         ],
-        "equipment": "BARBELL"
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Bench Press (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS",
+            "SHOULDERS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Bicep Curl (Cable)",
@@ -501,7 +146,8 @@
         "muscleGroups": [
             "BICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Bicep Curl (Dumbbell)",
@@ -511,474 +157,30 @@
         "muscleGroups": [
             "BICEPS"
         ],
-        "equipment": "DUMBBELL"
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Cable Fly Crossovers",
+        "name": "Bicep Curl (Machine)",
         "minReps": 10,
         "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Cycling",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycling_Stationary/0.jpg",
-        "muscleGroups": [
-            "CARDIO",
-            "QUADRICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Decline Bench Press (Machine)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Decline_Dumbbell_Bench_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Iso-Lateral Chest Press (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bench_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Iso-Lateral Row (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Knee Raise Parallel Bars",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Lat Pulldown (Cable)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "BICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Lateral Raise (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Seated_Lateral_Raise/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Leg Extension (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Leg Press (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Leg Raise Parallel Bars",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Low Cable Fly Crossovers",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Low_Cable_Crossover/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Preacher Curl (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Preacher_Curl/0.jpg",
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bicep_Curl/0.jpg",
         "muscleGroups": [
             "BICEPS"
         ],
-        "equipment": "DUMBBELL"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Preacher Curl (Machine)",
+        "name": "Bicycle Crunch",
         "minReps": 10,
         "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Preacher_Curls/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Pull Up",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "BICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Push Up",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS",
-            "SHOULDERS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Rope Straight Arm Pulldown",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Pulldown/0.jpg",
-        "muscleGroups": [
-            "LATS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Seated Cable Row - Bar Wide Grip",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Seated Cable Row - V Grip (Cable)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Seated Calf Raise",
-        "minReps": 12,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Calf_Raise/0.jpg",
-        "muscleGroups": [
-            "CALVES"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Seated Incline Curl (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Seated Leg Curl (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
-        "muscleGroups": [
-            "HAMSTRINGS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Seated Shoulder Press (Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Shoulder_Press/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Shoulder Press (Dumbbell)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Shoulder Press (Machine Plates)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Shoulder_Press/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Shrug (Cable)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Shrugs/0.jpg",
-        "muscleGroups": [
-            "TRAPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Side Bend",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Side_Bend/0.jpg",
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Air_Bike/0.jpg",
         "muscleGroups": [
             "ABDOMINALS"
         ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Single Arm Cable Row",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "LATS",
-            "UPPER_BACK"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Single Arm Triceps Pushdown (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_One_Arm_Tricep_Extension/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Split Squat (Dumbbell)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Split_Squats/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Squat (Smith Machine)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Smith_Machine_Squat/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Standing Calf Raise (Machine)",
-        "minReps": 12,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
-        "muscleGroups": [
-            "CALVES"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Standing Leg Curls",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Leg_Curl/0.jpg",
-        "muscleGroups": [
-            "HAMSTRINGS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Straight Arm Lat Pulldown (Cable)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Pulldown/0.jpg",
-        "muscleGroups": [
-            "LATS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Triceps Extension (Barbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Triceps Extension (Cable)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rope_Overhead_Triceps_Extension/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Triceps Extension (Dumbbell)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Triceps Rope Pushdown",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown_-_Rope_Attachment/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Incline Chest Press (Cable Machine)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Incline_Chest_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Burpees",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
-        "muscleGroups": [
-            "CARDIO",
-            "QUADRICEPS",
-            "CHEST"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Mountain Climbers",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS",
-            "CARDIO"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Plank",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Sit-up",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/3_4_Sit-Up/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "NONE"
-    },
-    {
-        "name": "Leg Raise (Floor)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Superman",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
-        "muscleGroups": [
-            "LOWER_BACK"
-        ],
-        "equipment": "OTHER"
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
     },
     {
         "name": "Bird Dog",
@@ -989,323 +191,70 @@
             "ABDOMINALS",
             "LOWER_BACK"
         ],
-        "equipment": "OTHER"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Glute Bridge",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg",
-        "muscleGroups": [
-            "GLUTES",
-            "HAMSTRINGS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Lunges (Bodyweight)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "NONE"
-    },
-    {
-        "name": "Russian Twist",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Bicycle Crunch",
+        "name": "Bodyweight Squat",
         "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Air_Bike/0.jpg",
-        "muscleGroups": [
-            "ABDOMINALS"
-        ],
-        "equipment": "NONE"
-    },
-    {
-        "name": "Diamond Push-up",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-        "muscleGroups": [
-            "TRICEPS",
-            "CHEST"
-        ],
-        "equipment": "NONE"
-    },
-    {
-        "name": "Dips (Chest)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "NONE"
-    },
-    {
-        "name": "Barbell Row (Bent Over)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg",
-        "muscleGroups": [
-            "BACK",
-            "LATS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Romanian Deadlift (Barbell)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg",
-        "muscleGroups": [
-            "HAMSTRINGS",
-            "GLUTES"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Stiff Leg Deadlift (Barbell)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stiff-Legged_Barbell_Deadlift/0.jpg",
-        "muscleGroups": [
-            "HAMSTRINGS",
-            "LOWER_BACK"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Barbell Shrug",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shrug/0.jpg",
-        "muscleGroups": [
-            "TRAPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Incline Bench Press (Barbell)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Decline Bench Press (Barbell)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Decline_Barbell_Bench_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Close Grip Bench Press (Barbell)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Barbell_Bench_Press/0.jpg",
-        "muscleGroups": [
-            "TRICEPS",
-            "CHEST"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Barbell Curl",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Skull Crusher (Barbell)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Z-Bar Curl",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Curl/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "French Press (Barbell)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "BARBELL"
-    },
-    {
-        "name": "Dumbbell Flyes",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/0.jpg",
-        "muscleGroups": [
-            "CHEST"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Dumbbell Row (Single Arm)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg",
-        "muscleGroups": [
-            "BACK",
-            "LATS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Dumbbell Pullover",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent-Arm_Dumbbell_Pullover/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "LATS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Dumbbell Lunges",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Lunges/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Dumbbell Step-up",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/0.jpg",
-        "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Incline Dumbbell Press",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Arnold Press",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "Dumbbell Rear Delt Fly",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg",
-        "muscleGroups": [
-            "SHOULDERS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Concentration Curl",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Concentration_Curls/0.jpg",
-        "muscleGroups": [
-            "BICEPS"
-        ],
-        "equipment": "OTHER"
-    },
-    {
-        "name": "French Press (Dumbbell)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
-        "muscleGroups": [
-            "TRICEPS"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Dumbbell Calf Raise",
-        "minReps": 12,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Raise_On_A_Dumbbell/0.jpg",
-        "muscleGroups": [
-            "CALVES"
-        ],
-        "equipment": "DUMBBELL"
-    },
-    {
-        "name": "Goblet Squat",
-        "minReps": 6,
-        "maxReps": 8,
+        "maxReps": 20,
         "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
         "muscleGroups": [
             "QUADRICEPS",
             "GLUTES"
         ],
-        "equipment": "OTHER"
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
     },
     {
-        "name": "Cable Pullover",
+        "name": "Box Squat (Barbell)",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Bulgarian Split Squat",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Split_Squats/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Burpee",
+        "minReps": 8,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Burpee/0.jpg",
+        "muscleGroups": [
+            "CARDIO",
+            "CHEST",
+            "QUADRICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Burpee (Other)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Pulldown/0.jpg",
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
         "muscleGroups": [
-            "LATS"
+            "CARDIO",
+            "QUADRICEPS",
+            "CHEST"
         ],
-        "equipment": "MACHINE"
+        "equipment": "OTHER",
+        "type": "DISTANCE_TIME"
     },
     {
         "name": "Cable Chest Press",
@@ -1316,29 +265,19 @@
             "CHEST",
             "TRICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Cable Row (Wide Grip)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "name": "Cable Crunch (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
         "muscleGroups": [
-            "BACK",
-            "LATS"
+            "ABDOMINALS"
         ],
-        "equipment": "MACHINE"
-    },
-    {
-        "name": "Cable Row (Neutral Grip)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
-        "muscleGroups": [
-            "BACK",
-            "LATS"
-        ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Cable Face Pull",
@@ -1349,7 +288,30 @@
             "SHOULDERS",
             "TRAPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Cable Fly Crossovers",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
+        "muscleGroups": [
+            "CHEST"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Cable Pullover",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Pulldown/0.jpg",
+        "muscleGroups": [
+            "LATS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Cable Shrug",
@@ -1359,29 +321,64 @@
         "muscleGroups": [
             "TRAPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Leg Press (Horizontal)",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+        "name": "Cable Y-Raise (Cable)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
         "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
+            "SHOULDERS",
+            "UPPER_BACK"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Hack Squat (Machine)",
-        "minReps": 6,
-        "maxReps": 8,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/0.jpg",
+        "name": "Calf Press (Machine)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
         "muscleGroups": [
-            "QUADRICEPS",
-            "GLUTES"
+            "CALVES"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Calf Raise",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "CALVES"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Chest Fly (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
+        "muscleGroups": [
+            "CHEST"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Chest Fly (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butterfly/0.jpg",
+        "muscleGroups": [
+            "CHEST"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Chest Press (Machine - Wide)",
@@ -1392,62 +389,283 @@
             "CHEST",
             "TRICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Row (Machine)",
+        "name": "Chest Press (Machine)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bench_Press/0.jpg",
         "muscleGroups": [
-            "BACK",
-            "LATS"
+            "CHEST",
+            "TRICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Rear Delt Fly (Machine)",
-        "minReps": 10,
-        "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Reverse_Machine_Flyes/0.jpg",
+        "name": "Chin Up",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
         "muscleGroups": [
-            "SHOULDERS"
+            "LATS",
+            "BICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
     },
     {
-        "name": "Bicep Curl (Machine)",
+        "name": "Close Grip Bench Press (Barbell)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Barbell_Bench_Press/0.jpg",
+        "muscleGroups": [
+            "TRICEPS",
+            "CHEST"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Concentration Curl",
         "minReps": 10,
         "maxReps": 15,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bicep_Curl/0.jpg",
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Concentration_Curls/0.jpg",
         "muscleGroups": [
             "BICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Stair Climber",
-        "minReps": 8,
-        "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycling_Stationary/0.jpg",
+        "name": "Crunch",
+        "minReps": 15,
+        "maxReps": 25,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
         "muscleGroups": [
-            "CARDIO",
-            "GLUTES",
-            "CALVES"
+            "ABDOMINALS"
         ],
-        "equipment": "OTHER"
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
     },
     {
-        "name": "Rowing Machine",
+        "name": "Crunch (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ab_Crunch_Machine/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Cycling",
         "minReps": 8,
         "maxReps": 12,
         "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycling_Stationary/0.jpg",
         "muscleGroups": [
             "CARDIO",
-            "UPPER_BACK",
             "QUADRICEPS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "OTHER",
+        "type": "DISTANCE_TIME"
+    },
+    {
+        "name": "Dead Bug",
+        "minReps": 10,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Deadlift (Barbell)",
+        "minReps": 5,
+        "maxReps": 8,
+        "imageUri": "",
+        "muscleGroups": [
+            "LOWER_BACK",
+            "HAMSTRINGS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Deadlift (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "LOWER_BACK",
+            "HAMSTRINGS",
+            "GLUTES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Deadlift (Trap Bar)",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "",
+        "muscleGroups": [
+            "LOWER_BACK",
+            "QUADRICEPS",
+            "GLUTES",
+            "HAMSTRINGS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Decline Bench Press (Barbell)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Decline_Barbell_Bench_Press/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Decline Bench Press (Machine)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Decline_Dumbbell_Bench_Press/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Diamond Push-up",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
+        "muscleGroups": [
+            "TRICEPS",
+            "CHEST"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Dips",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Chest_Version/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS",
+            "SHOULDERS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Dips (Chest)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Dumbbell Calf Raise",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Raise_On_A_Dumbbell/0.jpg",
+        "muscleGroups": [
+            "CALVES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Dumbbell Fly",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/0.jpg",
+        "muscleGroups": [
+            "CHEST"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Dumbbell Lunges",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Lunges/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Dumbbell Pullover",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent-Arm_Dumbbell_Pullover/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "LATS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Dumbbell Rear Delt Fly",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Dumbbell Row (Single Arm)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg",
+        "muscleGroups": [
+            "UPPER_BACK",
+            "LATS",
+            "BICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Dumbbell Step-up",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Elliptical",
@@ -1457,7 +675,315 @@
         "muscleGroups": [
             "CARDIO"
         ],
-        "equipment": "OTHER"
+        "equipment": "OTHER",
+        "type": "DISTANCE_TIME"
+    },
+    {
+        "name": "Face Pull (Band)",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRAPS"
+        ],
+        "equipment": "RESISTANCE_BAND",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Face Pull (Other)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRAPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Farmer's Walk (Dumbbell)",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "FOREARMS",
+            "TRAPS",
+            "ABDOMINALS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "TIME"
+    },
+    {
+        "name": "Farmer's Walk (Kettlebell)",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "FOREARMS",
+            "TRAPS",
+            "ABDOMINALS"
+        ],
+        "equipment": "KETTLEBELL",
+        "type": "TIME"
+    },
+    {
+        "name": "Floor Press (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Floor Press (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Flutter Kicks",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "French Press (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "French Press (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Front Lever",
+        "minReps": 1,
+        "maxReps": 1,
+        "imageUri": "",
+        "muscleGroups": [
+            "LATS",
+            "ABDOMINALS",
+            "UPPER_BACK"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Front Raise (Barbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Front Raise (Cable)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Front Raise (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Front Squat (Barbell)",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "ABDOMINALS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Glute Bridge (Other)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg",
+        "muscleGroups": [
+            "GLUTES",
+            "HAMSTRINGS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Glute Bridge (Single Leg)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "GLUTES",
+            "HAMSTRINGS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Glute Ham Raise (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "HAMSTRINGS",
+            "GLUTES",
+            "LOWER_BACK"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Glute Kickback (Cable)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "GLUTES"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Glute Kickback (Machine)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "GLUTES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Goblet Squat",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Good Mornings (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "LOWER_BACK",
+            "HAMSTRINGS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hack Squat (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hack Squat (Machine)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hammer Curl (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Hammer_Curls_-_Rope_Attachment/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hammer Curl (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Hammer_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Handstand Push-Up",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
     },
     {
         "name": "Hanging Leg Raise",
@@ -1467,7 +993,415 @@
         "muscleGroups": [
             "ABDOMINALS"
         ],
-        "equipment": "OTHER"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hip Abduction (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/0.jpg",
+        "muscleGroups": [
+            "ABDUCTORS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hip Adduction (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
+        "muscleGroups": [
+            "ADDUCTORS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hip Thrust (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
+        "muscleGroups": [
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hip Thrust (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "GLUTES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hip Thrust (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
+        "muscleGroups": [
+            "GLUTES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Hollow Body Hold",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "Inchworm",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS",
+            "SHOULDERS",
+            "HAMSTRINGS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Incline Bench Press (Barbell)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Incline Chest Press (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Incline_Chest_Press/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Incline Dumbbell Press",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Inverted Row",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inverted_Row/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Iso-Lateral Chest Press (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Bench_Press/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Iso-Lateral Row (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Jumping Jacks",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "CARDIO"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "Knee Raise Parallel Bars",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "L-Sit",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "Landmine Press (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "UPPER_BACK"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Lat Pulldown (Cable)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Lat Pulldown (Other)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Lateral Raise (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Seated_Lateral_Raise/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Lateral Raise (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Lateral Raise (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Leg Circles",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Leg Extension (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Leg Press (Horizontal)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Leg Press (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Leg Raise (Floor)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Leg Raise Parallel Bars",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Low Cable Fly Crossovers",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Low_Cable_Crossover/0.jpg",
+        "muscleGroups": [
+            "CHEST"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Lunge",
+        "minReps": 10,
+        "maxReps": 20,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Lunges (Bodyweight)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Lying Leg Curl (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Curls/0.jpg",
+        "muscleGroups": [
+            "HAMSTRINGS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Military Press (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Mountain Climber",
+        "minReps": 15,
+        "maxReps": 30,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS",
+            "CARDIO"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Mountain Climber (Other)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS",
+            "CARDIO"
+        ],
+        "equipment": "OTHER",
+        "type": "DISTANCE_TIME"
     },
     {
         "name": "Muscle Up",
@@ -1480,31 +1414,56 @@
             "TRICEPS",
             "UPPER_BACK"
         ],
-        "equipment": "OTHER"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Dips",
+        "name": "Overhead Curl (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Cable_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Pendlay Row (Barbell)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Chest_Version/0.jpg",
-        "muscleGroups": [
-            "CHEST",
-            "TRICEPS",
-            "SHOULDERS"
-        ],
-        "equipment": "NONE"
-    },
-    {
-        "name": "Front Lever",
-        "minReps": 1,
-        "maxReps": 1,
         "imageUri": "",
         "muscleGroups": [
             "LATS",
-            "ABDOMINALS",
-            "UPPER_BACK"
+            "UPPER_BACK",
+            "BICEPS"
         ],
-        "equipment": "OTHER"
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Pendulum Squat (Machine)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Pistol Squat",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
         "name": "Planche",
@@ -1517,49 +1476,1072 @@
             "TRICEPS",
             "ABDOMINALS"
         ],
-        "equipment": "OTHER"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Pistol Squat",
-        "minReps": 6,
-        "maxReps": 10,
+        "name": "Plank",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "OTHER",
+        "type": "TIME"
+    },
+    {
+        "name": "Preacher Curl (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Preacher_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Preacher Curl (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Preacher_Curls/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Preacher Curl (Other)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Preacher_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Pull Up",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Push Up",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS",
+            "SHOULDERS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Push Up (Archer)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "SHOULDERS",
+            "TRICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Push Up (Decline)",
+        "minReps": 10,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "SHOULDERS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Push Up (Staggered)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "TRICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Push Up (Wide Grip)",
+        "minReps": 10,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "CHEST",
+            "SHOULDERS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Rear Delt Fly (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Reverse_Machine_Flyes/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Rear Delt Reverse Fly (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rear_Delt_Fly/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "UPPER_BACK"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Rear Delt Reverse Fly (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Reverse_Machine_Flyes/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "UPPER_BACK"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Reverse Lunges (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
         "imageUri": "",
         "muscleGroups": [
             "QUADRICEPS",
             "GLUTES"
         ],
-        "equipment": "OTHER"
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Handstand Push-Up",
+        "name": "Reverse Lunges (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Reverse Wrist Curl (Barbell)",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "FOREARMS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Reverse Wrist Curl (Dumbbell)",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "FOREARMS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Romanian Deadlift (Barbell)",
         "minReps": 6,
-        "maxReps": 10,
-        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/0.jpg",
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg",
+        "muscleGroups": [
+            "HAMSTRINGS",
+            "GLUTES",
+            "LOWER_BACK"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Rope Straight Arm Pulldown",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Pulldown/0.jpg",
+        "muscleGroups": [
+            "LATS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Row (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "UPPER_BACK",
+            "LATS",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Rowing Machine",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycling_Stationary/0.jpg",
+        "muscleGroups": [
+            "CARDIO",
+            "UPPER_BACK",
+            "QUADRICEPS",
+            "LATS",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "DISTANCE_TIME"
+    },
+    {
+        "name": "Running",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Running_Treadmill/0.jpg",
+        "muscleGroups": [
+            "CARDIO"
+        ],
+        "equipment": "OTHER",
+        "type": "DISTANCE_TIME"
+    },
+    {
+        "name": "Russian Twist",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Scapula Pull-Up",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "UPPER_BACK"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Seated Cable Row (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Cable Row (Neutral Grip)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "UPPER_BACK",
+            "LATS",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Cable Row (V-Grip)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Cable Row (Wide Grip)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "UPPER_BACK",
+            "LATS",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Calf Raise",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Calf_Raise/0.jpg",
+        "muscleGroups": [
+            "CALVES"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Incline Curl (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Leg Curl (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
+        "muscleGroups": [
+            "HAMSTRINGS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Leg Curl (Other)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
+        "muscleGroups": [
+            "HAMSTRINGS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Seated Shoulder Press (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Shoulder_Press/0.jpg",
         "muscleGroups": [
             "SHOULDERS",
             "TRICEPS"
         ],
-        "equipment": "NONE"
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Cable Crunch (Cable)",
+        "name": "Shadow Boxing",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "CARDIO"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "Shoulder Press (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Shoulder Press (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Shoulder_Press/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Shoulder Press (Other)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Shrug (Cable)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Shrugs/0.jpg",
+        "muscleGroups": [
+            "TRAPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Shrug (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shrug/0.jpg",
+        "muscleGroups": [
+            "TRAPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Side Bend",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Side_Bend/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Side Plank",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "Single Arm Cable Row",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Arm Lat Pulldown",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Arm_Lat_Pulldown/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Arm Lateral Raise (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Seated_Lateral_Raise/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Arm Rear Delt Reverse Fly (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rear_Delt_Fly/0.jpg",
+        "muscleGroups": [
+            "SHOULDERS",
+            "UPPER_BACK"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Arm Triceps Extension (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_One_Arm_Tricep_Extension/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Arm Triceps Extension (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Arm Triceps Pushdown (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_One_Arm_Tricep_Extension/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Leg Extensions",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Leg Romanian Deadlift (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "HAMSTRINGS",
+            "GLUTES",
+            "LOWER_BACK"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Single Triceps Pushdown",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_One_Arm_Tricep_Extension/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Sit-up",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/3_4_Sit-Up/0.jpg",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Skull Crusher (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Spider Curl (Barbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Spider Curl (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Split Squat (Dumbbell)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Split_Squats/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Squat (Jump)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "CARDIO",
+            "GLUTES"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Squat (Smith Machine)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Smith_Machine_Squat/0.jpg",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Squat (Sumo)",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "GLUTES",
+            "ADDUCTORS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Stair Climber",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bicycling_Stationary/0.jpg",
+        "muscleGroups": [
+            "CARDIO",
+            "GLUTES",
+            "CALVES"
+        ],
+        "equipment": "OTHER",
+        "type": "DISTANCE_TIME"
+    },
+    {
+        "name": "Standing Calf Raise (Machine)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
+        "muscleGroups": [
+            "CALVES"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Standing Calf Raise (Other)",
+        "minReps": 12,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
+        "muscleGroups": [
+            "CALVES"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Standing Leg Curls",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Leg_Curl/0.jpg",
+        "muscleGroups": [
+            "HAMSTRINGS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Stiff Leg Deadlift (Barbell)",
+        "minReps": 6,
+        "maxReps": 8,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stiff-Legged_Barbell_Deadlift/0.jpg",
+        "muscleGroups": [
+            "HAMSTRINGS",
+            "LOWER_BACK",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Straight Arm Lat Pulldown (Cable)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Pulldown/0.jpg",
+        "muscleGroups": [
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Superman",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
+        "muscleGroups": [
+            "LOWER_BACK"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "T-Bar Row (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "T-Bar Row (Machine)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "LATS",
+            "UPPER_BACK",
+            "BICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Dip",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg",
+        "muscleGroups": [
+            "TRICEPS",
+            "CHEST"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Triceps Extension (Barbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Close-Grip_Barbell_Triceps_Extension_Behind_The_Head/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Extension (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rope_Overhead_Triceps_Extension/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Extension (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Extension (Machine)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Triceps_Extension/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "MACHINE",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Extension (Suspension)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Body_Tricep_Press/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "SUSPENSION_BAND",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Pushdown",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Triceps Rope Pushdown",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown_-_Rope_Attachment/0.jpg",
+        "muscleGroups": [
+            "TRICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Tuck Jump",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "CARDIO"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Upright Row (Barbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRAPS",
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Upright Row (Cable)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRAPS",
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Upright Row (Dumbbell)",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "TRAPS",
+            "LATS",
+            "BICEPS",
+            "UPPER_BACK"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "V-Up",
+        "minReps": 10,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "ABDOMINALS"
+        ],
+        "equipment": "NONE",
+        "type": "REPS_ONLY"
+    },
+    {
+        "name": "Wall Sit",
+        "minReps": 0,
+        "maxReps": 0,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS"
+        ],
+        "equipment": "NONE",
+        "type": "TIME"
+    },
+    {
+        "name": "Woodchopper (Cable)",
         "minReps": 10,
         "maxReps": 15,
         "imageUri": "",
         "muscleGroups": [
             "ABDOMINALS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
     },
     {
-        "name": "Cable Y-Raise (Cable)",
-        "minReps": 12,
+        "name": "Woodchopper (Dumbbell)",
+        "minReps": 10,
         "maxReps": 15,
         "imageUri": "",
         "muscleGroups": [
-            "SHOULDERS",
-            "UPPER_BACK"
+            "ABDOMINALS"
         ],
-        "equipment": "MACHINE"
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Wrist Curl (Barbell)",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "FOREARMS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Wrist Curl (Dumbbell)",
+        "minReps": 15,
+        "maxReps": 20,
+        "imageUri": "",
+        "muscleGroups": [
+            "FOREARMS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Z-Bar Curl",
+        "minReps": 10,
+        "maxReps": 15,
+        "imageUri": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Curl/0.jpg",
+        "muscleGroups": [
+            "BICEPS"
+        ],
+        "equipment": "OTHER",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Z-Press (Barbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "ABDOMINALS",
+            "TRICEPS"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Z-Press (Dumbbell)",
+        "minReps": 8,
+        "maxReps": 12,
+        "imageUri": "",
+        "muscleGroups": [
+            "SHOULDERS",
+            "ABDOMINALS",
+            "TRICEPS"
+        ],
+        "equipment": "DUMBBELL",
+        "type": "REPS_WEIGHT"
+    },
+    {
+        "name": "Zercher Squat (Barbell)",
+        "minReps": 6,
+        "maxReps": 10,
+        "imageUri": "",
+        "muscleGroups": [
+            "QUADRICEPS",
+            "ABDOMINALS",
+            "GLUTES"
+        ],
+        "equipment": "BARBELL",
+        "type": "REPS_WEIGHT"
     }
 ]
