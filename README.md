@@ -29,5 +29,5 @@
 - **FuzzySearch**: For fast search.
 
 ## Get started
-- Download the latest release of the app from the [Releases](https://github.com/atisn/Ostromgep/releases) page.
+- Download the latest release of the app from the [Releases](https://github.com/ateszk0/Ostromgep/releases) page.
 - Read the TUTORIAL.md file for a detailed guide on how to use the app.
