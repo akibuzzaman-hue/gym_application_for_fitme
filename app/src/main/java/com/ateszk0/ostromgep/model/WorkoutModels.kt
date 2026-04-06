@@ -209,3 +209,13 @@ data class WorkoutSummaryData(
     val muscleGroups: List<String>,
     val newPersonalRecords: List<String>       // exercise names where new max was set
 )
+
+data class OverallStats(
+    val totalWorkouts: Int,
+    val totalVolumeKg: Double,
+    val totalDurationMin: Int,
+    val avgDurationMin: Int,
+    val longestStreakDays: Int,
+    val thisMonthWorkouts: Int,
+    val thisMonthVolumeKg: Double
+)

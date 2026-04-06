@@ -1016,4 +1016,93 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
         return booleanList
     }
+
+    /** Returns completed working-set counts per muscle group across all history. */
+    fun getMuscleGroupSetCounts(): Map<MuscleGroup, Int> {
+        val map = mutableMapOf<MuscleGroup, Int>()
+        _workoutHistory.value.forEach { entry ->
+            entry.exercises.forEach { exSession ->
+                val def = _exerciseLibrary.value.find { it.name == exSession.name }
+                val completedSets = exSession.sets.count { it.isCompleted && !it.isWarmup }
+                if (completedSets > 0 && def != null) {
+                    def.muscleGroups.forEach { mg ->
+                        map[mg] = (map[mg] ?: 0) + completedSets
+                    }
+                }
+            }
+        }
+        return map
+    }
+
+    /** Returns the top exercises by total completed set count. */
+    fun getTopExercises(limit: Int = 10): List<Pair<String, Int>> {
+        val map = mutableMapOf<String, Int>()
+        _workoutHistory.value.forEach { entry ->
+            entry.exercises.forEach { ex ->
+                val count = ex.sets.count { it.isCompleted && !it.isWarmup }
+                if (count > 0) map[ex.name] = (map[ex.name] ?: 0) + count
+            }
+        }
+        return map.entries.sortedByDescending { it.value }.take(limit).map { it.key to it.value }
+    }
+
+    /** Computes overall all-time and monthly summary stats. */
+    fun getOverallStats(): com.ateszk0.ostromgep.model.OverallStats {
+        val history = _workoutHistory.value
+        val now = System.currentTimeMillis()
+        val thirtyDayMs = 30L * 24 * 60 * 60 * 1000
+        val dayMs = 24 * 60 * 60 * 1000L
+
+        val totalWorkouts = history.size
+        val totalVolumeKg = history.sumOf { it.totalVolume }
+        val totalDurationMin = history.sumOf { it.durationSeconds } / 60
+        val avgDurationMin = if (totalWorkouts > 0) totalDurationMin / totalWorkouts else 0
+
+        // Longest streak: count consecutive calendar days with at least one workout
+        val workoutDayKeys = history.map { entry ->
+            val cal = java.util.Calendar.getInstance().apply { timeInMillis = entry.timestamp }
+            cal.get(java.util.Calendar.YEAR) * 10000 +
+                cal.get(java.util.Calendar.MONTH) * 100 +
+                cal.get(java.util.Calendar.DAY_OF_MONTH)
+        }.toSortedSet()
+
+        var longestStreak = 0
+        var currentStreak = 0
+        var prevKey = -1
+        for (key in workoutDayKeys) {
+            if (prevKey == -1) {
+                currentStreak = 1
+            } else {
+                // Check if key is exactly one day after prevKey (simplified: difference should be 1 day)
+                val prevCal = java.util.Calendar.getInstance().apply {
+                    set(prevKey / 10000, (prevKey / 100) % 100, prevKey % 100)
+                }
+                prevCal.add(java.util.Calendar.DAY_OF_YEAR, 1)
+                val nextExpected = prevCal.get(java.util.Calendar.YEAR) * 10000 +
+                    prevCal.get(java.util.Calendar.MONTH) * 100 +
+                    prevCal.get(java.util.Calendar.DAY_OF_MONTH)
+                if (key == nextExpected) {
+                    currentStreak++
+                } else {
+                    currentStreak = 1
+                }
+            }
+            if (currentStreak > longestStreak) longestStreak = currentStreak
+            prevKey = key
+        }
+
+        val monthly = history.filter { now - it.timestamp <= thirtyDayMs }
+        val thisMonthWorkouts = monthly.size
+        val thisMonthVolumeKg = monthly.sumOf { it.totalVolume }
+
+        return com.ateszk0.ostromgep.model.OverallStats(
+            totalWorkouts = totalWorkouts,
+            totalVolumeKg = totalVolumeKg,
+            totalDurationMin = totalDurationMin,
+            avgDurationMin = avgDurationMin,
+            longestStreakDays = longestStreak,
+            thisMonthWorkouts = thisMonthWorkouts,
+            thisMonthVolumeKg = thisMonthVolumeKg
+        )
+    }
 }

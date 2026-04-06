@@ -162,6 +162,49 @@
     <string name="stat_total_workouts">Összes Edzés</string>
     <string name="stat_total_volume">Összes Volumen</string>
     <string name="stat_total_duration">Összes Időtartam</string>
+
+    <!-- New Statistics screen strings -->
+    <string name="stat_section_summary">Összesítés</string>
+    <string name="stat_label_workouts">Edzések</string>
+    <string name="stat_label_volume">Volumen</string>
+    <string name="stat_label_time">Idő</string>
+    <string name="stat_label_avg_workout">Avg. edzés</string>
+    <string name="stat_label_streak">Leghosszabb sorozat</string>
+    <string name="stat_label_this_month">Ez a hónap</string>
+    <string name="stat_label_days_unit">nap</string>
+    <string name="stat_label_workouts_unit">edz.</string>
+    <string name="stat_section_last7">Utolsó 7 nap</string>
+    <string name="stat_section_muscle_dist">Izomcsoport eloszlás</string>
+    <string name="stat_section_set_dist">Szett-eloszlás</string>
+    <string name="stat_section_top_exercises">Top gyakorlatok</string>
+    <string name="stat_section_records">Személyes rekordok</string>
+    <string name="stat_section_monthly">Havi összefoglaló</string>
+    <string name="stat_sets_unit">szett</string>
+    <string name="stat_sets_label">%1$d szett</string>
+    <string name="stat_minutes_label">%1$d perc</string>
+    <string name="stat_no_muscle_data">Még nincs izomcsoport adat. Naplózz edzéseket!</string>
+
+    <!-- Muscle group display names -->
+    <string name="mg_abdominals">Has</string>
+    <string name="mg_abductors">Abduktor</string>
+    <string name="mg_adductors">Adduktor</string>
+    <string name="mg_biceps">Bicepsz</string>
+    <string name="mg_calves">Vádli</string>
+    <string name="mg_cardio">Cardio</string>
+    <string name="mg_chest">Mell</string>
+    <string name="mg_forearms">Alkar</string>
+    <string name="mg_glutes">Fenék</string>
+    <string name="mg_hamstrings">Combhajlító</string>
+    <string name="mg_lats">Széles hát</string>
+    <string name="mg_lower_back">Ágyék</string>
+    <string name="mg_neck">Nyak</string>
+    <string name="mg_quadriceps">Comb</string>
+    <string name="mg_shoulders">Váll</string>
+    <string name="mg_traps">Trapéz</string>
+    <string name="mg_triceps">Tricepsz</string>
+    <string name="mg_upper_back">Felső hát</string>
+    <string name="mg_other">Egyéb</string>
+
     
     <string name="body_front">Elöl</string>
     <string name="body_back">Hátul</string>
