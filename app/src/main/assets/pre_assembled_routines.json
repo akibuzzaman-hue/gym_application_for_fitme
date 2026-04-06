@@ -837,7 +837,7 @@
             },
             {
                 "id": 5,
-                "name": "Barbell Curl",
+                "name": "Kettlebell Curl",
                 "restTimerDuration": 90,
                 "sets": [
                     {
@@ -954,7 +954,7 @@
             },
             {
                 "id": 2,
-                "name": "Stiff Leg Deadlift (Barbell)",
+                "name": "Deadlift (Barbell)",
                 "restTimerDuration": 180,
                 "sets": [
                     {
@@ -1065,7 +1065,7 @@
             },
             {
                 "id": 5,
-                "name": "Dips",
+                "name": "Ring Dips",
                 "restTimerDuration": 120,
                 "sets": [
                     {
@@ -1192,7 +1192,7 @@
             },
             {
                 "id": 2,
-                "name": "Incline Dumbbell Press",
+                "name": "Incline Chest Fly (Dumbbell)",
                 "restTimerDuration": 90,
                 "sets": [
                     {
@@ -1266,7 +1266,7 @@
             },
             {
                 "id": 4,
-                "name": "Cable Y-Raise (Cable)",
+                "name": "Lateral Raise (Cable)",
                 "restTimerDuration": 60,
                 "sets": [
                     {
@@ -1568,7 +1568,7 @@
             },
             {
                 "id": 5,
-                "name": "Barbell Curl",
+                "name": "Kettlebell Curl",
                 "restTimerDuration": 0,
                 "sets": [
                     {
@@ -1605,7 +1605,7 @@
             },
             {
                 "id": 6,
-                "name": "Skull Crusher (Barbell)",
+                "name": "Skullcrusher (Barbell)",
                 "restTimerDuration": 90,
                 "sets": [
                     {
@@ -1648,7 +1648,7 @@
         "exercises": [
             {
                 "id": 1,
-                "name": "Incline Dumbbell Press",
+                "name": "Incline Chest Fly (Dumbbell)",
                 "restTimerDuration": 120,
                 "sets": [
                     {
@@ -1759,7 +1759,7 @@
             },
             {
                 "id": 4,
-                "name": "Cable Face Pull",
+                "name": "Face Pull",
                 "restTimerDuration": 60,
                 "sets": [
                     {
@@ -1913,7 +1913,7 @@
             },
             {
                 "id": 2,
-                "name": "Stiff Leg Deadlift (Barbell)",
+                "name": "Deadlift (Barbell)",
                 "restTimerDuration": 180,
                 "sets": [
                     {
@@ -2188,7 +2188,7 @@
             },
             {
                 "id": 4,
-                "name": "Dumbbell Calf Raise",
+                "name": "Seated Calf Raise",
                 "restTimerDuration": 60,
                 "sets": [
                     {

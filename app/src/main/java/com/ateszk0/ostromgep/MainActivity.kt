@@ -108,10 +108,20 @@ class MainActivity : ComponentActivity() {
                 onPrimaryContainer = Color.White
             )
             
+            val workoutSummary by workoutViewModel.workoutSummary.collectAsState()
+
             MaterialTheme(colorScheme = customColorScheme) { 
                 Surface(modifier = Modifier.fillMaxSize(), color = DarkBackground) { 
                     OstromgepApp(workoutViewModel, themeColor) 
-                } 
+                }
+                // Wrap-up dialog shown after saving workout
+                workoutSummary?.let { summary ->
+                    com.ateszk0.ostromgep.ui.components.WorkoutWrapUpDialog(
+                        summary = summary,
+                        themeColor = themeColor,
+                        onDismiss = { workoutViewModel.clearWorkoutSummary() }
+                    )
+                }
             }
         }
     }
