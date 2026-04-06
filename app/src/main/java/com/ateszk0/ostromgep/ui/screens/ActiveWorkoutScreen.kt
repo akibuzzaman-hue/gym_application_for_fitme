@@ -92,6 +92,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
     // O(1) image lookup map to avoid O(n) library.find per list item during scroll
     val libraryImageMap = remember(library) { library.associate { it.name to it.imageUri } }
     val libraryVideoMap = remember(library) { library.associate { it.name to it.videoUrl } }
+    val libraryTypeMap = remember(library) { library.associate { it.name to it.type } }
 
     val groupedExercises = remember(exercises) {
         val groups = mutableListOf<List<com.ateszk0.ostromgep.model.ExerciseSessionData>>()
@@ -206,7 +207,8 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                                 { viewModel.removeSuperset(exercise.id) },
                                 { set -> rpeTarget = exercise.id to set },
                                 onReplaceExercise = { exerciseToReplace = exercise },
-                                bodyweightKg = if (exercise.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) latestBodyWeight else null
+                                bodyweightKg = if (exercise.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) latestBodyWeight else null,
+                                exerciseType = libraryTypeMap[exercise.name] ?: com.ateszk0.ostromgep.model.ExerciseType.REPS_WEIGHT
                             )
                         if (idxInGroup < group.size - 1 && !isSuperset) {
                             Spacer(modifier = Modifier.height(24.dp))

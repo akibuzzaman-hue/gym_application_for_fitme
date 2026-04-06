@@ -512,6 +512,39 @@ fun SettingsDialog(
                         }
                         
                         Spacer(modifier = Modifier.height(24.dp))
+                        Text("AI (Gemini API Key)", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                        val geminiKey by viewModel.geminiApiKey.collectAsState()
+                        var showApiEdit by remember { mutableStateOf(false) }
+                        var tempKey by remember { mutableStateOf(geminiKey ?: "") }
+                        Column(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().clickable { tempKey = geminiKey ?: ""; showApiEdit = !showApiEdit }.padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(Icons.Default.VpnKey, null, tint = if (!geminiKey.isNullOrBlank()) Color(0xFF32D74B) else TextGray, modifier = Modifier.size(20.dp))
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text(if (!geminiKey.isNullOrBlank()) "API Key: Set ✓" else "API Key: Not Set", fontSize = 15.sp, color = Color.White)
+                            }
+                            if (showApiEdit) {
+                                Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    OutlinedTextField(
+                                        value = tempKey,
+                                        onValueChange = { tempKey = it },
+                                        label = { Text("Gemini API Key") },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        singleLine = true,
+                                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = currentThemeColor, focusedTextColor = Color.White, unfocusedTextColor = Color.White, unfocusedLabelColor = TextGray, focusedLabelColor = currentThemeColor)
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Button(onClick = { viewModel.saveGeminiApiKey(tempKey); showApiEdit = false }, colors = ButtonDefaults.buttonColors(containerColor = currentThemeColor), modifier = Modifier.fillMaxWidth()) {
+                                        Text("Save Key", color = Color.White)
+                                    }
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
                         Text("Data", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
                         val exportLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
                             contract = androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv")
@@ -680,7 +713,7 @@ fun CreateFolderDialog(
                     viewModel.createFolder(name, selectedTemplates.toList())
                     onDismiss()
                 }
-            }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                             }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
                 Text(stringResource(R.string.save_btn), color = Color.White)
             }
         },
@@ -688,4 +721,107 @@ fun CreateFolderDialog(
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel_btn), color = themeColor) }
         }
     )
+}
+
+@Composable
+fun WorkoutWrapUpDialog(
+    summary: com.ateszk0.ostromgep.model.WorkoutSummaryData,
+    themeColor: Color,
+    onDismiss: () -> Unit
+) {
+    val mins = summary.durationSeconds / 60
+    val secs = summary.durationSeconds % 60
+
+    // Fun volume comparisons
+    val funFact = when {
+        summary.totalVolumeKg > 10000 -> "That's heavier than an African elephant! 🐘"
+        summary.totalVolumeKg > 5000 -> "You lifted the weight of a car! 🚗"
+        summary.totalVolumeKg > 1000 -> "You lifted a grand piano's worth! 🎹"
+        summary.totalVolumeKg > 500 -> "That's a motorbike worth of weight! 🏍️"
+        else -> "Keep grinding — every kg counts! 💪"
+    }
+
+    androidx.compose.ui.window.Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        androidx.compose.foundation.layout.Column(
+            modifier = androidx.compose.ui.Modifier
+                .fillMaxWidth(0.92f)
+                .clip(RoundedCornerShape(20.dp))
+                .background(SurfaceDark)
+                .padding(24.dp)
+        ) {
+            // Header
+            Text("🏆 Workout Complete!", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = androidx.compose.ui.Modifier.height(18.dp))
+            Divider(color = Color.DarkGray, thickness = 0.5.dp)
+            Spacer(modifier = androidx.compose.ui.Modifier.height(14.dp))
+
+            // Stats grid
+            androidx.compose.foundation.layout.Row(modifier = androidx.compose.ui.Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                WrapUpStat("⏱ Duration", if (mins > 0) "${mins}m ${secs}s" else "${secs}s", themeColor)
+                WrapUpStat("🏋️ Volume", "${String.format("%.0f", summary.totalVolumeKg)} kg", themeColor)
+            }
+            Spacer(modifier = androidx.compose.ui.Modifier.height(12.dp))
+            androidx.compose.foundation.layout.Row(modifier = androidx.compose.ui.Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                WrapUpStat("📦 Sets", "${summary.totalSets}", themeColor)
+                WrapUpStat("🔁 Reps", "${summary.totalReps}", themeColor)
+            }
+
+            // New PRs
+            if (summary.newPersonalRecords.isNotEmpty()) {
+                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                Text("🎯 New Personal Records", color = themeColor, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                Spacer(modifier = androidx.compose.ui.Modifier.height(6.dp))
+                summary.newPersonalRecords.forEach { pr ->
+                    Text("  • $pr", color = Color.White, fontSize = 13.sp)
+                }
+            }
+
+            // Muscles
+            if (summary.muscleGroups.isNotEmpty()) {
+                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                Text("💪 Muscles Trained", color = themeColor, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                Spacer(modifier = androidx.compose.ui.Modifier.height(6.dp))
+                Text(summary.muscleGroups.joinToString(" · "), color = TextGray, fontSize = 13.sp)
+            }
+
+            // Fun fact
+            Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+            androidx.compose.foundation.layout.Box(
+                modifier = androidx.compose.ui.Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(DarkBackground)
+                    .padding(12.dp)
+            ) {
+                Text(funFact, color = TextGray, fontSize = 13.sp)
+            }
+
+            Spacer(modifier = androidx.compose.ui.Modifier.height(20.dp))
+            Button(
+                onClick = onDismiss,
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth().height(48.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = themeColor),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Let's go! 🚀", color = Color.White, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+}
+
+@Composable
+private fun WrapUpStat(label: String, value: String, themeColor: Color) {
+    androidx.compose.foundation.layout.Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = androidx.compose.ui.Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(DarkBackground)
+            .padding(horizontal = 24.dp, vertical = 12.dp)
+    ) {
+        Text(value, color = themeColor, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text(label, color = TextGray, fontSize = 12.sp)
+    }
 }

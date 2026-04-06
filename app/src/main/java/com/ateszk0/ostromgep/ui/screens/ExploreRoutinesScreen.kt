@@ -252,21 +252,6 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
-                                    IconButton(onClick = {
-                                        tempApiKey = geminiApiKey ?: ""
-                                        showApiKeyDialog = true
-                                    }) {
-                                        val keyTint = when {
-                                            generatorStatus == WorkoutViewModel.GeneratorStatus.ERROR_KEY -> Color.Red
-                                            !geminiApiKey.isNullOrBlank() -> Color(0xFF32D74B)
-                                            else -> TextGray
-                                        }
-                                        Icon(
-                                            Icons.Default.VpnKey,
-                                            contentDescription = "API Key",
-                                            tint = keyTint
-                                        )
-                                    }
                                 }
 
                                 Spacer(modifier = Modifier.height(16.dp))
@@ -353,7 +338,7 @@ fun ExploreRoutinesScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack
                                             if (geminiApiKey.isNullOrBlank()) {
                                                 coroutineScope.launch {
                                                     snackbarHostState.showSnackbar(
-                                                        "Please add a Gemini API key first (🔑)"
+                                                        "Please add a Gemini API key in Settings first"
                                                     )
                                                 }
                                             } else {

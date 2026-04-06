@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Excluded JSON data files
+hevy_gyakorlatok.json
+old_default_exercises.json
+
+*.log
+*.py

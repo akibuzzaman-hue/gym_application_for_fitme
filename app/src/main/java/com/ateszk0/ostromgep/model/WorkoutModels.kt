@@ -200,3 +200,12 @@ data class RoutineChanges(
 ) {
     fun hasChanges(): Boolean = addedExercises > 0 || removedExercises > 0 || addedSets > 0 || removedSets > 0
 }
+
+data class WorkoutSummaryData(
+    val durationSeconds: Int,
+    val totalVolumeKg: Double,
+    val totalSets: Int,
+    val totalReps: Int,
+    val muscleGroups: List<String>,
+    val newPersonalRecords: List<String>       // exercise names where new max was set
+)

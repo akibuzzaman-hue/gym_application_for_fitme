@@ -64,8 +64,11 @@ fun ExerciseBlock(
     onRemoveSuperset: () -> Unit,
     onRpeClick: (WorkoutSetData) -> Unit,
     onReplaceExercise: () -> Unit = {},
-    bodyweightKg: Double? = null
+    bodyweightKg: Double? = null,
+    exerciseType: com.ateszk0.ostromgep.model.ExerciseType = com.ateszk0.ostromgep.model.ExerciseType.REPS_WEIGHT
 ) {
+    val showKgColumn = exerciseType == com.ateszk0.ostromgep.model.ExerciseType.REPS_WEIGHT
+    val kgColLabel = if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.TIME) "Sec" else if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) "Km" else if (bodyweightKg != null) stringResource(R.string.bw_kg_label) else stringResource(R.string.kg_label_short)
     val focusManager = LocalFocusManager.current
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -158,12 +161,12 @@ fun ExerciseBlock(
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) { 
             Text(stringResource(R.string.set_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center)
             Text(stringResource(R.string.previous_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.3f), textAlign = TextAlign.Center)
-            if (bodyweightKg != null) {
-                Text(stringResource(R.string.bw_kg_label), color = WarmupYellow, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
-            } else {
-                Text(stringResource(R.string.kg_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            if (showKgColumn) {
+                Text(kgColLabel, color = if (bodyweightKg != null) WarmupYellow else TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            } else if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) {
+                Text("Km", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
             }
-            Text(stringResource(R.string.reps_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            Text(if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.TIME || exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) "Time (mm:ss)" else stringResource(R.string.reps_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(if (showKgColumn || exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) 0.2f else 0.4f), textAlign = TextAlign.Center)
             Text(stringResource(R.string.rpe_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
             Text("✔", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center) 
         }
@@ -234,10 +237,15 @@ fun ExerciseBlock(
                             maxLines = 1
                         )
                         Box(modifier = Modifier.weight(0.2f).padding(horizontal = 4.dp)) { 
-                            CustomTextField(set.kg, { onSetUpdate(set.copy(kg = it)) }, set.isCompleted, themeColor) 
+                            if (showKgColumn) {
+                                CustomTextField(set.kg, { onSetUpdate(set.copy(kg = it)) }, set.isCompleted, themeColor)
+                            } else if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) {
+                                CustomTextField(set.kg, { onSetUpdate(set.copy(kg = it)) }, set.isCompleted, themeColor, KeyboardType.Decimal)
+                            }
                         }
-                        Box(modifier = Modifier.weight(0.2f).padding(horizontal = 4.dp)) { 
-                            CustomTextField(set.reps, { onSetUpdate(set.copy(reps = it)) }, set.isCompleted, themeColor) 
+                        val isTimeInput = exerciseType == com.ateszk0.ostromgep.model.ExerciseType.TIME || exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME
+                        Box(modifier = Modifier.weight(if (showKgColumn || exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) 0.2f else 0.4f).padding(horizontal = 4.dp)) { 
+                            CustomTextField(set.reps, { onSetUpdate(set.copy(reps = it)) }, set.isCompleted, themeColor, if (isTimeInput) KeyboardType.Text else KeyboardType.Number) 
                         }
                         Box(
                             modifier = Modifier
@@ -328,11 +336,11 @@ fun ExerciseBlock(
 }
 
 @Composable
-fun CustomTextField(v: String, onV: (String) -> Unit, comp: Boolean, theme: Color) {
+fun CustomTextField(v: String, onV: (String) -> Unit, comp: Boolean, theme: Color, keyboardType: KeyboardType = KeyboardType.Number) {
     BasicTextField(
         value = v, 
         onValueChange = onV, 
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), 
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType), 
         textStyle = TextStyle(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center), 
         cursorBrush = SolidColor(theme), 
         modifier = Modifier

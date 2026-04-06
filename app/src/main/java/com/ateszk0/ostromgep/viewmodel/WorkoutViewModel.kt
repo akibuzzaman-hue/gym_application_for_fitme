@@ -85,6 +85,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _generatorStatus = MutableStateFlow(GeneratorStatus.IDLE)
     val generatorStatus: StateFlow<GeneratorStatus> = _generatorStatus.asStateFlow()
 
+    private val _workoutSummary = MutableStateFlow<WorkoutSummaryData?>(null)
+    val workoutSummary: StateFlow<WorkoutSummaryData?> = _workoutSummary.asStateFlow()
+
+    fun clearWorkoutSummary() { _workoutSummary.value = null }
+
     companion object {
         val BODYWEIGHT_EXERCISES = setOf(
             "Pull Up", "Pull-up", 
@@ -348,11 +353,39 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             repository.saveSavedTemplates(updatedTemplates)
         }
         
+        // --- Compute summary before resetting state ---
+        val completedExercises = _activeExercises.value
+        val totalSets = completedExercises.sumOf { ex -> ex.sets.count { it.isCompleted && !it.isWarmup } }
+        val totalReps = completedExercises.sumOf { ex -> ex.sets.filter { it.isCompleted && !it.isWarmup }.sumOf { it.reps.toIntOrNull() ?: 0 } }
+        val musclesTrained = completedExercises.flatMap { ex ->
+            _exerciseLibrary.value.find { it.name == ex.name }?.muscleGroups?.map { mg ->
+                mg.name.lowercase().replace('_', ' ').replaceFirstChar { it.uppercase() }
+            } ?: emptyList()
+        }.distinct().filter { it != "Other" }
+        val newPRs = completedExercises.mapNotNull { ex ->
+            val prevBest = _workoutHistory.value.flatMap { it.exercises }
+                .filter { it.name == ex.name }
+                .flatMap { it.sets }
+                .filter { it.isCompleted && !it.isWarmup }
+                .maxOfOrNull { (it.kg.toDoubleOrNull() ?: 0.0) * (it.reps.toIntOrNull() ?: 0) } ?: 0.0
+            val current = ex.sets.filter { it.isCompleted && !it.isWarmup }
+                .maxOfOrNull { (it.kg.toDoubleOrNull() ?: 0.0) * (it.reps.toIntOrNull() ?: 0) } ?: 0.0
+            if (current > prevBest && current > 0.0) ex.name else null
+        }
+
         _activeExercises.value = emptyList()
         _activeTemplateId.value = null
         repository.clearActiveWorkoutState()
         _isWorkoutActive.value = false
         _isWorkoutMinimized.value = false
+        _workoutSummary.value = WorkoutSummaryData(
+            durationSeconds = _totalSeconds.value,
+            totalVolumeKg = vol,
+            totalSets = totalSets,
+            totalReps = totalReps,
+            muscleGroups = musclesTrained,
+            newPersonalRecords = newPRs
+        )
     }
 
     fun discardWorkout() {
