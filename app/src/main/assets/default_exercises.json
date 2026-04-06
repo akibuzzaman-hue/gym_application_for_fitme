@@ -213,7 +213,7 @@
         "name": "Overhead Press (Barbell)",
         "minReps": 6,
         "maxReps": 8,
-        "imageUri": "file:///android_asset/images/0017_overhead_press_barbell.jpg",
+        "imageUri": "file:///android_asset/images/0466_overhead_press_barbell.jpg",
         "muscleGroups": [
             "SHOULDERS"
         ],
@@ -362,7 +362,7 @@
         "name": "Stair Machine (Floors)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0029_stair_machine_floors.jpg",
+        "imageUri": "file:///android_asset/images/0467_stair_machine_floors.jpg",
         "muscleGroups": [
             "CARDIO"
         ],
@@ -374,7 +374,7 @@
         "name": "Stair Machine (Steps)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0030_stair_machine_steps.jpg",
+        "imageUri": "file:///android_asset/images/0468_stair_machine_steps.jpg",
         "muscleGroups": [
             "CARDIO"
         ],
@@ -410,13 +410,13 @@
         "name": "Walking",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0033_walking.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "DISTANCE_TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/57821201-Weighted-Hyperextension-(female)_Hips_.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Back Extension (Weighted Hyperextension)",
@@ -1061,7 +1061,7 @@
         "name": "21s Bicep Curl",
         "minReps": 12,
         "maxReps": 15,
-        "imageUri": "file:///android_asset/images/0086_21s_bicep_curl.jpg",
+        "imageUri": "file:///android_asset/images/0470_21s_bicep_curl.jpg",
         "muscleGroups": [
             "BICEPS"
         ],
@@ -1097,19 +1097,19 @@
         "name": "Aerobics",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0089_aerobics.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/02881201-Dumbbell-Around-Pullover_Chest.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Air Bike",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0090_air_bike.jpg",
+        "imageUri": "file:///android_asset/images/0472_air_bike.jpg",
         "muscleGroups": [
             "CARDIO"
         ],
@@ -1399,7 +1399,7 @@
         "name": "Boxing",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0114_boxing.jpg",
+        "imageUri": "file:///android_asset/images/0473_boxing.jpg",
         "muscleGroups": [
             "CARDIO"
         ],
@@ -1570,7 +1570,7 @@
         "name": "Chest Dip (Weighted)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0128_chest_dip_weighted.jpg",
+        "imageUri": "file:///android_asset/images/0474_chest_dip_weighted.jpg",
         "muscleGroups": [
             "CHEST"
         ],
@@ -1690,7 +1690,7 @@
         "name": "Clean and Jerk",
         "minReps": 6,
         "maxReps": 8,
-        "imageUri": "file:///android_asset/images/0138_clean_and_jerk.jpg",
+        "imageUri": "file:///android_asset/images/0475_clean_and_jerk.jpg",
         "muscleGroups": [
             "OTHER"
         ],
@@ -1726,13 +1726,13 @@
         "name": "Climbing",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0141_climbing.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/02971201-Dumbbell-Concentration-Curl_Upper-Arms.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Concentration Curl",
@@ -1786,14 +1786,14 @@
         "name": "Cycling",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0146_cycling.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO",
             "QUADRICEPS"
         ],
         "equipment": "MACHINE",
         "type": "DISTANCE_TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/78391201-Dead-Bug-(VERSION-3)-(female)_Waist_.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Dead Bug",
@@ -1811,13 +1811,13 @@
         "name": "Dead Hang",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0148_dead_hang.jpg",
+        "imageUri": "file:///android_asset/images/0444_dead_hang.jpg",
         "muscleGroups": [
             "UPPER_BACK"
         ],
         "equipment": "NONE",
         "type": "TIME",
-        "videoUrl": "Nincs videó"
+        "videoUrl": ""
     },
     {
         "name": "Deadlift (Band)",
@@ -1944,7 +1944,7 @@
         "name": "Dragonfly",
         "minReps": 12,
         "maxReps": 15,
-        "imageUri": "file:///android_asset/images/0159_dragonfly.jpg",
+        "imageUri": "file:///android_asset/images/0478_dragonfly.jpg",
         "muscleGroups": [
             "ABDOMINALS"
         ],
@@ -2016,7 +2016,7 @@
         "name": "Farmers Walk (Distance Duration)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0165_farmers_walk_distance_duration.jpg",
+        "imageUri": "file:///android_asset/images/0479_farmers_walk_distance_duration.jpg",
         "muscleGroups": [
             "OTHER"
         ],
@@ -2126,7 +2126,7 @@
         "name": "Front Lever Hold",
         "minReps": 12,
         "maxReps": 15,
-        "imageUri": "file:///android_asset/images/0174_front_lever_hold.jpg",
+        "imageUri": "file:///android_asset/images/0480_front_lever_hold.jpg",
         "muscleGroups": [
             "OTHER"
         ],
@@ -2210,7 +2210,7 @@
         "name": "Full Squat",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0181_full_squat.jpg",
+        "imageUri": "file:///android_asset/images/0481_full_squat.jpg",
         "muscleGroups": [
             "QUADRICEPS"
         ],
@@ -2428,7 +2428,7 @@
         "name": "Hex Press (Dumbbell)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0199_hex_press_dumbbell.jpg",
+        "imageUri": "file:///android_asset/images/0482_hex_press_dumbbell.jpg",
         "muscleGroups": [
             "CHEST"
         ],
@@ -2452,7 +2452,7 @@
         "name": "High Knees",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0201_high_knees.jpg",
+        "imageUri": "file:///android_asset/images/0483_high_knees.jpg",
         "muscleGroups": [
             "OTHER"
         ],
@@ -2464,25 +2464,25 @@
         "name": "HIIT",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0202_hiit.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/05971201-Lever-Seated-Hip-Abduction_Hips.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Hiking",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0203_hiking.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/05971201-Lever-Seated-Hip-Abduction_Hips.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Hip Abduction (Machine)",
@@ -2686,7 +2686,7 @@
         "name": "Jump Rope",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0220_jump_rope.jpg",
+        "imageUri": "file:///android_asset/images/0486_jump_rope.jpg",
         "muscleGroups": [
             "CARDIO"
         ],
@@ -2866,13 +2866,13 @@
         "name": "Kipping Pull Up",
         "minReps": 6,
         "maxReps": 8,
-        "imageUri": "Nincs kép",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "LATS"
         ],
         "equipment": "MACHINE",
         "type": "REPS_ONLY",
-        "videoUrl": "Nincs videó"
+        "videoUrl": ""
     },
     {
         "name": "Knee Raise Parallel Bars",
@@ -3094,7 +3094,7 @@
         "name": "Lunge",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0254_lunge.jpg",
+        "imageUri": "file:///android_asset/images/0487_lunge.jpg",
         "muscleGroups": [
             "QUADRICEPS",
             "GLUTES"
@@ -3414,19 +3414,19 @@
         "name": "Pilates",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0280_pilates.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "OTHER"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/16571201-Dumbbell-Cross-Body-Hammer-Curl-(Version-2)_Upper-Arms-FIX.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Pinwheel Curl (Dumbbell)",
         "minReps": 12,
         "maxReps": 15,
-        "imageUri": "file:///android_asset/images/0281_pinwheel_curl_dumbbell.jpg",
+        "imageUri": "file:///android_asset/images/0489_pinwheel_curl_dumbbell.jpg",
         "muscleGroups": [
             "BICEPS"
         ],
@@ -3571,13 +3571,13 @@
         "name": "Press Under",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "Nincs kép",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "OTHER"
         ],
         "equipment": "BARBELL",
         "type": "REPS_WEIGHT",
-        "videoUrl": "Nincs videó"
+        "videoUrl": ""
     },
     {
         "name": "Pull Up (Assisted)",
@@ -4445,25 +4445,25 @@
         "name": "Skating",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0365_skating.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "DISTANCE_TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/22511201-Dumbbell-Lying-Triceps-Extension-(female)_Upper-Arms_.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Skiing",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0366_skiing.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "DISTANCE_TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/22511201-Dumbbell-Lying-Triceps-Extension-(female)_Upper-Arms_.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Skullcrusher (Dumbbell)",
@@ -4505,13 +4505,13 @@
         "name": "Snowboarding",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0370_snowboarding.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/00721201-Barbell-Prone-Incline-Curl_Upper-Arms.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Spider Curl (Barbell)",
@@ -4590,13 +4590,13 @@
         "name": "Sprints",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0377_sprints.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "CARDIO"
         ],
         "equipment": "NONE",
         "type": "DISTANCE_TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/57491201-Band-squat-(female)_Hips_.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Squat (Band)",
@@ -4675,13 +4675,13 @@
         "name": "Standing Calf Raise",
         "minReps": 12,
         "maxReps": 15,
-        "imageUri": "file:///android_asset/images/0384_standing_calf_raise.jpg",
+        "imageUri": "file:///android_asset/images/0461_standing_calf_raise.jpg",
         "muscleGroups": [
             "CALVES"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "Nincs videó"
+        "videoUrl": ""
     },
     {
         "name": "Standing Calf Raise (Barbell)",
@@ -4809,13 +4809,13 @@
         "name": "Stretching",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0395_stretching.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "OTHER"
         ],
         "equipment": "NONE",
         "type": "TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/01171201-Barbell-Sumo-Deadlift_Hips.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Sumo Deadlift",
@@ -4881,7 +4881,7 @@
         "name": "Swimming",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0401_swimming.jpg",
+        "imageUri": "file:///android_asset/images/0495_swimming.jpg",
         "muscleGroups": [
             "CARDIO"
         ],
@@ -5133,19 +5133,19 @@
         "name": "Walking Lunge",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0421_walking_lunge.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "QUADRICEPS"
         ],
         "equipment": "NONE",
         "type": "DISTANCE_TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/14601201-Walking-Lunge-Male_Hips.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Walking Lunge (Dumbbell)",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "Nincs kép",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "QUADRICEPS"
         ],
@@ -5181,13 +5181,13 @@
         "name": "Warm Up",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0425_warm_up.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "OTHER"
         ],
         "equipment": "NONE",
         "type": "REPS_WEIGHT",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/14291201-Wide-Grip-Pull-Up_Back.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Wide Pull Up",
@@ -5229,13 +5229,13 @@
         "name": "Yoga",
         "minReps": 8,
         "maxReps": 12,
-        "imageUri": "file:///android_asset/images/0429_yoga.jpg",
+        "imageUri": "file:///android_asset/images/logo.png",
         "muscleGroups": [
             "OTHER"
         ],
         "equipment": "NONE",
         "type": "TIME",
-        "videoUrl": "https://d2l9nsnmtah87f.cloudfront.net/exercise-assets/15451201-Barbell-full-Zercher-Squat_Thighs.mp4"
+        "videoUrl": ""
     },
     {
         "name": "Zercher Squat",
