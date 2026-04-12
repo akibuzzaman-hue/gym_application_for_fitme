@@ -25,6 +25,11 @@ import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.R
 import androidx.compose.ui.res.stringResource
+import com.melihcolpan.musclemap.views.BodyView
+import com.melihcolpan.musclemap.data.BodySide
+import com.melihcolpan.musclemap.data.Muscle
+import com.melihcolpan.musclemap.heatmap.MuscleIntensity
+
 
 @Composable
 fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorkout: () -> Unit) {
@@ -32,7 +37,7 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
     val bodyWeightHistory by viewModel.bodyWeightHistory.collectAsState()
     val nextMission = viewModel.suggestNextMission()
     val weeklyLog = viewModel.getWeeklyBattleLog()
-    val recoveryMap = viewModel.getMuscleRecoveryStatus()
+    val recoveryMap = viewModel.getMuscleRecoveryFraction()
     val records = viewModel.getPersonalRecords()
     
     val scrollState = rememberScrollState()
@@ -84,6 +89,8 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
             Text("Ostromgép", fontSize = 28.sp, fontWeight = FontWeight.Black, color = Color.White)
         }
         
+        ReadyToSiegeHeatmap(recoveryMap = recoveryMap)
+
         NextMissionCard(nextMission = nextMission, themeColor = themeColor, onStart = {
             if (nextMission != null) {
                 handleStartWorkout {
@@ -94,8 +101,6 @@ fun HomeScreen(viewModel: WorkoutViewModel, themeColor: Color, onNavigateToWorko
         })
 
         WeeklyBattleLog(log = weeklyLog, themeColor = themeColor)
-
-        ReadyToSiegeHeatmap(recoveryMap = recoveryMap)
 
         WallOfFameTicker(records = records, themeColor = themeColor)
 
@@ -178,56 +183,113 @@ fun WeeklyBattleLog(log: List<Boolean>, themeColor: Color) {
 }
 
 @Composable
-fun ReadyToSiegeHeatmap(recoveryMap: Map<MuscleGroup, String>) {
+fun ReadyToSiegeHeatmap(recoveryMap: Map<MuscleGroup, Float>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = SurfaceDark),
         shape = RoundedCornerShape(16.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 12.dp)) {
             Text(stringResource(R.string.ready_to_siege), color = TextGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            val heatmapDataFront = remember(recoveryMap) {
+                recoveryMap.flatMap { (mg, statusFrac) ->
+                    val color = if (statusFrac <= 0.5f) {
+                        androidx.compose.ui.graphics.lerp(Color(0xFFFF453A), Color(0xFFFFD60A), statusFrac * 2f)
+                    } else {
+                        androidx.compose.ui.graphics.lerp(Color(0xFFFFD60A), Color(0xFF32D74B), (statusFrac - 0.5f) * 2f)
+                    }
+                    val muscles = when(mg) {
+                        MuscleGroup.ABDOMINALS -> listOf(Muscle.Abs, Muscle.Obliques, Muscle.Serratus)
+                        MuscleGroup.ABDUCTORS -> listOf(Muscle.Gluteal, Muscle.OuterQuad)
+                        MuscleGroup.ADDUCTORS -> listOf(Muscle.Adductors)
+                        MuscleGroup.BICEPS -> listOf(Muscle.Biceps, Muscle.Triceps) // A fronton a belső és külső rész együtt
+                        MuscleGroup.CALVES -> listOf(Muscle.Calves, Muscle.Tibialis)
+                        MuscleGroup.CHEST -> listOf(Muscle.Chest)
+                        MuscleGroup.FOREARMS -> listOf(Muscle.Forearm)
+                        MuscleGroup.GLUTES -> listOf(Muscle.Gluteal)
+                        MuscleGroup.HAMSTRINGS -> listOf(Muscle.Hamstring)
+                        MuscleGroup.LATS -> listOf(Muscle.UpperBack, Muscle.Serratus) // A SVG-ben az UpperBack a Lats-ot reprezentálja
+                        MuscleGroup.LOWER_BACK -> listOf(Muscle.LowerBack)
+                        MuscleGroup.NECK -> listOf(Muscle.Neck)
+                        MuscleGroup.QUADRICEPS -> listOf(Muscle.Quadriceps)
+                        MuscleGroup.SHOULDERS -> listOf(Muscle.Deltoids, Muscle.RotatorCuff)
+                        MuscleGroup.TRAPS -> listOf(Muscle.Trapezius)
+                        MuscleGroup.TRICEPS -> emptyList() // Elöl a teljes felkar a bicepsszel van színezve, így a tricepsz külön nem látszik
+                        MuscleGroup.UPPER_BACK -> emptyList() // Felső hát nem látszik elölről, a nyaki Traps pedig a TRAPS edzéshez tartozik
+                        else -> emptyList()
+                    }
+                    muscles.map { MuscleIntensity(muscle = it, intensity = 1.0, color = color) }
+                }
+            }
+
+            val heatmapDataBack = remember(recoveryMap) {
+                recoveryMap.flatMap { (mg, statusFrac) ->
+                    val color = if (statusFrac <= 0.5f) {
+                        androidx.compose.ui.graphics.lerp(Color(0xFFFF453A), Color(0xFFFFD60A), statusFrac * 2f)
+                    } else {
+                        androidx.compose.ui.graphics.lerp(Color(0xFFFFD60A), Color(0xFF32D74B), (statusFrac - 0.5f) * 2f)
+                    }
+                    val muscles = when(mg) {
+                        MuscleGroup.ABDOMINALS -> listOf(Muscle.Abs, Muscle.Obliques, Muscle.Serratus)
+                        MuscleGroup.ABDUCTORS -> listOf(Muscle.Gluteal, Muscle.OuterQuad)
+                        MuscleGroup.ADDUCTORS -> listOf(Muscle.Adductors)
+                        MuscleGroup.BICEPS -> listOf(Muscle.Biceps) // Hátulról a bicepsz csak a saját területén van
+                        MuscleGroup.CALVES -> listOf(Muscle.Calves, Muscle.Tibialis)
+                        MuscleGroup.CHEST -> listOf(Muscle.Chest)
+                        MuscleGroup.FOREARMS -> listOf(Muscle.Forearm)
+                        MuscleGroup.GLUTES -> listOf(Muscle.Gluteal)
+                        MuscleGroup.HAMSTRINGS -> listOf(Muscle.Hamstring)
+                        MuscleGroup.LATS -> listOf(Muscle.UpperBack) // Kizárólag az UpperBack felel meg a széles hátizomnak hátulról
+                        MuscleGroup.LOWER_BACK -> listOf(Muscle.LowerBack)
+                        MuscleGroup.NECK -> listOf(Muscle.Neck)
+                        MuscleGroup.QUADRICEPS -> listOf(Muscle.Quadriceps)
+                        MuscleGroup.SHOULDERS -> listOf(Muscle.Deltoids, Muscle.RotatorCuff)
+                        MuscleGroup.TRAPS -> listOf(Muscle.Trapezius)
+                        MuscleGroup.TRICEPS -> listOf(Muscle.Triceps)
+                        MuscleGroup.UPPER_BACK -> listOf(Muscle.Rhomboids, Muscle.Trapezius) // Felső hát = csuklyás izmok ezen a modellen
+                        else -> emptyList()
+                    }
+                    muscles.map { MuscleIntensity(muscle = it, intensity = 1.0, color = color) }
+                }
+            }
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                BodyView(
+                    modifier = Modifier.weight(1f).height(270.dp),
+                    side = BodySide.Front,
+                    heatmapData = heatmapDataFront,
+                    hideSubGroups = false
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                BodyView(
+                    modifier = Modifier.weight(1f).height(270.dp),
+                    side = BodySide.Back,
+                    heatmapData = heatmapDataBack,
+                    hideSubGroups = false
+                )
+            }
+            
             Spacer(modifier = Modifier.height(16.dp))
             
-            val columns = 4
-            val items = MuscleGroup.values().toList()
-            val rows = items.chunked(columns)
-            
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                rows.forEach { rowItems ->
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        for (i in 0 until columns) {
-                            if (i < rowItems.size) {
-                                val mg = rowItems[i]
-                                val status = recoveryMap[mg] ?: "Green"
-                                val color = when(status) {
-                                    "Red" -> Color(0xFFFF453A)
-                                    "Yellow" -> Color(0xFFFFD60A)
-                                    else -> Color(0xFF32D74B)
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .aspectRatio(1f)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(DarkBackground)
-                                        .border(2.dp, color, RoundedCornerShape(8.dp))
-                                        .padding(4.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = mg.name.lowercase().replaceFirstChar { it.uppercase() },
-                                        color = Color.White,
-                                        fontSize = 11.sp,
-                                        maxLines = 1,
-                                        fontWeight = FontWeight.Bold,
-                                        softWrap = false
-                                    )
-                                }
-                            } else {
-                                Spacer(modifier = Modifier.weight(1f))
-                            }
-                        }
-                    }
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(
+                            androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                colors = listOf(Color(0xFFFF453A), Color(0xFFFFD60A), Color(0xFF32D74B))
+                            )
+                        )
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(stringResource(R.string.legend_0h), color = TextGray, fontSize = 10.sp)
+                    Text(stringResource(R.string.legend_24h), color = TextGray, fontSize = 10.sp)
+                    Text(stringResource(R.string.legend_48h), color = TextGray, fontSize = 10.sp)
                 }
             }
         }

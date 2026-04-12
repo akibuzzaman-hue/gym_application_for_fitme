@@ -219,3 +219,13 @@ data class OverallStats(
     val thisMonthWorkouts: Int,
     val thisMonthVolumeKg: Double
 )
+
+data class OverallStats(
+    val totalWorkouts: Int,
+    val totalVolumeKg: Double,
+    val totalDurationMin: Int,
+    val avgDurationMin: Int,
+    val longestStreakDays: Int,
+    val thisMonthWorkouts: Int,
+    val thisMonthVolumeKg: Double
+)
