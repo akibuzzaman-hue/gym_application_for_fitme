@@ -162,6 +162,49 @@
     <string name="stat_total_workouts">Total Workouts</string>
     <string name="stat_total_volume">Total Volume</string>
     <string name="stat_total_duration">Total Duration</string>
+
+    <!-- New Statistics screen strings -->
+    <string name="stat_section_summary">Summary</string>
+    <string name="stat_label_workouts">Workouts</string>
+    <string name="stat_label_volume">Volume</string>
+    <string name="stat_label_time">Time</string>
+    <string name="stat_label_avg_workout">Avg. Workout</string>
+    <string name="stat_label_streak">Longest Streak</string>
+    <string name="stat_label_this_month">This Month</string>
+    <string name="stat_label_days_unit">days</string>
+    <string name="stat_label_workouts_unit">sessions</string>
+    <string name="stat_section_last7">Last 7 Days</string>
+    <string name="stat_section_muscle_dist">Muscle Group Distribution</string>
+    <string name="stat_section_set_dist">Set Distribution</string>
+    <string name="stat_section_top_exercises">Top Exercises</string>
+    <string name="stat_section_records">Personal Records</string>
+    <string name="stat_section_monthly">Monthly Summary</string>
+    <string name="stat_sets_unit">sets</string>
+    <string name="stat_sets_label">%1$d sets</string>
+    <string name="stat_minutes_label">%1$d min</string>
+    <string name="stat_no_muscle_data">No muscle data yet. Log some workouts first.</string>
+
+    <!-- Muscle group display names -->
+    <string name="mg_abdominals">Abs</string>
+    <string name="mg_abductors">Abductors</string>
+    <string name="mg_adductors">Adductors</string>
+    <string name="mg_biceps">Biceps</string>
+    <string name="mg_calves">Calves</string>
+    <string name="mg_cardio">Cardio</string>
+    <string name="mg_chest">Chest</string>
+    <string name="mg_forearms">Forearms</string>
+    <string name="mg_glutes">Glutes</string>
+    <string name="mg_hamstrings">Hamstrings</string>
+    <string name="mg_lats">Lats</string>
+    <string name="mg_lower_back">Lower Back</string>
+    <string name="mg_neck">Neck</string>
+    <string name="mg_quadriceps">Quads</string>
+    <string name="mg_shoulders">Shoulders</string>
+    <string name="mg_traps">Traps</string>
+    <string name="mg_triceps">Triceps</string>
+    <string name="mg_upper_back">Upper Back</string>
+    <string name="mg_other">Other</string>
+
     
     <string name="body_front">Front</string>
     <string name="body_back">Back</string>
@@ -243,4 +286,8 @@
     <string name="notif_skip">Skip</string>
     <string name="notif_sub15">-15s</string>
     <string name="notif_add15">+15s</string>
+    
+    <string name="legend_0h">0h (Tired)</string>
+    <string name="legend_24h">24h (Recovering)</string>
+    <string name="legend_48h">48h+ (Rested)</string>
 </resources>
