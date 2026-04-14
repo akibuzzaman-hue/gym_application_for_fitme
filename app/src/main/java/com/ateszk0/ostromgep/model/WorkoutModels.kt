@@ -6,7 +6,7 @@ data class WorkoutSetData(
     val previousText: String = "-",
     val kg: String = "",
     val reps: String = "",
-    val rpe: String = "",
+    @com.google.gson.annotations.SerializedName("rpe") val rir: String = "",
     val isCompleted: Boolean = false,
     val isWarmup: Boolean = false
 ) {
@@ -17,7 +17,7 @@ data class WorkoutSetData(
             previousText = if (previousText != null) previousText else "-",
             kg = if (kg != null) kg else "",
             reps = if (reps != null) reps else "",
-            rpe = if (rpe != null) rpe else "",
+            rir = if (rir != null) rir else "",
             isCompleted = if (isCompleted != null) isCompleted else false,
             isWarmup = if (isWarmup != null) isWarmup else false
         )
@@ -56,7 +56,7 @@ data class ExerciseSessionData(
             previousText = previousText,
             kg = kg,
             reps = reps,
-            rpe = ""
+            rir = ""
         )
         return copy(sets = sets + newSet)
     }
@@ -208,16 +208,6 @@ data class WorkoutSummaryData(
     val totalReps: Int,
     val muscleGroups: List<String>,
     val newPersonalRecords: List<String>       // exercise names where new max was set
-)
-
-data class OverallStats(
-    val totalWorkouts: Int,
-    val totalVolumeKg: Double,
-    val totalDurationMin: Int,
-    val avgDurationMin: Int,
-    val longestStreakDays: Int,
-    val thisMonthWorkouts: Int,
-    val thisMonthVolumeKg: Double
 )
 
 data class OverallStats(

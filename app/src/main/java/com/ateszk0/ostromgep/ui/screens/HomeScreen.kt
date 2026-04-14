@@ -25,10 +25,10 @@ import com.ateszk0.ostromgep.viewmodel.WorkoutViewModel
 import com.ateszk0.ostromgep.ui.theme.*
 import com.ateszk0.ostromgep.R
 import androidx.compose.ui.res.stringResource
-import com.melihcolpan.musclemap.views.BodyView
-import com.melihcolpan.musclemap.data.BodySide
-import com.melihcolpan.musclemap.data.Muscle
-import com.melihcolpan.musclemap.heatmap.MuscleIntensity
+import com.musclemap.views.BodyView
+import com.musclemap.data.BodySide
+import com.musclemap.data.Muscle
+import com.musclemap.heatmap.MuscleIntensity
 
 
 @Composable

@@ -174,7 +174,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                                 .clickable { 
                                     draftExercises = draftExercises.mapIndexed { i, ex -> 
                                         if (i == index) {
-                                            val newSet = WorkoutSetData(id = (ex.sets.maxOfOrNull { it.id } ?: 0) + 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = "")
+                                            val newSet = WorkoutSetData(id = (ex.sets.maxOfOrNull { it.id } ?: 0) + 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rir = "")
                                             ex.copy(sets = ex.sets + newSet)
                                         } else ex 
                                     }
@@ -218,7 +218,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                                 id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
                                 name = exDef.name,
                                 restTimerDuration = 90,
-                                sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
+                                sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rir = ""))
                             )
                             draftExercises = draftExercises + newSession
                             showBottomSheet = false
@@ -241,7 +241,7 @@ fun RoutineEditorScreen(viewModel: WorkoutViewModel, themeColor: Color, onBack: 
                         id = (draftExercises.maxOfOrNull { it.id } ?: 0) + 1,
                         name = name,
                         restTimerDuration = 90,
-                        sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rpe = ""))
+                        sets = listOf(WorkoutSetData(id = 1, setLabel = "1", previousText = "-", kg = "", reps = "10", rir = ""))
                     )
                     draftExercises = draftExercises + newSession
                     showCreateDialog = false

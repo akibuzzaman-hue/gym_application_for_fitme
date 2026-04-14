@@ -58,6 +58,16 @@ class WorkoutRepository(private val context: Context) {
         prefs.edit().putString("app_language", lang).apply()
     }
 
+    fun getTimerVibration(): Boolean = prefs.getBoolean("timer_vibration", true)
+    fun saveTimerVibration(enabled: Boolean) {
+        prefs.edit().putBoolean("timer_vibration", enabled).apply()
+    }
+
+    fun getTimerSoundType(): Int = prefs.getInt("timer_sound_type", 1)
+    fun saveTimerSoundType(type: Int) {
+        prefs.edit().putInt("timer_sound_type", type).apply()
+    }
+
     fun getExerciseLibrary(): List<ExerciseDef> {
         val libJsonV2 = prefs.getString("library_v2", null)
         if (libJsonV2 != null) {

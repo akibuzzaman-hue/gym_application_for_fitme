@@ -266,16 +266,16 @@ fun RpeSelectionSheet(
 ) {
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible = true }
-    val rpeOptions = listOf(
-        "10" to "Maximal effort. No more reps.",
-        "9.5" to "No more reps, could do more weight.",
-        "9" to "Could do 1 more rep.",
-        "8.5" to "Could definitively do 1 more rep.",
-        "8" to "Could do 2 more reps.",
-        "7.5" to "Could definitively do 2 more reps.",
-        "7" to "Could do 3 more reps.",
-        "6.5" to "Could definitively do 3 more reps.",
-        "6" to "Could do 4+ more reps."
+    val rirOptions = listOf(
+        "0" to "Maximal effort. No more reps left in the tank.",
+        "~1" to "Could maybe do 1 more rep.",
+        "1" to "Could do 1 more rep.",
+        "~2" to "Could maybe do 2 more reps.",        
+        "2" to "Could do 2 more reps.",
+        "~3" to "Could maybe do 3 more reps.",
+        "3" to "Could do 3 more reps.",
+        "4" to "Could do 4 more reps.",
+        "4+" to "Could do 4+ more reps."
     )
 
     androidx.compose.animation.AnimatedVisibility(
@@ -294,20 +294,20 @@ fun RpeSelectionSheet(
                         }) {
                             Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = themeColor)
                         }
-                        Text("Select RPE", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        Text("Select RIR", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.width(48.dp))
                     }
-                    Text("Rate of Perceived Exertion", color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 16.dp, start = 8.dp))
+                    Text("Reps in Reserve", color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 16.dp, start = 8.dp))
                     
                     LazyColumn {
-                    items(rpeOptions) { (rpe, desc) ->
-                        val isSelected = currentRpe == rpe
+                    items(rirOptions) { (rir, desc) ->
+                        val isSelected = currentRpe == rir
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(8.dp))
                                 .clickable {
-                                    onRpeSelected(rpe)
+                                    onRpeSelected(rir)
                                 }
                                 .background(if (isSelected) themeColor.copy(alpha = 0.2f) else Color.Transparent)
                                 .padding(vertical = 12.dp, horizontal = 16.dp),
@@ -319,7 +319,7 @@ fun RpeSelectionSheet(
                                     .background(if (isSelected) themeColor else SurfaceDark, CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(rpe, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(rir, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(desc, color = if (isSelected) Color.White else TextGray, fontSize = 16.sp)

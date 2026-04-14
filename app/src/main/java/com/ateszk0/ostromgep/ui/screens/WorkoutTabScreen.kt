@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.animation.AnimatedVisibility
@@ -33,6 +34,7 @@ import com.ateszk0.ostromgep.ui.theme.*
 import androidx.compose.foundation.border
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.asImageBitmap
 import com.ateszk0.ostromgep.R
 
 @Composable
@@ -51,6 +53,26 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
     val activeExercises by viewModel.activeExercises.collectAsState()
     var showOverrideConfirm by remember { mutableStateOf<(() -> Unit)?>(null) }
     var templateToDelete by remember { mutableStateOf<Int?>(null) }
+    var templateToShare by remember { mutableStateOf<com.ateszk0.ostromgep.model.WorkoutTemplate?>(null) }
+
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val scanLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        com.journeyapps.barcodescanner.ScanContract()
+    ) { result ->
+        if (result.contents != null) {
+            try {
+                val decodedTemplate = com.google.gson.Gson().fromJson(result.contents, com.ateszk0.ostromgep.model.WorkoutTemplate::class.java)
+                if (decodedTemplate.templateName != null && decodedTemplate.exercises.isNotEmpty()) {
+                    viewModel.saveNewTemplate(decodedTemplate.templateName + " (Imported)", decodedTemplate.exercises)
+                    android.widget.Toast.makeText(context, "Routine Imported Successfully", android.widget.Toast.LENGTH_SHORT).show()
+                } else {
+                    android.widget.Toast.makeText(context, "Invalid QR content", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+               android.widget.Toast.makeText(context, "Failed to parse routine QR", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     if (showOverrideConfirm != null) {
         AlertDialog(
@@ -100,6 +122,66 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         )
     }
 
+    if (templateToShare != null) {
+        val window = (context as? android.app.Activity)?.window
+        DisposableEffect(templateToShare) {
+            // Boost brightness to max when dialog appears
+            val originalBrightness = window?.attributes?.screenBrightness
+            if (window != null) {
+                val layoutParams = window.attributes
+                layoutParams.screenBrightness = 1.0f
+                window.attributes = layoutParams
+            }
+            onDispose {
+                // Restore brightness when dialog disappears
+                if (window != null && originalBrightness != null) {
+                    val layoutParams = window.attributes
+                    layoutParams.screenBrightness = originalBrightness
+                    window.attributes = layoutParams
+                }
+            }
+        }
+        
+        var qrBitmap by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
+        LaunchedEffect(templateToShare) {
+            try {
+                val json = com.google.gson.Gson().toJson(templateToShare)
+                val barcodeEncoder = com.journeyapps.barcodescanner.BarcodeEncoder()
+                qrBitmap = barcodeEncoder.encodeBitmap(json, com.google.zxing.BarcodeFormat.QR_CODE, 600, 600)
+            } catch (e: Exception) { e.printStackTrace() }
+        }
+        
+        androidx.compose.ui.window.Dialog(onDismissRequest = { templateToShare = null }) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Share Routine", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                    Text("Scan this code on another device to import.", color = Color.Gray, fontSize = 14.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.padding(bottom = 16.dp))
+                    
+                    if (qrBitmap != null) {
+                        androidx.compose.foundation.Image(
+                            bitmap = qrBitmap!!.asImageBitmap(),
+                            contentDescription = "QR Code",
+                            modifier = Modifier.size(250.dp)
+                        )
+                    } else {
+                        Box(modifier = Modifier.size(250.dp), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(color = themeColor)
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Button(onClick = { templateToShare = null }, colors = ButtonDefaults.buttonColors(containerColor = themeColor)) {
+                        Text("Done", color = Color.White)
+                    }
+                }
+            }
+        }
+    }
+
     val handleStartWorkout: (() -> Unit) -> Unit = { startAction ->
         if (activeExercises.isNotEmpty()) {
             showOverrideConfirm = startAction
@@ -135,8 +217,22 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.routines_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            IconButton(onClick = { showFoldersDialog = true }) {
-                Icon(Icons.Default.Folder, contentDescription = "Folders", tint = TextGray)
+            Row {
+                IconButton(onClick = { 
+                    val options = com.journeyapps.barcodescanner.ScanOptions().apply {
+                        setDesiredBarcodeFormats(com.journeyapps.barcodescanner.ScanOptions.QR_CODE)
+                        setPrompt("Scan a Routine QR Code")
+                        setBeepEnabled(false)
+                        setBarcodeImageEnabled(false)
+                        setOrientationLocked(false)
+                    }
+                    scanLauncher.launch(options)
+                }) {
+                    Icon(Icons.Default.QrCodeScanner, contentDescription = "Scan QR", tint = TextGray)
+                }
+                IconButton(onClick = { showFoldersDialog = true }) {
+                    Icon(Icons.Default.Folder, contentDescription = "Folders", tint = TextGray)
+                }
             }
         }
         
@@ -196,7 +292,8 @@ fun WorkoutTab(viewModel: WorkoutViewModel, themeColor: Color, onStart: () -> Un
                             )
                             Box { 
                                 Icon(Icons.Default.MoreVert, null, tint = TextGray, modifier = Modifier.clickable { showMenu = true }.padding(4.dp))
-                                DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(SurfaceDark)) { 
+                                DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(SurfaceDark)) {
+                                    DropdownMenuItem(text = { Text("Share via QR", color = Color.White) }, onClick = { showMenu = false; templateToShare = template })
                                     DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; templateToDelete = template.id }) 
                                 } 
                             } 

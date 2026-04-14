@@ -62,7 +62,7 @@ class WorkoutGenerator(private val context: Context) {
             4. `sets.id` should just be sequential positive integers (1, 2, 3...) for each exercise.
             5. `setLabel` should be the string form of the set number (e.g. "1", "2").
             6. `kg` can be "0" for the template.
-            7. `rpe` should be empty ("").
+            7. `rir` should be empty ("").
             8. `previousText` should be "-".
             9. `isWarmup` and `isCompleted` should be `false`.
             
@@ -96,7 +96,7 @@ class WorkoutGenerator(private val context: Context) {
                         "setLabel": "1",
                         "kg": "0",
                         "reps": "8",
-                        "rpe": "",
+                        "rir": "",
                         "isWarmup": false,
                         "isCompleted": false,
                         "previousText": "-"

@@ -224,7 +224,7 @@ fun SimpleWorkoutView(
             Text(stringResource(R.string.previous_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.25f), textAlign = TextAlign.Center)
             Text(stringResource(R.string.kg_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
             Text(stringResource(R.string.reps_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
-            Text(stringResource(R.string.rpe_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.rir_label_short), color = TextGray, fontSize = 12.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -270,7 +270,7 @@ fun SimpleWorkoutView(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (currentSet.rpe.isBlank()) "-" else currentSet.rpe,
+                    text = if (currentSet.rir.isBlank()) "-" else currentSet.rir,
                     color = if (currentSet.isCompleted) TextGray else Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
