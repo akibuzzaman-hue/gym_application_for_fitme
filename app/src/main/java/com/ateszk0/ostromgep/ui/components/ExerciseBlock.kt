@@ -64,14 +64,16 @@ fun ExerciseBlock(
     onRemoveSuperset: () -> Unit,
     onRpeClick: (WorkoutSetData) -> Unit,
     onReplaceExercise: () -> Unit = {},
+    onApplyWarmups: (baseKg: Double, baseReps: String, percentages: List<Int>) -> Unit = { _, _, _ -> },
     bodyweightKg: Double? = null,
     exerciseType: com.ateszk0.ostromgep.model.ExerciseType = com.ateszk0.ostromgep.model.ExerciseType.REPS_WEIGHT
 ) {
     val showKgColumn = exerciseType == com.ateszk0.ostromgep.model.ExerciseType.REPS_WEIGHT
-    val kgColLabel = if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.TIME) "Sec" else if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) "Km" else if (bodyweightKg != null) stringResource(R.string.bw_kg_label) else stringResource(R.string.kg_label_short)
+    val kgColLabel = if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.TIME) "Sec" else if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) "Km" else if (bodyweightKg != null) "BW (${bodyweightKg.toInt()}kg) + KG" else stringResource(R.string.kg_label_short)
     val focusManager = LocalFocusManager.current
     var showRest by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
+    var showWarmupCalc by remember { mutableStateOf(false) }
     var showImageDialog by remember { mutableStateOf<String?>(null) }
     var showVideoDialog by remember { mutableStateOf<String?>(null) }
 
@@ -139,6 +141,9 @@ fun ExerciseBlock(
                         DropdownMenuItem(text = { Text(stringResource(R.string.move_down) + " ↓", color = Color.White) }, onClick = { showMenu = false; onMoveDown() })
                         DropdownMenuItem(text = { Text(stringResource(R.string.edit_label), color = Color.White) }, onClick = { showMenu = false; onEditRepRange() })
                         DropdownMenuItem(text = { Text("Replace Exercise", color = Color.White) }, onClick = { showMenu = false; onReplaceExercise() })
+                        if (showKgColumn) {
+                            DropdownMenuItem(text = { Text("Warmup Calculator", color = Color.White) }, onClick = { showMenu = false; showWarmupCalc = true })
+                        }
                         DropdownMenuItem(text = { Text(if (exercise.supersetId == null) stringResource(R.string.superset_label) else stringResource(R.string.remove_superset), color = Color.White) }, onClick = { showMenu = false; if (exercise.supersetId == null) onSuperset() else onRemoveSuperset() })
                         DropdownMenuItem(text = { Text(stringResource(R.string.delete_btn), color = Color.Red) }, onClick = { showMenu = false; onDeleteExercise() })
                     }
@@ -167,7 +172,7 @@ fun ExerciseBlock(
                 Text("Km", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center)
             }
             Text(if (exerciseType == com.ateszk0.ostromgep.model.ExerciseType.TIME || exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) "Time (mm:ss)" else stringResource(R.string.reps_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(if (showKgColumn || exerciseType == com.ateszk0.ostromgep.model.ExerciseType.DISTANCE_TIME) 0.2f else 0.4f), textAlign = TextAlign.Center)
-            Text(stringResource(R.string.rpe_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
+            Text(stringResource(R.string.rir_label_short), color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.15f), textAlign = TextAlign.Center)
             Text("✔", color = TextGray, fontSize = 10.sp, modifier = Modifier.weight(0.1f), textAlign = TextAlign.Center) 
         }
 
@@ -259,7 +264,7 @@ fun ExerciseBlock(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = if (set.rpe.isBlank()) "-" else set.rpe,
+                                text = if (set.rir.isBlank()) "-" else set.rir,
                                 color = if (set.isCompleted) TextGray else Color.White,
                                 textAlign = TextAlign.Center
                             )
@@ -333,6 +338,15 @@ fun ExerciseBlock(
             }
         }
     }
+    
+    if (showWarmupCalc) {
+        WarmupCalculatorDialog(
+            exercise = exercise,
+            themeColor = themeColor,
+            onDismiss = { showWarmupCalc = false },
+            onApply = onApplyWarmups
+        )
+    }
 }
 
 @Composable
@@ -371,3 +385,106 @@ fun TimerAdjustButton(t: String, onClick: () -> Unit) {
         Text(t, color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold) 
     } 
 }
+
+@Composable
+fun WarmupCalculatorDialog(
+    exercise: ExerciseSessionData,
+    themeColor: Color,
+    onDismiss: () -> Unit,
+    onApply: (baseKg: Double, baseReps: String, percentages: List<Int>) -> Unit
+) {
+    var warmupSetsCount by remember { mutableIntStateOf(1) }
+    var percentages by remember { mutableStateOf(listOf(50)) }
+    
+    // First non-warmup set for default value
+    val workingSet = exercise.sets.firstOrNull { it.isWorkingSet() } ?: exercise.sets.firstOrNull { !it.isWarmup }
+    val baseWeightStr = workingSet?.kg ?: "0"
+    val baseReps = workingSet?.reps ?: "10"
+    
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = DarkBackground),
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    "Warmup Calculator", 
+                    color = Color.White, 
+                    fontSize = 18.sp, 
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                
+                Text("Base Working Weight: $baseWeightStr kg", color = TextGray, fontSize = 14.sp)
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                    Text("Number of Warmup Sets", color = Color.White, fontSize = 14.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { 
+                            if (warmupSetsCount > 1) {
+                                warmupSetsCount--
+                                percentages = percentages.dropLast(1)
+                            }
+                        }) {
+                            Text("-", color = themeColor, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                        }
+                        Text("$warmupSetsCount", color = Color.White, fontSize = 16.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                        IconButton(onClick = { 
+                            if (warmupSetsCount < 5) {
+                                warmupSetsCount++
+                                val p = if (percentages.isNotEmpty()) percentages.last() else 50
+                                percentages = percentages + (p + 10).coerceAtMost(90)
+                            }
+                        }) {
+                            Text("+", color = themeColor, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                percentages.forEachIndexed { index, pct ->
+                    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text("Set ${index + 1}", color = Color.White, fontSize = 12.sp)
+                            Text("$pct%", color = themeColor, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                        Slider(
+                            value = pct.toFloat(),
+                            onValueChange = { newValue ->
+                                val newPct = ((newValue / 10).roundToInt() * 10).coerceIn(10, 90)
+                                percentages = percentages.toMutableList().apply { set(index, newPct) }
+                            },
+                            valueRange = 10f..90f,
+                            steps = 7,
+                            colors = SliderDefaults.colors(thumbColor = themeColor, activeTrackColor = themeColor)
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    TextButton(onClick = onDismiss) {
+                        Text(stringResource(R.string.cancel_btn), color = TextGray)
+                    }
+                    Button(
+                        onClick = { 
+                            val baseWeightDb = baseWeightStr.toDoubleOrNull() ?: 0.0
+                            if (baseWeightDb > 0) {
+                                onApply(baseWeightDb, baseReps, percentages)
+                            }
+                            onDismiss() 
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = themeColor)
+                    ) {
+                        Text(stringResource(R.string.apply_btn), color = Color.White)
+                    }
+                }
+            }
+        }
+    }
+}
+

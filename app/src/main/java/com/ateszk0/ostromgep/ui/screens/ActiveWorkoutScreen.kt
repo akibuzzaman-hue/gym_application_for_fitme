@@ -207,6 +207,7 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
                                 { viewModel.removeSuperset(exercise.id) },
                                 { set -> rpeTarget = exercise.id to set },
                                 onReplaceExercise = { exerciseToReplace = exercise },
+                                onApplyWarmups = { baseKg, baseReps, percentages -> viewModel.applyWarmupSets(exercise.id, baseKg, baseReps, percentages) },
                                 bodyweightKg = if (exercise.name in com.ateszk0.ostromgep.viewmodel.WorkoutViewModel.BODYWEIGHT_EXERCISES) latestBodyWeight else null,
                                 exerciseType = libraryTypeMap[exercise.name] ?: com.ateszk0.ostromgep.model.ExerciseType.REPS_WEIGHT
                             )
@@ -251,9 +252,9 @@ fun ActiveWorkoutScreen(viewModel: WorkoutViewModel, themeColor: Color, onFinish
         rpeTarget?.let { (exerciseId, set) ->
             RpeSelectionSheet(
                 themeColor = themeColor,
-                currentRpe = set.rpe,
+                currentRpe = set.rir,
                 onRpeSelected = { newRpe ->
-                    viewModel.updateSet(exerciseId, set.copy(rpe = newRpe))
+                    viewModel.updateSet(exerciseId, set.copy(rir = newRpe))
                     rpeTarget = null
                 },
                 onDismiss = { rpeTarget = null }

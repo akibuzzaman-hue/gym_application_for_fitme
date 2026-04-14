@@ -59,6 +59,22 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _username = MutableStateFlow(repository.getUsername())
     val username: StateFlow<String> = _username.asStateFlow()
 
+    private val _timerVibration = MutableStateFlow(repository.getTimerVibration())
+    val timerVibration = _timerVibration.asStateFlow()
+
+    private val _timerSoundType = MutableStateFlow(repository.getTimerSoundType())
+    val timerSoundType = _timerSoundType.asStateFlow()
+
+    fun setTimerVibration(enabled: Boolean) {
+        _timerVibration.value = enabled
+        repository.saveTimerVibration(enabled)
+    }
+
+    fun setTimerSoundType(type: Int) {
+        _timerSoundType.value = type
+        repository.saveTimerSoundType(type)
+    }
+
     private val _appTheme = MutableStateFlow(repository.getTheme())
     val appTheme: StateFlow<String> = _appTheme.asStateFlow()
 
@@ -135,10 +151,10 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                     _totalSeconds.value += 1
                     if (_restTimerSeconds.value > 0) {
                         _restTimerSeconds.value -= 1
-                        if (_restTimerSeconds.value == 0) {
-                            try {
-                                android.media.RingtoneManager.getRingtone(application, android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_NOTIFICATION))?.play()
-                            } catch (e: Exception) {}
+                        if (_restTimerSeconds.value == 10) {
+                            playTacticalSound(isWarning = true)
+                        } else if (_restTimerSeconds.value == 0) {
+                            playTacticalSound(isWarning = false)
                         }
                     }
                     val targetEx = targetExerciseForNotification()
@@ -153,6 +169,58 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setTheme(theme: String) { _appTheme.value = theme; repository.saveTheme(theme) }
+
+    private fun playTacticalSound(isWarning: Boolean) {
+        val app = getApplication<Application>()
+        val soundType = repository.getTimerSoundType()
+        val vibrate = repository.getTimerVibration()
+        
+        try {
+            val audioManager = app.getSystemService(android.content.Context.AUDIO_SERVICE) as android.media.AudioManager
+            // Map 1, 2, 3 to different tones
+            val toneType = when (soundType) {
+                2 -> android.media.ToneGenerator.TONE_PROP_PROMPT
+                3 -> android.media.ToneGenerator.TONE_DTMF_0
+                else -> android.media.ToneGenerator.TONE_PROP_BEEP
+            }
+            
+            val durationMs = if (isWarning) 300 else 800
+            val tg = android.media.ToneGenerator(android.media.AudioManager.STREAM_ALARM, 100)
+            
+            if (!isWarning && soundType == 1) {
+                // Double beep for 0s
+                tg.startTone(android.media.ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, durationMs)
+            } else {
+                tg.startTone(toneType, durationMs)
+            }
+            
+            // Release tone generator after duration + buffer
+            viewModelScope.launch {
+                delay(durationMs + 200L)
+                tg.release()
+            }
+        } catch (e: Exception) { e.printStackTrace() }
+        
+        if (vibrate) {
+            try {
+                val vibrator = app.getSystemService(android.content.Context.VIBRATOR_SERVICE) as android.os.Vibrator
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    val effect = if (isWarning) {
+                        android.os.VibrationEffect.createOneShot(500, android.os.VibrationEffect.DEFAULT_AMPLITUDE)
+                    } else {
+                        android.os.VibrationEffect.createWaveform(longArrayOf(0, 500, 200, 500), -1)
+                    }
+                    vibrator.vibrate(effect)
+                } else {
+                    if (isWarning) vibrator.vibrate(500) else vibrator.vibrate(longArrayOf(0, 500, 200, 500), -1)
+                }
+            } catch (e: Exception) { e.printStackTrace() }
+        }
+    }
+
+    fun testTimerSound() {
+        playTacticalSound(isWarning = false)
+    }
 
     private val _generatorErrorMessage = MutableStateFlow<String?>(null)
     val generatorErrorMessage: StateFlow<String?> = _generatorErrorMessage.asStateFlow()
@@ -273,7 +341,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                     isCompleted = false, 
                     kg = p?.kg ?: s.kg, 
                     reps = p?.reps ?: s.reps, 
-                    rpe = "", 
+                    rir = "", 
                     previousText = if (p != null && p.kg.isNotBlank()) "${p.kg}kg x ${p.reps}" else "-"
                 )
             })
@@ -437,7 +505,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun saveNewTemplate(name: String, exercises: List<ExerciseSessionData>) {
         val id = (_savedTemplates.value.maxOfOrNull { it.id } ?: 0) + 1
         // 1. normalize() fixes any nulls that Gson may inject into non-null Kotlin fields
-        //    (e.g. `sets`, `note`, `rpe`) when fields are missing in the JSON.
+        //    (e.g. `sets`, `note`, `rir`) when fields are missing in the JSON.
         // 2. Renumber IDs so that explore-page templates (which all use IDs 1, 2, 3)
         //    get unique IDs and don't cause duplicate-key crashes in the Compose LazyColumn.
         val normalizedExercises = exercises.mapIndexed { exIdx, ex ->
@@ -501,7 +569,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             previousText = if (firstPrev != null && firstPrev.kg.isNotBlank()) "${firstPrev.kg}kg x ${firstPrev.reps}" else "-", 
             kg = firstPrev?.kg ?: "", 
             reps = firstPrev?.reps ?: "", 
-            rpe = ""
+            rir = ""
         )
         val newSession = ExerciseSessionData(
             id = (_activeExercises.value.maxOfOrNull { it.id } ?: 0) + 1, 
@@ -526,7 +594,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                     isCompleted = false,
                     kg = p?.kg ?: "",
                     reps = p?.reps ?: s.reps,
-                    rpe = "",
+                    rir = "",
                     previousText = if (p != null && p.kg.isNotBlank()) "${p.kg}kg x ${p.reps}" else "-"
                 )
             }
@@ -623,6 +691,37 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         updateExercise(eId) { it.updateRestTimer(durationSeconds) }
     }
 
+    fun applyWarmupSets(eId: Int, baseKg: Double, baseReps: String, percentages: List<Int>) {
+        updateExercise(eId) { ex ->
+            val nonWarmups = ex.sets.filter { !it.isWarmup }
+            val newWarmups = percentages.mapIndexed { idx, pct ->
+                val calculatedKg = Math.round(baseKg * (pct / 100.0)).toString()
+                WorkoutSetData(
+                    id = (ex.sets.maxOfOrNull { it.id } ?: 0) + 1 + idx,
+                    setLabel = "W",
+                    previousText = "-",
+                    kg = calculatedKg,
+                    reps = baseReps,
+                    rir = "",
+                    isWarmup = true
+                )
+            }
+            // Remove old warmups, prepend new warmups, and recalculate labels logic
+            // Since recalculateSetLabels is internal to ExerciseSessionData, we need to do this carefully.
+            // Unfortunately, ExerciseSessionData does not expose recalculateSetLabels.
+            // But we can emulate it:
+            var c = 1
+            val combined = (newWarmups + nonWarmups).map { set ->
+                if (set.isWarmup) {
+                    set.copy(setLabel = "W")
+                } else {
+                    set.copy(setLabel = (c++).toString())
+                }
+            }
+            ex.copy(sets = combined)
+        }
+    }
+
     fun importCsvHistory(context: android.content.Context, uri: android.net.Uri): Boolean {
         try {
             val inputStream = context.contentResolver.openInputStream(uri) ?: return false
@@ -630,7 +729,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             val lines = reader.readLines()
             if (lines.isEmpty()) return false
             
-            // Expected headers: title,"start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"
+            // Expected headers: title,"start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rir"
             val workoutsMap = mutableMapOf<String, MutableList<String>>() // Key: start_time, Value: List of rows
             
             // Skip header (index 0)
@@ -655,7 +754,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 
                 // Group by exercise_title and superset_id
                 // Row format assumed: title [0], start_time [1], end_time [2], description [3], exercise_title [4], superset_id [5], 
-                // exercise_notes [6], set_index [7], set_type [8], weight_kg [9], reps [10], distance_km [11], duration_seconds [12], rpe [13]
+                // exercise_notes [6], set_index [7], set_type [8], weight_kg [9], reps [10], distance_km [11], duration_seconds [12], rir [13]
                 
                 val exercisesMap = mutableMapOf<Pair<String, String>, MutableList<List<String>>>()
                 for (row in rows) {
@@ -679,7 +778,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                                 setLabel = if (isWarmup) "W" else (setIdCounter - 1).toString(),
                                 kg = t[9],
                                 reps = t[10],
-                                rpe = if (t.size > 13) t[13] else "",
+                                rir = if (t.size > 13) t[13] else "",
                                 isCompleted = true,
                                 isWarmup = isWarmup
                             )
@@ -738,7 +837,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 set.copy(
                     id = setIdx + 1,
                     isCompleted = false,
-                    rpe = "",
+                    rir = "",
                     previousText = if (set.kg.isNotBlank()) "${set.kg}kg x ${set.reps}" else "-"
                 )
             }
@@ -761,7 +860,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             val writer = java.io.BufferedWriter(java.io.OutputStreamWriter(outputStream))
             val sdf = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.ENGLISH)
             // Write header
-            writer.write("\"title\",\"start_time\",\"end_time\",\"description\",\"exercise_title\",\"superset_id\",\"exercise_notes\",\"set_index\",\"set_type\",\"weight_kg\",\"reps\",\"distance_km\",\"duration_seconds\",\"rpe\"")
+            writer.write("\"title\",\"start_time\",\"end_time\",\"description\",\"exercise_title\",\"superset_id\",\"exercise_notes\",\"set_index\",\"set_type\",\"weight_kg\",\"reps\",\"distance_km\",\"duration_seconds\",\"rir\"")
             writer.newLine()
             _workoutHistory.value.sortedByDescending { it.timestamp }.forEach { entry ->
                 val startTime = sdf.format(java.util.Date(entry.timestamp))
@@ -783,7 +882,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         val supersetStr = if (ex.supersetId.isNullOrBlank()) "" else "\"${ex.supersetId}\""
                         val weightStr = set.kg.takeIf { it.isNotBlank() } ?: ""
                         val repsStr = set.reps.takeIf { it.isNotBlank() } ?: ""
-                        val rpeStr = set.rpe.takeIf { it.isNotBlank() } ?: ""
+                        val rpeStr = set.rir.takeIf { it.isNotBlank() } ?: ""
                         
                         writer.write("\"$title\",\"$startTime\",\"$endTime\",\"\",\"${ex.name}\",$supersetStr,\"${ex.note}\",$setIdx,\"$setType\",$weightStr,$repsStr,,,$rpeStr")
                         writer.newLine()

@@ -270,7 +270,7 @@
     <string name="time_min_format">%1$dm</string>
     <string name="weight_kg_format">%1$s kg</string>
     <string name="previous_label_short">PREVIOUS</string>
-    <string name="rpe_label_short">RPE</string>
+    <string name="rir_label_short">RIR</string>
     <string name="move_up">Move Up</string>
     <string name="move_down">Move Down</string>
     <string name="remove_superset">Remove Superset</string>

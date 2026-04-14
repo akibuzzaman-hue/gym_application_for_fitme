@@ -512,6 +512,32 @@ fun SettingsDialog(
                         }
                         
                         Spacer(modifier = Modifier.height(24.dp))
+                        Text("Timer Settings", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+                        val timerVib by viewModel.timerVibration.collectAsState()
+                        val timerSound by viewModel.timerSoundType.collectAsState()
+                        Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(SurfaceDark)) {
+                            // Vibration Toggle
+                            Row(modifier = Modifier.fillMaxWidth().clickable { viewModel.setTimerVibration(!timerVib) }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("Timer Vibration", fontSize = 16.sp, color = Color.White)
+                                Spacer(modifier = Modifier.weight(1f))
+                                Switch(checked = timerVib, onCheckedChange = { viewModel.setTimerVibration(it) }, colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = currentThemeColor))
+                            }
+                            Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                            
+                            // Sound Type selectors
+                            val soundNames = listOf("Beep 1", "Beep 2", "Beep 3")
+                            soundNames.forEachIndexed { i, name ->
+                                val sId = i + 1
+                                Row(modifier = Modifier.fillMaxWidth().clickable { viewModel.setTimerSoundType(sId); viewModel.testTimerSound() }.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Text(name, fontSize = 16.sp, color = Color.White)
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    if (timerSound == sId) Icon(Icons.Default.Check, null, tint = currentThemeColor)
+                                }
+                                if (i < 2) Divider(color = Color.DarkGray, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                            }
+                        }
+                        
+                        Spacer(modifier = Modifier.height(24.dp))
                         Text("AI (Gemini API Key)", fontWeight = FontWeight.Bold, color = TextGray, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
                         val geminiKey by viewModel.geminiApiKey.collectAsState()
                         var showApiEdit by remember { mutableStateOf(false) }
