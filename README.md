@@ -17,7 +17,7 @@
 
 ## Tech Stack
 - **Jetpack Compose**: For building the UI.
-- **Gemini 2.5 Flash**: For AI-powered workout generation.
+- **Gemini 3.0 Flash**: For AI-powered workout generation.
 - **Media3 ExoPlayer**: For video playback.
 - **Room**: For local data storage.
 - **Hilt**: For dependency injection.
